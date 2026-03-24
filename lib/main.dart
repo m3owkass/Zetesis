@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'firebase_options.dart';
 import 'package:zetesis/views/login_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,7 +22,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Color(0xfff8efeb),
 
-        colorScheme: ColorScheme.light(primary: Color(0xffb7aac6), onPrimary: Color(0xff38344f)),
+        colorScheme: ColorScheme.light(
+          primary: Color(0xffb7aac6),
+          onPrimary: Color(0xff38344f),
+        ),
 
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
