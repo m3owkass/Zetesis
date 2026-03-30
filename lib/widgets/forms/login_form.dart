@@ -42,12 +42,13 @@ class _LoginFormState extends State<LoginForm> {
           child: Center(
             child: Column(
               children: [
+                
                 CustomFormField(
                   controller: _emailController,
                   fieldType: FieldType.email,
                   label: "Email",
                   hint: 'exemplo@dominio.com',
-                  preffixIcon: Icon(Icons.email),
+                  preffixIcon: Icon(Icons.email, color: Color(0xff4c4666)),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor, digite seu email';
@@ -64,6 +65,7 @@ class _LoginFormState extends State<LoginForm> {
                     fieldType: FieldType.password,
                     label: 'Senha',
                     hint: 'Senha segura',
+                    preffixIcon: Icon(Icons.lock, color: Color(0xff4c4666)),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, digite uma senha';
@@ -81,7 +83,10 @@ class _LoginFormState extends State<LoginForm> {
                     onPressed: _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
-                      minimumSize: Size(MediaQuery.of(context).size.width/2, 55),
+                      minimumSize: Size(
+                        MediaQuery.of(context).size.width / 2,
+                        55,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadiusGeometry.circular(14),
                       ),

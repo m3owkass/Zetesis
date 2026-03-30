@@ -20,10 +20,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Zetesis',
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xfff8efeb),
+        scaffoldBackgroundColor: Color(0xff251d30),
 
         colorScheme: ColorScheme.light(
-          primary: Color(0xffb7aac6),
+          primary: Color(0xff5f54a0),
           onPrimary: Color(0xff38344f),
         ),
 

@@ -50,20 +50,25 @@ class _CustomFormFieldState extends State<CustomFormField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final errorColor = theme.colorScheme.error;
-    final normalColor = widget.labelStyle?.color ?? Color(0xff38344f);
+    final normalColor = widget.labelStyle?.color ??  Color(0xff4c4666);
 
     return TextFormField(
       controller: widget.controller,
       obscureText: widget.fieldType == FieldType.password ? _obscure : false,
       validator: widget.validator,
       keyboardType: _getKeyboardType(),
-      style: const TextStyle(color: Colors.white),
+      style:  TextStyle(color: Theme.of(context).colorScheme.onPrimary),
       cursorColor: Colors.white70,
       decoration: InputDecoration(
         labelText: widget.label,
         hintText: widget.hint,
         hintStyle: widget.hintStyle,
         prefixIcon: widget.preffixIcon,
+        border: OutlineInputBorder(borderSide: BorderSide(color: Color(0xff4c4666))),
+        
+        
+        
+
         labelStyle: WidgetStateTextStyle.resolveWith((states) {
           if (states.contains(WidgetState.error)) {
             return TextStyle(color: errorColor);
@@ -79,17 +84,17 @@ class _CustomFormFieldState extends State<CustomFormField> {
             return TextStyle(color: errorColor);
           }
           if (states.contains(WidgetState.focused)) {
-            return const TextStyle(color:Color(0xff38344f));
+            return const TextStyle(color:Color(0xff5f54a0));
           }
-          return TextStyle(color: normalColor);
+          return TextStyle(color: Color(0xff4c4666));
         }),
         suffixIcon: widget.fieldType == FieldType.password
             ? IconButton(
                 icon: Icon(
                   _obscure
                       ? Icons.visibility_off_outlined
-                      : Icons.visibility_outlined,
-                  color: Color(0xff38344f),
+                      : Icons.visibility_outlined,  
+                  color: Color(0xff5f54a0),
                 ),
                 onPressed: () {
                   setState(() {
