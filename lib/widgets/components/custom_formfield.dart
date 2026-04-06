@@ -50,14 +50,19 @@ class _CustomFormFieldState extends State<CustomFormField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final errorColor = theme.colorScheme.error;
-    final normalColor = widget.labelStyle?.color ??  Color(0xff4c4666);
+    final normalColor = widget.labelStyle?.color ??  Color.fromARGB(255, 110, 99, 156);
 
     return TextFormField(
       controller: widget.controller,
       obscureText: widget.fieldType == FieldType.password ? _obscure : false,
       validator: widget.validator,
       keyboardType: _getKeyboardType(),
-      style:  TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+      style: WidgetStateTextStyle.resolveWith((states){
+        if(states.contains(WidgetState.focused)){
+          return TextStyle(color: Color.fromARGB(255, 146, 126, 228));
+        }return TextStyle(color: normalColor);
+      }),
+      
       cursorColor: Colors.white70,
       decoration: InputDecoration(
         labelText: widget.label,
@@ -74,7 +79,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
             return TextStyle(color: errorColor);
           }
           if (states.contains(WidgetState.focused)) {
-            return const TextStyle(color: Colors.white);
+            return const TextStyle(color: Color.fromARGB(255, 146, 126, 228));
           }
           return TextStyle(color: normalColor);
         }),
@@ -84,9 +89,9 @@ class _CustomFormFieldState extends State<CustomFormField> {
             return TextStyle(color: errorColor);
           }
           if (states.contains(WidgetState.focused)) {
-            return const TextStyle(color:Color(0xff5f54a0));
+            return const TextStyle(color: Color.fromARGB(255, 146, 126, 228));
           }
-          return TextStyle(color: Color(0xff4c4666));
+          return TextStyle(color: normalColor);
         }),
         suffixIcon: widget.fieldType == FieldType.password
             ? IconButton(

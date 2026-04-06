@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:zetesis/widgets/forms/login_form.dart';
+import 'package:zetesis/widgets/forms/cadastro_form.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class CadastroScreen extends StatefulWidget {
+  const CadastroScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _LoginScreenState();
+  State<StatefulWidget> createState() => _CadastroScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _CadastroScreenState extends State<CadastroScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: LoginForm(),
+                  child: CadastroForm(),
                 ),
               ],
             ),

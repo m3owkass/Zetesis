@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:zetesis/views/cadastro_screen.dart';
 import 'firebase_options.dart';
 import 'package:zetesis/views/login_screen.dart';
 
@@ -36,8 +37,8 @@ class MyApp extends StatelessWidget {
           hintStyle: TextStyle(color: Color(0xffb7aac6)),
         ),
       ),
-      home: const LoginScreen(),
-      routes: {'/login': (context) => const LoginScreen()},
+      home: const CadastroScreen(),
+      routes: {'/login': (context) => const LoginScreen(),'/cadastro':(context)=> const CadastroScreen()},
     );
   }
 }
