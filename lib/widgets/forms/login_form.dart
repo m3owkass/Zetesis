@@ -28,7 +28,7 @@ class _LoginFormState extends State<LoginForm> {
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacementNamed(context, '/dashboard');
+      Navigator.pushReplacementNamed(context, '/index');
     }
   }
 

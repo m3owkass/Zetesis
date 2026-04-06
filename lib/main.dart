@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: const CadastroScreen(),
-      routes: {'/login': (context) => const LoginScreen(),'/cadastro':(context)=> const CadastroScreen()},
+      routes: {'/login': (context) => const LoginScreen(),'/cadastro':(context)=> const CadastroScreen(), '/index': (context) => const Index()},
     );
   }
 }

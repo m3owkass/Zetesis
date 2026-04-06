@@ -29,7 +29,7 @@ class CadastroFormState extends State<CadastroForm> {
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacementNamed(context, '/index');
     }
   }
 
