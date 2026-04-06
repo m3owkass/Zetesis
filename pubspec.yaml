@@ -62,7 +62,12 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+      - assets/phatos.webp
+      - assets/home.webp
+      - assets/config.webp
+      - assets/loja.webp
+      - assets/biblioteca.webp
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

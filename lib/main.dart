@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:zetesis/views/index.dart';
 import 'package:zetesis/views/cadastro_screen.dart';
 import 'firebase_options.dart';
 import 'package:zetesis/views/login_screen.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.light(
           primary: Color(0xff5f54a0),
           onPrimary: Color(0xff38344f),
+          surface: Color(0xfff8efeb)
         ),
 
         inputDecorationTheme: InputDecorationTheme(
