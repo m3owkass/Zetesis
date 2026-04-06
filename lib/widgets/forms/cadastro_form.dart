@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:zetesis/widgets/components/custom_formfield.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class CadastroForm extends StatefulWidget {
+  const CadastroForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<CadastroForm> createState() => CadastroFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class CadastroFormState extends State<CadastroForm> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _secondPasswordController = TextEditingController();
 
   final strongPasswordRegex = RegExp(
     r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._\-])[A-Za-z\d@$!%*?&._\-]{8,}$',
@@ -28,7 +29,7 @@ class _LoginFormState extends State<LoginForm> {
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacementNamed(context, '/dashboard');
+      Navigator.pushReplacementNamed(context, '/login');
     }
   }
 
@@ -72,6 +73,24 @@ class _LoginFormState extends State<LoginForm> {
                         return 'Por favor, digite uma senha';
                       } else if (!strongPasswordRegex.hasMatch(value)) {
                         return 'Senha deve ter 8+ caracteres, incluir maiúscula e minúscula, número, e símbolo';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: CustomFormField(
+                    controller: _secondPasswordController,
+                    fieldType: FieldType.password,
+                    label: 'Confirme sua Senha',
+                    hint: 'Senha segura',
+                    preffixIcon: Icon(Icons.lock, color: Color(0xff4c4666)),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, digite uma senha';
+                      } else if (!(value == _passwordController.text)) {
+                        return 'as senhas devem ser iguais';
                       }
                       return null;
                     },
