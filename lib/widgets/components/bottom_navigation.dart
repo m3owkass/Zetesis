@@ -33,14 +33,6 @@ class _BottomNavBarState extends State<CustomBottomNav> {
           icon: Image(image: AssetImage('assets/loja.webp'), height: 70),
           label: '',
         ),
-        BottomNavigationBarItem(
-          icon: Image(
-            image: AssetImage('assets/config.webp'),
-            fit: BoxFit.scaleDown,
-            height: 70,
-          ),
-          label: '',
-        ),
       ],
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,

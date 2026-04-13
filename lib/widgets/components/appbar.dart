@@ -19,8 +19,8 @@ class _CustomStatefulAppBarState extends State<CustomStatefulAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       leading: widget.userIcon != null
-          ? Icon(widget.userIcon)
-          : Icon(Icons.person),
+          ? IconButton(icon: Icon(widget.userIcon), onPressed: null,)
+          : IconButton(icon: Icon(Icons.person), onPressed: null,),
       title: Text(widget.title),
       titleSpacing: 0,
       bottom: PreferredSize(
