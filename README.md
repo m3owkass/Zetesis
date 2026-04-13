@@ -1,16 +1,29 @@
-# zetesis
+# Zetesis
 
-A new Flutter project.
+* Um sistema de aprendizado filosofico, com mapa mental conectando assuntos e um modo desafio
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+## Pre Requisitos
 
-A few resources to get you started if this is your first Flutter project:
+* Sistema operaçional Android
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+##  Instalação
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* Baixe pelo Google Play
+
+## Construído com
+
+* Sistema Operaçional de Desenvolvimento: Windows 10, Linux CachyOS
+* Sistema Operaçional de Usuario: Android
+* Linguagem: Dart 
+* Framework: Flutter
+  
+
+##  Autores
+
+Mencione todos aqueles que ajudaram a levantar o projeto desde o seu início
+
+* **Heitor Klane Stella** - *Backend, Programação de telas* - [Perfil](https://github.com/HeitorkStella)
+* **João Vitor Lino** - *Backend, Programação de telas, banco de dados* - [Perfil](https://github.com/m3owkass)
+* **Lucas Antônio Dias Maschio** - *Design, Reuniões, Programação de telas* - [Perfil](https://github.com/linkParaPerfil)
