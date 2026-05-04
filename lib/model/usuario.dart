@@ -1,22 +1,39 @@
- import 'package:flutter/material.dart';
-
-class UsuarioModel{
-   String? email;
-   String nome;
-   String ranking;
-   String senha;
-   int pontos;
-   Image avatar;
-   bool admin;
+class UsuarioModel {
+  final String? email;
+  final String nome;
+  final String ranking;
+  final int pontos;
+  final String avatarUrl;
+  final bool admin;
 
   UsuarioModel({
-
     this.email,
     required this.nome,
     required this.ranking,
-    required this.admin,
-    required this.avatar,
     required this.pontos,
-    required this.senha
+    required this.avatarUrl,
+    required this.admin,
   });
- }
+
+  factory UsuarioModel.fromMap(Map<String, dynamic> map) {
+    return UsuarioModel(
+      email: map['email'],
+      nome: map['nome'],
+      ranking: map['ranking'],
+      pontos: map['pontos'],
+      avatarUrl: map['avatarUrl'],
+      admin: map['admin'] ?? false,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'email': email,
+      'nome': nome,
+      'ranking': ranking,
+      'pontos': pontos,
+      'avatarUrl': avatarUrl,
+      'admin': admin,
+    };
+  }
+}
