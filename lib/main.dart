@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:zetesis/views/index.dart';
-import 'package:zetesis/views/cadastro_screen.dart';
-import 'firebase_options.dart';
-import 'package:zetesis/views/login_screen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:zetesis/auth_gate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp();
+  await Hive.initFlutter();
+  await Hive.openBox<Map>('userBox');
 
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -21,26 +21,24 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Zetesis',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xff251d30),
-
-        colorScheme: ColorScheme.light(
+        scaffoldBackgroundColor: const Color(0xff251d30),
+        colorScheme: const ColorScheme.light(
           primary: Color(0xff5f54a0),
           onPrimary: Color(0xff38344f),
-          surface: Color(0xfff8efeb)
+          surface: Color(0xfff8efeb),
         ),
-
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
             borderSide: const BorderSide(color: Color(0xffb7aac6)),
           ),
-
-          hintStyle: TextStyle(color: Color(0xffb7aac6)),
+          hintStyle: const TextStyle(color: Color(0xffb7aac6)),
+          prefixIconColor: Color.fromARGB(255, 110, 99, 156),
         ),
       ),
-      home:  Index(),
-      routes: {'/login': (context) => const LoginScreen(),'/cadastro':(context)=> const CadastroScreen(), '/index': (context) =>  Index()},
+      home: const AuthGate(),
     );
   }
 }
