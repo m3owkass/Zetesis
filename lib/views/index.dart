@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:zetesis/views/desafio_start.dart';
+import 'package:zetesis/views/login_screen.dart';
 import 'package:zetesis/widgets/components/appbar.dart';
 import 'package:zetesis/widgets/components/bottom_navigation.dart';
 
 class Index extends StatelessWidget {
-  const Index({super.key});
+  Index({super.key});
+  final List<Widget> _pages = [DesafioStart(), LoginScreen()];
+
+  CustomBottomNav bottomNav = CustomBottomNav();
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +21,7 @@ class Index extends StatelessWidget {
         ),
         child: CustomBottomNav(),
       ),
-    );
+    body: _pages[0]);
   }
 }
+

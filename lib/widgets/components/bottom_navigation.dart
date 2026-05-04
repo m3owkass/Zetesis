@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:zetesis/views/index.dart';
 
 class CustomBottomNav extends StatefulWidget {
   const CustomBottomNav({super.key});
-
   @override
   State<CustomBottomNav> createState() => _BottomNavBarState();
 }
@@ -15,6 +15,7 @@ class _BottomNavBarState extends State<CustomBottomNav> {
       _selectedIndex = index;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {

@@ -39,8 +39,8 @@ class MyApp extends StatelessWidget {
           hintStyle: TextStyle(color: Color(0xffb7aac6)),
         ),
       ),
-      home: const CadastroScreen(),
-      routes: {'/login': (context) => const LoginScreen(),'/cadastro':(context)=> const CadastroScreen(), '/index': (context) => const Index()},
+      home:  Index(),
+      routes: {'/login': (context) => const LoginScreen(),'/cadastro':(context)=> const CadastroScreen(), '/index': (context) =>  Index()},
     );
   }
 }
