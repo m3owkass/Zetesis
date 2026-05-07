@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zetesis/controller/auth_controller.dart';
 import 'package:zetesis/widgets/components/custom_formfield.dart';
+import 'package:zetesis/widgets/components/password_recovery_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginForm extends ConsumerStatefulWidget {
@@ -39,6 +40,16 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
   void _loginGoogle() async {
     await ref.read(authControllerProvider.notifier).loginGoogle();
+  }
+
+  Future<void> _openRecoverPasswordDialog() async {
+    await PasswordRecoveryDialog.show(
+      context: context,
+      initialEmail: _emailController.text.trim(),
+      emailRegex: _emailRegex,
+      onRecoverPassword: (email) =>
+          ref.read(authControllerProvider.notifier).recoverPassword(email),
+    );
   }
 
   @override
@@ -107,6 +118,15 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                       }
                       return null;
                     },
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: authState.isLoading
+                        ? null
+                        : _openRecoverPasswordDialog,
+                    child: const Text('Esqueci minha senha'),
                   ),
                 ),
 

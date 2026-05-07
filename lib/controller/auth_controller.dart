@@ -82,6 +82,21 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  Future<bool> recoverPassword(String email) async {
+    state = const AuthState.loading();
+    try {
+      await _auth.sendPasswordResetEmail(email);
+      state = const AuthState.idle();
+      return true;
+    } on FirebaseAuthException catch (e) {
+      state = AuthState.error(_mapError(e.code));
+      return false;
+    } catch (_) {
+      state = const AuthState.error('Erro ao enviar email de recuperação');
+      return false;
+    }
+  }
+
   Future<void> logout() async {
     await _auth.logout();
     await _storage.clear();
@@ -142,6 +157,7 @@ class AuthController extends StateNotifier<AuthState> {
     'email-already-in-use' => 'Este email já está cadastrado',
     'weak-password' => 'Senha muito fraca',
     'invalid-email' => 'Email inválido',
+    'missing-email' => 'Informe um email',
     'user-disabled' => 'Conta desativada',
     'network-request-failed' => 'Sem conexão com a internet',
     'too-many-requests' => 'Muitas tentativas. Tente novamente mais tarde',

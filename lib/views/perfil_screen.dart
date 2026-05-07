@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/controller/auth_controller.dart';
 import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/widgets/components/appbar.dart';
+import 'package:zetesis/widgets/components/password_recovery_dialog.dart';
 
 class PerfilScreen extends ConsumerStatefulWidget {
   const PerfilScreen({super.key});
@@ -13,7 +14,10 @@ class PerfilScreen extends ConsumerStatefulWidget {
 
 class _PerfilScreenState extends ConsumerState<PerfilScreen> {
   late TextEditingController _nomeController;
+  final _emailController = TextEditingController();
   bool _editandoNome = false;
+
+  final _emailRegex = RegExp(r'^[\w\.-]+@[\w\.-]+\.\w{2,}$');
 
   @override
   void initState() {
@@ -24,6 +28,7 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
   @override
   void dispose() {
     _nomeController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -31,9 +36,20 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
     return 1;
   }
 
+  Future<void> _openRecoverPasswordDialog() async {
+    await PasswordRecoveryDialog.show(
+      context: context,
+      initialEmail: _emailController.text.trim(),
+      emailRegex: _emailRegex,
+      onRecoverPassword: (email) =>
+          ref.read(authControllerProvider.notifier).recoverPassword(email),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final userAsync = ref.watch(userProvider);
+    final authState = ref.watch(authControllerProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -206,7 +222,9 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
                       const SizedBox(height: 28),
                       Center(
                         child: ElevatedButton(
-                          onPressed: null,
+                          onPressed: authState.isLoading
+                              ? null
+                              : _openRecoverPasswordDialog,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xff8175c8),
                             foregroundColor: Colors.white,

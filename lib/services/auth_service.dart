@@ -25,6 +25,18 @@ class AuthService {
     return cred.user;
   }
 
+  Future<void> sendPasswordResetEmail(String email) {
+    _auth.setLanguageCode('pt-BR');
+    final settings = ActionCodeSettings(
+      url: 'https://zetesis-firebase.firebaseapp.com/',
+      handleCodeInApp: false,
+    );
+    return _auth.sendPasswordResetEmail(
+      email: email,
+      actionCodeSettings: settings,
+    );
+  }
+
   Future<User?> loginGoogle() async {
     if (kIsWeb) {
       final provider = GoogleAuthProvider();
