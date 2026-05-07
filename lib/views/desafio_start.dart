@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zetesis/controller/auth_controller.dart';
 
-class DesafioStart extends StatefulWidget {
+class DesafioStart extends ConsumerStatefulWidget {
   const DesafioStart({super.key});
 
   @override
-  State<DesafioStart> createState() => _DesafioStartState();
+  ConsumerState<DesafioStart> createState() => _DesafioStartState();
 }
 
-class _DesafioStartState extends State<DesafioStart> {
+class _DesafioStartState extends ConsumerState<DesafioStart> {
+  void _logout() async {
+    await ref.read(authControllerProvider.notifier).logout();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -67,28 +73,30 @@ class _DesafioStartState extends State<DesafioStart> {
               ),
             ),
           ),
-          SizedBox(height: MediaQuery.heightOf(context)*0.1,),
-          TextButton(onPressed: null, child: Center(
-            child: Container(
-              width: MediaQuery.widthOf(context) * 0.7,
-              height: MediaQuery.heightOf(context) * 0.063,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Color(0xfff0915a),
-              ),
-              child: Center(
-                child: Text(
-                  'Iniciar Desafio',
-                  style: TextStyle(
-                    fontSize: MediaQuery.heightOf(context) * 0.03,
-                    color: Color(0xff23255d),
-                    fontWeight: FontWeight.bold,
+          SizedBox(height: MediaQuery.heightOf(context) * 0.1),
+          TextButton(
+            onPressed: _logout,
+            child: Center(
+              child: Container(
+                width: MediaQuery.widthOf(context) * 0.7,
+                height: MediaQuery.heightOf(context) * 0.063,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Color(0xfff0915a),
+                ),
+                child: Center(
+                  child: Text(
+                    'Iniciar Desafio',
+                    style: TextStyle(
+                      fontSize: MediaQuery.heightOf(context) * 0.03,
+                      color: Color(0xff23255d),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),),
-          
+          ),
         ],
       ),
     );

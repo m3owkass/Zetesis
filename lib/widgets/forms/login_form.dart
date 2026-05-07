@@ -54,6 +54,9 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           ),
         );
         ref.read(authControllerProvider.notifier).resetState();
+      } else if (next.status == AuthStatus.success) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        ref.read(authControllerProvider.notifier).resetState();
       }
     });
 
@@ -70,7 +73,10 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                   fieldType: FieldType.email,
                   label: 'Email',
                   hint: 'exemplo@dominio.com',
-                  preffixIcon: const Icon(Icons.email, color: Color(0xff4c4666)),
+                  preffixIcon: const Icon(
+                    Icons.email,
+                    color: Color(0xff4c4666),
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor, digite seu email';
@@ -88,7 +94,10 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                     fieldType: FieldType.password,
                     label: 'Senha',
                     hint: 'Senha segura',
-                    preffixIcon: const Icon(Icons.lock, color: Color(0xff4c4666)),
+                    preffixIcon: const Icon(
+                      Icons.lock,
+                      color: Color(0xff4c4666),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, digite uma senha';
@@ -107,6 +116,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                     onPressed: authState.isLoading ? null : _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Colors.white,
                       minimumSize: Size(
                         MediaQuery.of(context).size.width / 1.5,
                         MediaQuery.of(context).size.height / 13,
@@ -127,8 +137,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                         : Text(
                             'Entrar',
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              fontSize: MediaQuery.of(context).size.height * 0.027,
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.027,
                             ),
                           ),
                   ),
@@ -148,13 +158,17 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                       ),
                     ),
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset('assets/icon_google.png', height: 32),
                         const SizedBox(width: 12),
-                        const Text(
-                          'Entrar com Google',
-                          style: TextStyle(fontSize: 16),
+                        const Flexible(
+                          child: Text(
+                            'Entrar com Google',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 16),
+                          ),
                         ),
                       ],
                     ),

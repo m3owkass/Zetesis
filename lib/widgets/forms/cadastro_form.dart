@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zetesis/controller/auth_controller.dart';
 import 'package:zetesis/widgets/components/custom_formfield.dart';
 
-class CadastroForm extends StatefulWidget {
+class CadastroForm extends ConsumerStatefulWidget {
   const CadastroForm({super.key});
 
   @override
-  State<CadastroForm> createState() => CadastroFormState();
+  ConsumerState<CadastroForm> createState() => CadastroFormState();
 }
 
-class CadastroFormState extends State<CadastroForm> {
+class CadastroFormState extends ConsumerState<CadastroForm> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _secondPasswordController = TextEditingController();
+  final _nomeController = TextEditingController();
 
   final strongPasswordRegex = RegExp(
     r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._\-])[A-Za-z\d@$!%*?&._\-]{8,}$',
@@ -24,17 +27,45 @@ class CadastroFormState extends State<CadastroForm> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _secondPasswordController.dispose();
+    _nomeController.dispose();
     super.dispose();
   }
 
-  void _login() async {
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacementNamed(context, '/index');
-    }
+  void _registerLogin() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    final controller = ref.read(authControllerProvider.notifier);
+    await controller.register(
+      _nomeController.text.trim(),
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+  }
+
+  void _loginGoogle() async {
+    await ref.read(authControllerProvider.notifier).loginGoogle();
   }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authControllerProvider);
+
+    ref.listen<AuthState>(authControllerProvider, (previous, next) {
+      if (next.hasError && next.errorMessage != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.errorMessage!),
+            backgroundColor: Colors.red.shade700,
+          ),
+        );
+        ref.read(authControllerProvider.notifier).resetState();
+      } else if (next.status == AuthStatus.success) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        ref.read(authControllerProvider.notifier).resetState();
+      }
+    });
+
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(8.0),
@@ -43,7 +74,6 @@ class CadastroFormState extends State<CadastroForm> {
           child: Center(
             child: Column(
               children: [
-                
                 CustomFormField(
                   controller: _emailController,
                   fieldType: FieldType.email,
@@ -58,7 +88,23 @@ class CadastroFormState extends State<CadastroForm> {
                     }
                     return null;
                   },
-
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: CustomFormField(
+                    controller: _nomeController,
+                    fieldType: FieldType.username,
+                    label: 'Nome',
+                    hint: 'Nome de usuário',
+                    preffixIcon: Icon(Icons.person, color: Color(0xff4c4666)),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, digite um nome';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
@@ -100,23 +146,53 @@ class CadastroFormState extends State<CadastroForm> {
                 Padding(
                   padding: EdgeInsets.only(top: 30.0),
                   child: ElevatedButton(
-                    onPressed: _login,
+                    onPressed: _registerLogin,
                     style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       minimumSize: Size(
-                        MediaQuery.of(context).size.width /1.5,
-                        MediaQuery.of(context).size.height /13,
+                        MediaQuery.of(context).size.width / 1.5,
+                        MediaQuery.of(context).size.height / 13,
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadiusGeometry.circular(14),
                       ),
                     ),
                     child: Text(
-                      "Entrar",
+                      "Cadastrar",
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        fontSize: MediaQuery.of(context).size.height * 0.027
+                        fontSize: MediaQuery.of(context).size.height * 0.027,
                       ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: ElevatedButton(
+                    onPressed: authState.isLoading ? null : _loginGoogle,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      minimumSize: const Size(0, 60),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/icon_google.png', height: 32),
+                        const SizedBox(width: 12),
+                        const Flexible(
+                          child: Text(
+                            'Entrar com Google',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

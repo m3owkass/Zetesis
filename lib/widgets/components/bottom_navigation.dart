@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:zetesis/views/index.dart';
 
-class CustomBottomNav extends StatefulWidget {
-  const CustomBottomNav({super.key});
-  @override
-  State<CustomBottomNav> createState() => _BottomNavBarState();
-}
+class CustomBottomNav extends StatelessWidget {
+  final int currentIndex;
+  final void Function(int) onTap;
 
-class _BottomNavBarState extends State<CustomBottomNav> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+  const CustomBottomNav({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +28,8 @@ class _BottomNavBarState extends State<CustomBottomNav> {
           label: '',
         ),
       ],
-      currentIndex: _selectedIndex,
-      onTap: _onItemTapped,
+      currentIndex: currentIndex,
+      onTap: onTap,
     );
   }
 }

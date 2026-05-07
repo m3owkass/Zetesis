@@ -13,15 +13,18 @@ class AuthState {
   const AuthState.idle() : this(status: AuthStatus.idle);
   const AuthState.loading() : this(status: AuthStatus.loading);
   const AuthState.success() : this(status: AuthStatus.success);
-  const AuthState.error(String msg) : this(status: AuthStatus.error, errorMessage: msg);
+  const AuthState.error(String msg)
+    : this(status: AuthStatus.error, errorMessage: msg);
 
   bool get isLoading => status == AuthStatus.loading;
   bool get hasError => status == AuthStatus.error;
 }
 
-final authControllerProvider = StateNotifierProvider<AuthController, AuthState>((ref) {
-  return AuthController(ref);
-});
+final authControllerProvider = StateNotifierProvider<AuthController, AuthState>(
+  (ref) {
+    return AuthController(ref);
+  },
+);
 
 class AuthController extends StateNotifier<AuthState> {
   final Ref _ref;
@@ -50,7 +53,7 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final user = await _auth.register(email, senha);
       if (user != null) {
-        await _afterLogin(user);
+        await _afterLogin(user, nome: nome);
       }
       state = const AuthState.success();
     } on FirebaseAuthException catch (e) {
@@ -69,8 +72,10 @@ class AuthController extends StateNotifier<AuthState> {
         return;
       }
       await _afterLogin(user);
+      print('After login concluído');
       state = const AuthState.success();
     } on FirebaseAuthException catch (e) {
+      print('FirebaseAuthException: ${e.code}');
       state = AuthState.error(_mapError(e.code));
     } catch (e) {
       state = AuthState.error('Erro no login com Google');
@@ -85,13 +90,13 @@ class AuthController extends StateNotifier<AuthState> {
 
   void resetState() => state = const AuthState.idle();
 
-  Future<void> _afterLogin(User user) async {
+  Future<void> _afterLogin(User user, {String? nome}) async {
     final existing = await _db.getUser(user.uid);
 
     if (existing == null) {
       final novoUsuario = UsuarioModel(
         email: user.email,
-        nome: user.displayName ?? 'Usuário',
+        nome: nome ?? user.displayName ?? 'Usuário',
         ranking: 'Bronze',
         pontos: 0,
         avatarUrl: user.photoURL ?? '',
@@ -106,16 +111,40 @@ class AuthController extends StateNotifier<AuthState> {
     _ref.invalidate(userProvider);
   }
 
+  Future<void> deleteAccount() async {
+    state = const AuthState.loading();
+    try {
+      final uid = _ref.read(authServiceProvider).currentUser?.uid;
+      if (uid != null) await _ref.read(databaseServiceProvider).removeUser(uid);
+      await _auth.deleteAccount();
+      await _storage.clear();
+      state = const AuthState.idle();
+    } catch (e) {
+      state = AuthState.error('Erro ao deletar conta: $e');
+    }
+  }
+
+  Future<void> updateNome(String nome) async {
+    try {
+      final uid = _ref.read(authServiceProvider).currentUser?.uid;
+      if (uid == null) return;
+      await _ref.read(databaseServiceProvider).updateUser(uid, {'nome': nome});
+      _ref.invalidate(userProvider);
+    } catch (e) {
+      state = AuthState.error('Erro ao atualizar nome: $e');
+    }
+  }
+
   String _mapError(String code) => switch (code) {
-    'user-not-found'         => 'Usuário não encontrado',
-    'wrong-password'         => 'Senha incorreta',
-    'invalid-credential'     => 'Email ou senha incorretos',
-    'email-already-in-use'   => 'Este email já está cadastrado',
-    'weak-password'          => 'Senha muito fraca',
-    'invalid-email'          => 'Email inválido',
-    'user-disabled'          => 'Conta desativada',
+    'user-not-found' => 'Usuário não encontrado',
+    'wrong-password' => 'Senha incorreta',
+    'invalid-credential' => 'Email ou senha incorretos',
+    'email-already-in-use' => 'Este email já está cadastrado',
+    'weak-password' => 'Senha muito fraca',
+    'invalid-email' => 'Email inválido',
+    'user-disabled' => 'Conta desativada',
     'network-request-failed' => 'Sem conexão com a internet',
-    'too-many-requests'      => 'Muitas tentativas. Tente novamente mais tarde',
-    _                        => 'Erro de autenticação ($code)',
+    'too-many-requests' => 'Muitas tentativas. Tente novamente mais tarde',
+    _ => 'Erro de autenticação ($code)',
   };
 }

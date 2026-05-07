@@ -5,10 +5,14 @@ class DatabaseService {
   final _db = FirebaseFirestore.instance;
 
   Future<void> saveUser(String uid, UsuarioModel user) async {
-    await _db.collection('users').doc(uid).set(
-      user.toMap(),
-      SetOptions(merge: true),
-    );
+    await _db
+        .collection('users')
+        .doc(uid)
+        .set(user.toMap(), SetOptions(merge: true));
+  }
+
+  Future<void> removeUser(String uid) async {
+    await _db.collection('users').doc(uid).delete();
   }
 
   Future<UsuarioModel?> getUser(String uid) async {

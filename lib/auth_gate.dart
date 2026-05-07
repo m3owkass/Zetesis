@@ -5,7 +5,6 @@ import 'package:zetesis/views/login_screen.dart';
 
 import '../provider/providers.dart';
 
-
 class AuthGate extends ConsumerWidget {
   const AuthGate({super.key});
 
@@ -14,13 +13,12 @@ class AuthGate extends ConsumerWidget {
     final auth = ref.watch(authStateProvider);
 
     return auth.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(body: Text(e.toString())),
       data: (user) {
         if (user != null) {
-          return const Index();
+          return Index();
         } else {
           return const LoginScreen();
         }

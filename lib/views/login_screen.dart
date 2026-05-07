@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zetesis/views/cadastro_screen.dart';
 import 'package:zetesis/widgets/forms/login_form.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,15 +17,17 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           children: [
             Padding(
-              padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.07, left:MediaQuery.of(context).size.height * 0.02),
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.07,
+                left: MediaQuery.of(context).size.height * 0.02,
+              ),
               child: Align(
                 alignment: AlignmentGeometry.topLeft,
                 child: Text(
                   "Zetesis",
-                  textAlign: TextAlign.left,  
+                  textAlign: TextAlign.left,
                   style: TextStyle(
-                    
-                    color: Colors.white70,  
+                    color: Colors.white70,
                     fontSize: MediaQuery.of(context).size.height * 0.06,
                     fontWeight: FontWeight.normal,
                   ),
@@ -32,14 +35,15 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             Padding(
-              padding:  EdgeInsets.only(left: MediaQuery.of(context).size.height * 0.02),
+              padding: EdgeInsets.only(
+                left: MediaQuery.of(context).size.height * 0.02,
+              ),
               child: Align(
                 alignment: AlignmentGeometry.topLeft,
                 child: Text(
                   "Login",
-                  textAlign: TextAlign.left,  
+                  textAlign: TextAlign.left,
                   style: TextStyle(
-                    
                     color: Colors.white70,
                     fontSize: MediaQuery.of(context).size.height * 0.025,
                     fontWeight: FontWeight.normal,
@@ -47,15 +51,31 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height *0.2,
-            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.2),
 
             Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: LoginForm(),
+                Padding(padding: const EdgeInsets.all(8.0), child: LoginForm()),
+                TextButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const CadastroScreen()),
+                  ),
+                  child: RichText(
+                    text: const TextSpan(
+                      text: 'Não tem uma conta? ',
+                      style: TextStyle(color: Colors.grey),
+                      children: [
+                        TextSpan(
+                          text: 'Cadastre-se',
+                          style: TextStyle(
+                            color: Color(0xff5f54a0),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),

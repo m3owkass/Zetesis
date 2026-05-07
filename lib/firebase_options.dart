@@ -46,7 +46,7 @@ class DefaultFirebaseOptions {
     storageBucket: 'zetesis-firebase.firebasestorage.app',
   );
 
-  static const FirebaseOptions linux = web; // Sim, aponte para a web!
+  static const FirebaseOptions linux = web;
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyD0YRqMEQQvEMr6plqv4H23E22dbxD6zz4',
@@ -82,5 +82,4 @@ class DefaultFirebaseOptions {
     authDomain: 'zetesis-firebase.firebaseapp.com',
     storageBucket: 'zetesis-firebase.firebasestorage.app',
   );
-
 }

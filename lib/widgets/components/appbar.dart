@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zetesis/controller/auth_controller.dart';
 import 'package:zetesis/provider/providers.dart';
+import 'package:zetesis/views/perfil_screen.dart';
 
 class CustomStatefulAppBar extends ConsumerStatefulWidget
     implements PreferredSizeWidget {
@@ -41,21 +43,55 @@ class _CustomStatefulAppBarState extends ConsumerState<CustomStatefulAppBar> {
           data: (user) {
             return Row(
               children: [
-                CircleAvatar(
-                  radius: 18,
-                  backgroundColor: Colors.grey.shade300,
-                  backgroundImage:
-                      (user?.avatarUrl != null && user!.avatarUrl.isNotEmpty)
-                      ? NetworkImage(user.avatarUrl)
-                      : null,
-                  child: (user?.avatarUrl == null || user!.avatarUrl.isEmpty)
-                      ? Text(
-                          user?.nome.isNotEmpty == true
-                              ? user!.nome[0].toUpperCase()
-                              : '?',
-                          style: const TextStyle(color: Colors.black),
-                        )
-                      : null,
+                PopupMenuButton<String>(
+                  onSelected: (value) {
+                    if (value == 'logout') {
+                      ref.read(authControllerProvider.notifier).logout();
+                    } else if (value == 'perfil') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const PerfilScreen()),
+                      );
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: 'perfil',
+                      child: Row(
+                        children: [
+                          Icon(Icons.person),
+                          SizedBox(width: 8),
+                          Text('Perfil'),
+                        ],
+                      ),
+                    ),
+                    const PopupMenuItem(
+                      value: 'logout',
+                      child: Row(
+                        children: [
+                          Icon(Icons.logout),
+                          SizedBox(width: 8),
+                          Text('Sair'),
+                        ],
+                      ),
+                    ),
+                  ],
+                  child: CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Colors.grey.shade300,
+                    backgroundImage:
+                        (user?.avatarUrl != null && user!.avatarUrl.isNotEmpty)
+                        ? NetworkImage(user.avatarUrl)
+                        : null,
+                    child: (user?.avatarUrl == null || user!.avatarUrl.isEmpty)
+                        ? Text(
+                            user?.nome.isNotEmpty == true
+                                ? user!.nome[0].toUpperCase()
+                                : '?',
+                            style: const TextStyle(color: Colors.black),
+                          )
+                        : null,
+                  ),
                 ),
 
                 const SizedBox(width: 10),
