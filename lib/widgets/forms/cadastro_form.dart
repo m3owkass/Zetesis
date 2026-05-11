@@ -166,36 +166,7 @@ class CadastroFormState extends ConsumerState<CadastroForm> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: ElevatedButton(
-                    onPressed: authState.isLoading ? null : _loginGoogle,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      minimumSize: const Size(0, 60),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/icon_google.png', height: 32),
-                        const SizedBox(width: 12),
-                        const Flexible(
-                          child: Text(
-                            'Entrar com Google',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                
               ],
             ),
           ),

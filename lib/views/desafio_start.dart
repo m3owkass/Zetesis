@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/controller/auth_controller.dart';
+import 'package:zetesis/views/desafio_selecao.dart';
 
 class DesafioStart extends ConsumerStatefulWidget {
   const DesafioStart({super.key});
@@ -21,15 +22,23 @@ class _DesafioStartState extends ConsumerState<DesafioStart> {
         children: [
           Padding(
             padding: EdgeInsets.only(top: MediaQuery.heightOf(context) * 0.05),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Color(0xfff0915a),
-                borderRadius: BorderRadius.circular(180),
+            child: TextButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute<int>(
+                  builder: (context) => DesafioSelecao(),
+                ),
               ),
-              height: MediaQuery.heightOf(context) * 0.35,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Image.asset('assets/desafio_placeholder.png'),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xfff0915a),
+                  borderRadius: BorderRadius.circular(180),
+                ),
+                height: MediaQuery.heightOf(context) * 0.35,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Image.asset('assets/desafio_placeholder.png'),
+                ),
               ),
             ),
           ),
