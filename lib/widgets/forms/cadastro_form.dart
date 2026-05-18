@@ -43,26 +43,21 @@ class CadastroFormState extends ConsumerState<CadastroForm> {
     );
   }
 
-  void _loginGoogle() async {
-    await ref.read(authControllerProvider.notifier).loginGoogle();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authControllerProvider);
-
     ref.listen<AuthState>(authControllerProvider, (previous, next) {
+      if (previous?.status == next.status) return;
       if (next.hasError && next.errorMessage != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(next.errorMessage!),
-            backgroundColor: Colors.red.shade700,
-          ),
-        );
-        ref.read(authControllerProvider.notifier).resetState();
-      } else if (next.status == AuthStatus.success) {
-        Navigator.of(context).popUntil((route) => route.isFirst);
-        ref.read(authControllerProvider.notifier).resetState();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(next.errorMessage!),
+              backgroundColor: Colors.red.shade700,
+            ),
+          );
+          ref.read(authControllerProvider.notifier).resetState();
+        });
       }
     });
 
@@ -166,7 +161,6 @@ class CadastroFormState extends ConsumerState<CadastroForm> {
                     ),
                   ),
                 ),
-                
               ],
             ),
           ),

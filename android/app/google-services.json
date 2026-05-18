@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "557418805454-2adusjfmsjfkqatnhmc527i024po1r09.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.zetesis",
+            "certificate_hash": "cbe9d857502242cec0e4a6ab5aff8ab47aacdde9"
+          }
+        },
+        {
           "client_id": "557418805454-hmkllurubghqueg5973f4udjvbmfd0hr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

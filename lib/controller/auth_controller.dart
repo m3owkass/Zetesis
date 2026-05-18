@@ -1,7 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/model/usuario.dart';
 import 'package:zetesis/provider/providers.dart';
+import 'package:zetesis/services/auth_service.dart';
+import 'package:zetesis/services/database_service.dart';
+import 'package:zetesis/services/secure_storage_service.dart';
 
 enum AuthStatus { idle, loading, success, error }
 
@@ -31,9 +35,9 @@ class AuthController extends StateNotifier<AuthState> {
 
   AuthController(this._ref) : super(const AuthState.idle());
 
-  get _auth => _ref.read(authServiceProvider);
-  get _db => _ref.read(databaseServiceProvider);
-  get _storage => _ref.read(secureStorageProvider);
+  AuthService get _auth => _ref.read(authServiceProvider);
+  DatabaseService get _db => _ref.read(databaseServiceProvider);
+  SecureStorageService get _storage => _ref.read(secureStorageProvider);
 
   Future<void> login(String email, String senha) async {
     state = const AuthState.loading();
@@ -72,13 +76,17 @@ class AuthController extends StateNotifier<AuthState> {
         return;
       }
       await _afterLogin(user);
-      print('After login concluído');
+      debugPrint('After login concluído');
       state = const AuthState.success();
     } on FirebaseAuthException catch (e) {
-      print('FirebaseAuthException: ${e.code}');
-      state = AuthState.error(_mapError(e.code));
-    } catch (e) {
-      state = AuthState.error('Erro no login com Google');
+      debugPrint('FirebaseAuthException: ${e.code} - ${e.message}');
+      state = AuthState.error(
+        '${_mapError(e.code)}: ${e.message ?? e.toString()}',
+      );
+    } catch (e, stackTrace) {
+      debugPrint('Erro no login com Google: $e');
+      debugPrintStack(stackTrace: stackTrace);
+      state = AuthState.error('Erro no login com Google: $e');
     }
   }
 
