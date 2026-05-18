@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/controller/auth_controller.dart';
 import 'package:zetesis/provider/providers.dart';
-import 'package:zetesis/widgets/components/appbar.dart';
 import 'package:zetesis/widgets/components/password_recovery_dialog.dart';
 
 class PerfilScreen extends ConsumerStatefulWidget {

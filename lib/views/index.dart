@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zetesis/controller/auth_controller.dart';
 import 'package:zetesis/views/desafio_start.dart';
 import 'package:zetesis/views/login_screen.dart';
+import 'package:zetesis/views/loja_screen.dart';
 import 'package:zetesis/views/perfil_screen.dart';
 import 'package:zetesis/widgets/components/appbar.dart';
 import 'package:zetesis/widgets/components/bottom_navigation.dart';
@@ -19,7 +19,7 @@ class _IndexState extends ConsumerState<Index> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> pages = [const DesafioStart(), const LoginScreen(), const PerfilScreen()];
+    final List<Widget> pages = [const DesafioStart(), const LoginScreen(), const LojaScreen()];
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,

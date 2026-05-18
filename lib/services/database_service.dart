@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:zetesis/model/item_loja.dart';
 import 'package:zetesis/model/usuario.dart';
 
 class DatabaseService {
@@ -25,5 +26,22 @@ class DatabaseService {
 
   Future<void> updateUser(String uid, Map<String, dynamic> fields) async {
     await _db.collection('users').doc(uid).update(fields);
+  }
+
+  Future<void> addItem(ItemLojaModel item) async {
+    await _db.collection('items').add(item.toMap());
+  }
+
+  Future<List<ItemLojaModel>> getAllItems() async {
+    try {
+      QuerySnapshot querySnapshot = await _db.collection('items').get();
+
+      return querySnapshot.docs.map((doc) {
+        return ItemLojaModel.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+    } catch (e) {
+      print("Error fetching items: $e");
+      return [];
+    }
   }
 }

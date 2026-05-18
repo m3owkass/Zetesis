@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zetesis/model/item_loja.dart';
 import 'package:zetesis/model/usuario.dart';
 import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/services/auth_service.dart';
 import 'package:zetesis/services/database_service.dart';
 import 'package:zetesis/services/secure_storage_service.dart';
+import 'package:zetesis/widgets/components/item_loja.dart';
 
 enum AuthStatus { idle, loading, success, error }
 
@@ -171,4 +173,19 @@ class AuthController extends StateNotifier<AuthState> {
     'too-many-requests' => 'Muitas tentativas. Tente novamente mais tarde',
     _ => 'Erro de autenticação ($code)',
   };
+
+  Future<void> register_item(
+    String nome,
+    int custo,
+    String assetUrl,
+    bool status,
+  ) async {
+    final item = ItemLojaModel(
+      nome: nome,
+      custo: custo,
+      assetUrl: assetUrl,
+      status: status,
+    );
+    if (item != null) await _ref.read(databaseServiceProvider).addItem(item);
+  }
 }

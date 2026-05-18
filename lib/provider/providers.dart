@@ -18,3 +18,7 @@ final userProvider = FutureProvider<UsuarioModel?>((ref) async {
   if (user == null) return null;
   return ref.read(databaseServiceProvider).getUser(user.uid);
 });
+
+final itemsProvider = FutureProvider((ref) {
+  return ref.watch(databaseServiceProvider).getAllItems();
+});
