@@ -1,16 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/controller/auth_controller.dart';
-import 'package:zetesis/views/desafio_selecao.dart';
+import 'package:zetesis/views/selecao_tema.dart';
 
 class DesafioStart extends ConsumerStatefulWidget {
-  const DesafioStart({super.key});
+  int desafioSelecionado;
+
+   DesafioStart({super.key,this.desafioSelecionado =0});
 
   @override
   ConsumerState<DesafioStart> createState() => _DesafioStartState();
+   
+  void setDesafio(int index){
+   desafioSelecionado = index;
+  }
+
+  int getDesafio(){
+    return desafioSelecionado;
+  }
 }
 
 class _DesafioStartState extends ConsumerState<DesafioStart> {
+  
+  DesafioStart  desafioStart = DesafioStart();
+  int desafioSelecionado=0;
+
+  setDesafio(){
+    setState(() {
+      desafioSelecionado = desafioStart.getDesafio();
+    });
+  }
+
+  final List<String> images = [
+    'assets/desafio_placeholder.png',
+    'assets/icon_google.png',
+    'assets/biblioteca.webp',
+    'assets/loja.webp',
+  ];
+  final List<String> temas = [
+    'existencia',
+    'subjetividade',
+    'verdade',
+    'dinheiro',
+  ];
+
   void _logout() async {
     await ref.read(authControllerProvider.notifier).logout();
   }
@@ -25,9 +58,7 @@ class _DesafioStartState extends ConsumerState<DesafioStart> {
             child: TextButton(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute<int>(
-                  builder: (context) => DesafioSelecao(),
-                ),
+                MaterialPageRoute<int>(builder: (context) => SelecaoTema()),
               ),
               child: Container(
                 decoration: BoxDecoration(
@@ -37,7 +68,7 @@ class _DesafioStartState extends ConsumerState<DesafioStart> {
                 height: MediaQuery.heightOf(context) * 0.35,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Image.asset('assets/desafio_placeholder.png'),
+                  child: Image.asset(images[desafioSelecionado]),
                 ),
               ),
             ),
@@ -52,7 +83,7 @@ class _DesafioStartState extends ConsumerState<DesafioStart> {
               ),
               child: Center(
                 child: Text(
-                  'Existência',
+                  temas[desafioSelecionado],
                   style: TextStyle(
                     fontSize: MediaQuery.heightOf(context) * 0.03,
                     color: Colors.white,
@@ -72,7 +103,7 @@ class _DesafioStartState extends ConsumerState<DesafioStart> {
               ),
               child: Center(
                 child: Text(
-                  'Existência',
+                  temas[desafioSelecionado],
                   style: TextStyle(
                     fontSize: MediaQuery.heightOf(context) * 0.02,
                     color: Colors.white,

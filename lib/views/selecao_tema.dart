@@ -1,15 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:zetesis/views/desafio_start.dart';
 
-class DesafioSelecao extends StatefulWidget {
-  const DesafioSelecao({super.key});
+class SelecaoTema extends StatefulWidget {
+  const SelecaoTema({super.key});
 
   @override
-  State<DesafioSelecao> createState() => _DesafioSelecaoState();
+  State<SelecaoTema> createState() => _SelecaoTemaState();
 }
 
-class _DesafioSelecaoState extends State<DesafioSelecao> {
+class _SelecaoTemaState extends State<SelecaoTema> {
   @override
+  DesafioStart desafioStart = DesafioStart();
+
   Widget build(BuildContext context) {
+    final List<String> images = [
+      'assets/desafio_placeholder.png',
+      'assets/icon_google.png',
+      'assets/biblioteca.webp',
+      'assets/loja.webp',
+    ];
+    final List<String> temas = [
+      'existencia',
+      'subjetividade',
+      'verdade',
+      'dinheiro',
+    ];
+    
+
     return Scaffold(
       backgroundColor: const Color(0xff251d30),
       body: Container(
@@ -42,8 +59,8 @@ class _DesafioSelecaoState extends State<DesafioSelecao> {
               ),
               Expanded(
                 child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 4,
+                  scrollDirection: Axis.vertical,
+                  itemCount: temas.length,
 
                   itemBuilder: (BuildContext context, int index) {
                     return SizedBox(
@@ -65,22 +82,31 @@ class _DesafioSelecaoState extends State<DesafioSelecao> {
                                     color: Color(0xfff0915a),
                                     borderRadius: BorderRadius.circular(2000),
                                   ),
-                                  child: Image.asset(
-                                    'assets/desafio_placeholder.png',
-                                  ),
+                                  child: Image.asset(images[index]),
                                 ),
                               ),
                             ),
                           ),
-                          Container(
-                            alignment: Alignment.center,
-                            width: MediaQuery.widthOf(context)*0.5,
-                            height: MediaQuery.heightOf(context)*0.05,
-                            decoration: BoxDecoration(
-                              color: Color(0xff6055a2),
-                              borderRadius: BorderRadius.circular(20),
+                          FilledButton(
+                            onPressed: () {
+                              desafioStart.setDesafio(index);
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: MediaQuery.widthOf(context) * 0.5,
+                              height: MediaQuery.heightOf(context) * 0.05,
+                              decoration: BoxDecoration(
+                                color: Color(0xff6055a2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                temas[index],
+                                style: TextStyle(
+                                  fontSize: MediaQuery.heightOf(context) * 0.03,
+                                ),
+                              ),
                             ),
-                            child: Text("existência", style: TextStyle(fontSize: MediaQuery.heightOf(context)*0.03),),
                           ),
                         ],
                       ),
