@@ -55,7 +55,7 @@ class BibliotecaScreen extends ConsumerWidget {
             return GestureDetector(
               onTap: () => Navigator.push(
                 context,
-              MaterialPageRoute(builder: (_) => MaterialBibliotecaScreen(item["destino"]))),
+              MaterialPageRoute(builder: (_) => MaterialBibliotecaScreen(destino:item["destino"]))),
               child: Container(
                 decoration: BoxDecoration(
                   color: const Color(0xffddd6d2),

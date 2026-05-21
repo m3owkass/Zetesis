@@ -22,3 +22,11 @@ final userProvider = FutureProvider<UsuarioModel?>((ref) async {
 final itemsProvider = FutureProvider((ref) {
   return ref.watch(databaseServiceProvider).getAllItems();
 });
+
+final temasProvider = FutureProvider((ref){
+  return ref.watch(databaseServiceProvider).getAllTemas();
+});
+
+final temaSelecionadoProvider = StateProvider((ref){
+  return ref.watch(databaseServiceProvider).getAllTemas();
+});

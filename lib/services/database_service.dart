@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:zetesis/model/item_loja.dart';
+import 'package:zetesis/model/tema.dart';
 import 'package:zetesis/model/usuario.dart';
 
 class DatabaseService {
@@ -43,5 +44,34 @@ class DatabaseService {
       print("Error fetching items: $e");
       return [];
     }
+  }
+
+  Future<void> addTema(TemaModel tema) async {
+    await _db.collection('temas').add(tema.toMap());
+  }
+
+  Future<void> removeTema(String tid) async {
+    await _db.collection('temas').doc(tid).delete();
+    
+  }
+
+  Future<List<TemaModel>> getAllTemas() async {
+    try {
+      QuerySnapshot querySnapshot = await _db.collection('temas').get();
+
+      return querySnapshot.docs.map((doc) {
+        return TemaModel.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+    } catch (e) {
+      print("Error fetching items: $e");
+      return [];
+    }
+  }
+  Future<TemaModel?> getTema(String tid) async {
+    final doc = await _db.collection('temas').doc(tid).get();
+    if (doc.exists && doc.data() != null) {
+      return TemaModel.fromMap(doc.data()!);
+    }
+    return null;
   }
 }
