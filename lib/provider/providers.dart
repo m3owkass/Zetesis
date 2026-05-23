@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:zetesis/model/tema.dart';
 import 'package:zetesis/model/usuario.dart';
 import 'package:zetesis/services/auth_service.dart';
 import 'package:zetesis/services/database_service.dart';
@@ -27,6 +28,10 @@ final temasProvider = FutureProvider((ref){
   return ref.watch(databaseServiceProvider).getAllTemas();
 });
 
-final temaSelecionadoProvider = StateProvider((ref){
-  return ref.watch(databaseServiceProvider).getAllTemas();
+final temaSelecionadoProvider = StateProvider<String?>((ref) => null);
+
+final temaAtualProvider = FutureProvider<TemaModel?>((ref) async {
+  final nome = ref.watch(temaSelecionadoProvider);
+  if (nome == null) return null;
+  return ref.read(databaseServiceProvider).getTemaByName(nome);
 });

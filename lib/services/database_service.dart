@@ -74,4 +74,29 @@ class DatabaseService {
     }
     return null;
   }
+
+  Future<TemaModel?> getTemaByName(String name) async {
+    try {
+      final query = await _db
+          .collection('temas')
+          .where('nome', isEqualTo: name)
+          .limit(1)
+          .get();
+      if (query.docs.isEmpty) return null;
+      return TemaModel.fromMap(query.docs.first.data());
+    } catch (e) {
+      print("Error fetching tema by name: $e");
+      return null;
+    }
+  }
+
+  Future<List<String>> getNamesTemas() async {
+    try {
+      final temas = await getAllTemas();
+      return temas.map((t) => t.nome).toList();
+    } catch (e) {
+      print("Error fetching tema names: $e");
+      return [];
+    }
+  }
 }
