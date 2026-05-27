@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/model/tema.dart';
 import 'package:zetesis/provider/providers.dart';
-import 'package:zetesis/services/database_service.dart';
 
-class ItemTema extends StatelessWidget {
+class ItemTema extends ConsumerStatefulWidget {
   final TemaModel tema;
 
   ItemTema({super.key, required this.tema});
-  
-  final DatabaseService databaseService = DatabaseService();
 
-  
+  @override
+  ConsumerState<ItemTema> createState() => _ItemTemaState();
+}
 
+class _ItemTemaState extends ConsumerState<ItemTema> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -27,7 +28,8 @@ class ItemTema extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8.0),
               child: GestureDetector(
                 onTap: () {
-                
+                ref.read(temaSelecionadoProvider.notifier).state = widget.tema.nome;
+                Navigator.pop(context);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -38,7 +40,7 @@ class ItemTema extends StatelessWidget {
                   width: MediaQuery.heightOf(context) * 0.25,
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                    child: Image.network(tema.assetUrl),
+                    child: Image.network(widget.tema.assetUrl),
                   ),
                 ),
               ),
@@ -52,7 +54,7 @@ class ItemTema extends StatelessWidget {
                 color: Color(0xff6055a2),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Text(tema.nome),
+              child: Text(widget.tema.nome),
             ),
           ],
         ),

@@ -7,7 +7,6 @@ import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/services/auth_service.dart';
 import 'package:zetesis/services/database_service.dart';
 import 'package:zetesis/services/secure_storage_service.dart';
-import 'package:zetesis/widgets/components/item_loja.dart';
 
 enum AuthStatus { idle, loading, success, error }
 
@@ -46,6 +45,7 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final user = await _auth.login(email, senha);
       if (user != null) await _afterLogin(user);
+      
       state = const AuthState.success();
     } on FirebaseAuthException catch (e) {
       state = AuthState.error(_mapError(e.code));

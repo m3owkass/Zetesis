@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zetesis/controller/auth_controller.dart';
+import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/widgets/components/custom_formfield.dart';
 import 'package:zetesis/widgets/components/password_recovery_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,6 +30,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   }
 
   void _login() async {
+    ref.read(temaSelecionadoProvider.notifier).state = 'existencia';
     if (!_formKey.currentState!.validate()) return;
 
     final controller = ref.read(authControllerProvider.notifier);
@@ -39,6 +41,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   }
 
   void _loginGoogle() async {
+    ref.read(temaSelecionadoProvider.notifier).state = 'existencia';
     await ref.read(authControllerProvider.notifier).loginGoogle();
   }
 

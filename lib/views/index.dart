@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zetesis/provider/providers.dart';
+import 'package:zetesis/services/database_service.dart';
 import 'package:zetesis/views/desafio_start.dart';
 import 'package:zetesis/views/login_screen.dart';
 import 'package:zetesis/views/loja_screen.dart';
@@ -18,7 +20,11 @@ class _IndexState extends ConsumerState<Index> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> pages = [ DesafioStart(), const LoginScreen(), const LojaScreen()];
+    final List<Widget> pages = [
+      DesafioStart(),
+      const LoginScreen(),
+      const LojaScreen(),
+    ];
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -29,7 +35,10 @@ class _IndexState extends ConsumerState<Index> {
         ),
         child: CustomBottomNav(
           currentIndex: _currentIndex,
-          onTap: (index) => setState(() => _currentIndex = index),
+          onTap: (index) {
+            
+            setState(() => _currentIndex = index);
+          },
         ),
       ),
       body: pages[_currentIndex],
