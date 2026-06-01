@@ -1,15 +1,14 @@
+class TextoModel {
+  final String? id;
+  final String nome;
+  final String descricao;
 
+  const TextoModel({this.id, required this.nome, required this.descricao});
 
- class TextoModel{
-   int? id;
-   String nome;
-   String descricao;
+  factory TextoModel.fromMap(Map<String, dynamic> map) => TextoModel(
+    nome: map['nome'] ?? '',
+    descricao: map['descricao'] ?? '',
+  );
 
-  TextoModel({
-
-    this.id,
-    required this.nome,
-    required this.descricao
-
-  });
- }
+  Map<String, dynamic> toMap() => {'nome': nome, 'descricao': descricao};
+}

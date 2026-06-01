@@ -1,15 +1,14 @@
+class MusicaModel {
+  final String? id;
+  final String nome;
+  final String link;
 
+  const MusicaModel({this.id, required this.nome, required this.link});
 
- class MusicaModel{
-   int? id;
-   String nome;
-   String link;
+  factory MusicaModel.fromMap(Map<String, dynamic> map) => MusicaModel(
+    nome: map['nome'] ?? '',
+    link: map['link'] ?? '',
+  );
 
-  MusicaModel({
-
-    this.id,
-    required this.nome,
-    required this.link
-
-  });
- }
+  Map<String, dynamic> toMap() => {'nome': nome, 'link': link};
+}

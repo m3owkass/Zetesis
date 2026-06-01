@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zetesis/provider/providers.dart';
-import 'package:zetesis/services/database_service.dart';
 import 'package:zetesis/views/desafio_start.dart';
 import 'package:zetesis/views/login_screen.dart';
 import 'package:zetesis/views/loja_screen.dart';
@@ -28,7 +26,7 @@ class _IndexState extends ConsumerState<Index> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: CustomStatefulAppBar(),
+      appBar: const CustomStatefulAppBar(),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           border: Border(top: BorderSide(color: Color(0xffcbafa2), width: 2.0)),
@@ -36,7 +34,6 @@ class _IndexState extends ConsumerState<Index> {
         child: CustomBottomNav(
           currentIndex: _currentIndex,
           onTap: (index) {
-            
             setState(() => _currentIndex = index);
           },
         ),

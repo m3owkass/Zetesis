@@ -72,6 +72,11 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           );
           ref.read(authControllerProvider.notifier).resetState();
         });
+      } else if (next.status == AuthStatus.success) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        });
       }
     });
 

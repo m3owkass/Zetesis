@@ -1,15 +1,12 @@
+class FilosofoModel {
+  final String? id;
+  final String nome;
 
+  const FilosofoModel({this.id, required this.nome});
 
- class FilosofoModel{
-   int? id;
-   String nome;
-   
+  factory FilosofoModel.fromMap(Map<String, dynamic> map) => FilosofoModel(
+    nome: map['nome'] ?? '',
+  );
 
-  FilosofoModel({
-
-    this.id,
-    required this.nome,
-  
-
-  });
- }
+  Map<String, dynamic> toMap() => {'nome': nome};
+}

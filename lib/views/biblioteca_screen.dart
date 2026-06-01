@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/views/materialbiblioteca_screen.dart';
-import 'package:zetesis/widgets/components/item_loja.dart';
 
-class BibliotecaScreen extends ConsumerWidget {
+class BibliotecaScreen extends StatelessWidget {
   const BibliotecaScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     
       final List<Map<String, dynamic>> items = const [
       {

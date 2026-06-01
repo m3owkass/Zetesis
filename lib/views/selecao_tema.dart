@@ -12,23 +12,24 @@ class SelecaoTema extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        title: const Text('Selecionar Tema'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
+      ),
       body: temasAsync.when(
-        data: (temas) => ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: (temas.length / 2).ceil(),
-          itemBuilder: (context, index) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ItemTema(tema: temas[index * 2]),
-                if (index * 2 + 1 < temas.length)
-                  ItemTema(tema: temas[index * 2 + 1]),
-              ],
-            );
-          },
+        data: (temas) => GridView.builder(
+          padding: const EdgeInsets.all(16),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+          ),
+          itemCount: temas.length,
+          itemBuilder: (context, index) => ItemTema(tema: temas[index]),
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        error: (err, _) => Center(child: Text('Erro: $err')),
       ),
     );
   }

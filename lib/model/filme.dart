@@ -1,14 +1,14 @@
+class FilmeModel {
+  final String? id;
+  final String nome;
+  final String link;
 
- class FilmeModel{
-   int? id;
-   String nome;
-   String link;
+  const FilmeModel({this.id, required this.nome, required this.link});
 
-  FilmeModel({
+  factory FilmeModel.fromMap(Map<String, dynamic> map) => FilmeModel(
+    nome: map['nome'] ?? '',
+    link: map['link'] ?? '',
+  );
 
-    this.id,
-    required this.nome,
-    required this.link
-
-  });
- }
+  Map<String, dynamic> toMap() => {'nome': nome, 'link': link};
+}

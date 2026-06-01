@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:zetesis/model/material_biblioteca.dart';
 import 'package:zetesis/model/tema.dart';
 import 'package:zetesis/model/usuario.dart';
 import 'package:zetesis/services/auth_service.dart';
@@ -24,7 +25,7 @@ final itemsProvider = FutureProvider((ref) {
   return ref.watch(databaseServiceProvider).getAllItems();
 });
 
-final temasProvider = FutureProvider((ref){
+final temasProvider = FutureProvider((ref) {
   return ref.watch(databaseServiceProvider).getAllTemas();
 });
 
@@ -34,4 +35,8 @@ final temaAtualProvider = FutureProvider<TemaModel?>((ref) async {
   final nome = ref.watch(temaSelecionadoProvider);
   if (nome == null) return null;
   return ref.read(databaseServiceProvider).getTemaByName(nome);
+});
+
+final materiaisProvider = FutureProvider.family<List<MaterialBibliotecaModel>, String>((ref, tipo) {
+  return ref.read(databaseServiceProvider).getMateriais(tipo);
 });

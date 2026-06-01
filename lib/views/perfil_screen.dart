@@ -31,10 +31,6 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
     super.dispose();
   }
 
-  int kill() {
-    return 1;
-  }
-
   Future<void> _openRecoverPasswordDialog() async {
     await PasswordRecoveryDialog.show(
       context: context,
@@ -102,7 +98,7 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ElevatedButton(
-                                  onPressed: kill,
+                                  onPressed: () {},
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xff8175c8),
                                     foregroundColor: Colors.white,
@@ -124,7 +120,7 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
                                 ),
                                 const SizedBox(height: 8),
                                 ElevatedButton(
-                                  onPressed: kill,
+                                  onPressed: () {},
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xff8175c8),
                                     foregroundColor: Colors.white,

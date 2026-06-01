@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:zetesis/model/item_loja.dart';
+import 'package:zetesis/model/material_biblioteca.dart';
 import 'package:zetesis/model/tema.dart';
 import 'package:zetesis/model/usuario.dart';
 
@@ -96,6 +97,21 @@ class DatabaseService {
       return temas.map((t) => t.nome).toList();
     } catch (e) {
       print("Error fetching tema names: $e");
+      return [];
+    }
+  }
+
+  Future<List<MaterialBibliotecaModel>> getMateriais(String tipo) async {
+    try {
+      final query = await _db
+          .collection('materiais')
+          .where('tipo', isEqualTo: tipo)
+          .get();
+      return query.docs
+          .map((doc) => MaterialBibliotecaModel.fromMap(doc.data(), id: doc.id))
+          .toList();
+    } catch (e) {
+      print("Error fetching materiais: $e");
       return [];
     }
   }

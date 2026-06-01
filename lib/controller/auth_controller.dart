@@ -174,7 +174,7 @@ class AuthController extends StateNotifier<AuthState> {
     _ => 'Erro de autenticação ($code)',
   };
 
-  Future<void> register_item(
+  Future<void> registerItem(
     String nome,
     int custo,
     String assetUrl,
@@ -186,6 +186,6 @@ class AuthController extends StateNotifier<AuthState> {
       assetUrl: assetUrl,
       status: status,
     );
-    if (item != null) await _ref.read(databaseServiceProvider).addItem(item);
+    await _ref.read(databaseServiceProvider).addItem(item);
   }
 }
