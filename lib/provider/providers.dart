@@ -8,8 +8,12 @@ import 'package:zetesis/services/database_service.dart';
 import 'package:zetesis/services/secure_storage_service.dart';
 
 final authServiceProvider = Provider<AuthService>((ref) => AuthService());
-final databaseServiceProvider = Provider<DatabaseService>((ref) => DatabaseService());
-final secureStorageProvider = Provider<SecureStorageService>((ref) => SecureStorageService());
+final databaseServiceProvider = Provider<DatabaseService>(
+  (ref) => DatabaseService(),
+);
+final secureStorageProvider = Provider<SecureStorageService>(
+  (ref) => SecureStorageService(),
+);
 
 final authStateProvider = StreamProvider<User?>((ref) {
   return ref.watch(authServiceProvider).authState;
@@ -39,6 +43,16 @@ final temaAtualProvider = FutureProvider<TemaModel?>((ref) async {
   return ref.read(databaseServiceProvider).getTemaByName(nome);
 });
 
-final materiaisProvider = FutureProvider.family<List<MaterialBibliotecaModel>, String>((ref, tipo) {
-  return ref.read(databaseServiceProvider).getMateriais(tipo);
+final gruposProviders = FutureProvider((ref) {
+  return ref.watch(databaseServiceProvider).getAllGruposBiblioteca();
+});
+
+final grupoSelecionadoProvider = StateProvider<String?>((ref) {
+  return null;
+});
+
+final materiaisProvider = FutureProvider<List<MaterialBibliotecaModel>>((ref) async {
+  final type = ref.watch(grupoSelecionadoProvider);
+  if (type == null) return [];
+  return ref.read(databaseServiceProvider).getMaterialsByType(type);
 });

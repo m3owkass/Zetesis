@@ -1,26 +1,23 @@
-class MaterialBibliotecaModel {
+class GrupoBibliotecaModel {
   final String? id;
   final String nome;
-  final String tipo;
   final String? descricao;
   final String? assetUrl;
 
-  const MaterialBibliotecaModel({
+  const GrupoBibliotecaModel({
     this.id,
     required this.nome,
-    required this.tipo,
     this.descricao,
     this.assetUrl,
   });
 
-  factory MaterialBibliotecaModel.fromMap(
+  factory GrupoBibliotecaModel.fromMap(
     Map<String, dynamic> map, {
     String? id,
   }) {
-    return MaterialBibliotecaModel(
+    return GrupoBibliotecaModel(
       id: id ?? map['id'],
       nome: map['nome'] ?? '',
-      tipo: map['tipo'] ?? '',
       descricao: map['descricao'],
       assetUrl: map['assetUrl'],
     );
@@ -28,7 +25,6 @@ class MaterialBibliotecaModel {
 
   Map<String, dynamic> toMap() => {
     'nome': nome,
-    'tipo': tipo,
     'descricao': descricao,
     'assetUrl': assetUrl,
   };

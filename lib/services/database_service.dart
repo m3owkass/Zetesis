@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:zetesis/model/grupo_biblioteca.dart';
 import 'package:zetesis/model/item_loja.dart';
 import 'package:zetesis/model/material_biblioteca.dart';
 import 'package:zetesis/model/tema.dart';
@@ -53,7 +54,6 @@ class DatabaseService {
 
   Future<void> removeTema(String tid) async {
     await _db.collection('temas').doc(tid).delete();
-    
   }
 
   Future<List<TemaModel>> getAllTemas() async {
@@ -68,6 +68,7 @@ class DatabaseService {
       return [];
     }
   }
+
   Future<TemaModel?> getTema(String tid) async {
     final doc = await _db.collection('temas').doc(tid).get();
     if (doc.exists && doc.data() != null) {
@@ -101,17 +102,60 @@ class DatabaseService {
     }
   }
 
-  Future<List<MaterialBibliotecaModel>> getMateriais(String tipo) async {
+  Future<List<MaterialBibliotecaModel>> getAllMateriais() async {
     try {
-      final query = await _db
-          .collection('materiais')
-          .where('tipo', isEqualTo: tipo)
-          .get();
-      return query.docs
-          .map((doc) => MaterialBibliotecaModel.fromMap(doc.data(), id: doc.id))
-          .toList();
+      QuerySnapshot querySnapshot = await _db.collection('materiais').get();
+
+      return querySnapshot.docs.map((doc) {
+        return MaterialBibliotecaModel.fromMap(
+          doc.data() as Map<String, dynamic>,
+        );
+      }).toList();
     } catch (e) {
-      print("Error fetching materiais: $e");
+      print("Error fetching items_biblioteca: $e");
+      return [];
+    }
+  }
+
+  Future<List<String>> getMateriaisNames() async {
+    try {
+      final itemsBiblioteca = await getAllMateriais();
+      return itemsBiblioteca.map((t) => t.nome).toList();
+    } catch (e) {
+      print("Error fetching itens_biblioteca names: $e");
+      return [];
+    }
+  }
+
+  Future<List<MaterialBibliotecaModel>> getMaterialsByType(String type) async {
+    try {
+      QuerySnapshot querySnapshot = await _db
+          .collection('materiais')
+          .where('tipo', isEqualTo: type)
+          .get();
+
+      return querySnapshot.docs.map((doc) {
+        return MaterialBibliotecaModel.fromMap(
+          doc.data() as Map<String, dynamic>,
+        );
+      }).toList();
+    } catch (e) {
+      print("Error fetching items_biblioteca: $e");
+      return [];
+    }
+  }
+
+  Future<List<GrupoBibliotecaModel>> getAllGruposBiblioteca() async {
+    try {
+      QuerySnapshot querySnapshot = await _db
+          .collection('grupos_biblioteca')
+          .get();
+
+      return querySnapshot.docs.map((doc) {
+        return GrupoBibliotecaModel.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+    } catch (e) {
+      print("Error fetching grupo_biblioteca: $e");
       return [];
     }
   }

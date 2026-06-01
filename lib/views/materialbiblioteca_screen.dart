@@ -1,50 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/provider/providers.dart';
+import 'package:zetesis/widgets/components/item_biblioteca.dart';
 
 class MaterialBibliotecaScreen extends ConsumerWidget {
-  final String destino;
 
-  const MaterialBibliotecaScreen({super.key, required this.destino});
-
-  String get _titulo => switch (destino) {
-    'texto' => 'Textos',
-    'musica' => 'Músicas',
-    'video' => 'Vídeos',
-    'imagem' => 'Imagens',
-    'livro' => 'Livros',
-    _ => 'Outros',
-  };
+  const MaterialBibliotecaScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final materiaisAsync = ref.watch(materiaisProvider(destino));
+    final materiaisAsync = ref.watch(materiaisProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text(_titulo),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
       ),
       body: materiaisAsync.when(
-        data: (materiais) => materiais.isEmpty
-            ? const Center(child: Text('Nenhum material disponível'))
-            : ListView.separated(
-                padding: const EdgeInsets.all(16),
-                itemCount: materiais.length,
-                separatorBuilder: (_, __) => const Divider(),
-                itemBuilder: (context, index) {
-                  final m = materiais[index];
-                  return ListTile(
-                    title: Text(m.nome),
-                    subtitle: m.descricao != null ? Text(m.descricao!) : null,
-                    trailing: m.url != null
-                        ? const Icon(Icons.open_in_new)
-                        : null,
-                  );
-                },
-              ),
+        data: (materiais) => GridView.builder(
+          padding: const EdgeInsets.all(16),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+          ),
+          itemCount: materiais.length,
+          itemBuilder: (context, index) => ItemBiblioteca(item: materiais[index]),
+        ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, _) => Center(child: Text('Erro: $err')),
       ),
