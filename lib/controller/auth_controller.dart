@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/model/item_loja.dart';
 import 'package:zetesis/model/usuario.dart';
@@ -85,6 +86,15 @@ class AuthController extends StateNotifier<AuthState> {
       state = AuthState.error(
         '${_mapError(e.code)}: ${e.message ?? e.toString()}',
       );
+    } on PlatformException catch (e) {
+      debugPrint('PlatformException Google Sign-In: ${e.code} - ${e.message}');
+      if (e.code == '10') {
+        state = const AuthState.error(
+          'Erro de configuração do Google Sign-In. Adicione o SHA-1 deste dispositivo no Firebase.',
+        );
+      } else {
+        state = AuthState.error('Erro no login com Google: ${e.message ?? e.code}');
+      }
     } catch (e, stackTrace) {
       debugPrint('Erro no login com Google: $e');
       debugPrintStack(stackTrace: stackTrace);

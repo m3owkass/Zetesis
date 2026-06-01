@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "557418805454-k3cmt032kg7k5ih838dgpkijsvcdso0d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.zetesis",
+            "certificate_hash": "5f08f88ffe3b8c75673208134a03ecc7254e4484"
+          }
+        },
+        {
           "client_id": "557418805454-vpq8heqatmtrjd3mh0srmvi7as6doqnt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
