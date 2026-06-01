@@ -5,6 +5,7 @@ class UsuarioModel {
   final int pontos;
   final String avatarUrl;
   final bool admin;
+  final String? temaAtual;
 
   UsuarioModel({
     this.email,
@@ -13,6 +14,7 @@ class UsuarioModel {
     required this.pontos,
     required this.avatarUrl,
     required this.admin,
+    this.temaAtual,
   });
 
   factory UsuarioModel.fromMap(Map<String, dynamic> map) {
@@ -23,6 +25,7 @@ class UsuarioModel {
       pontos: map['pontos'],
       avatarUrl: map['avatarUrl'],
       admin: map['admin'] ?? false,
+      temaAtual: map['temaAtual'],
     );
   }
 
@@ -34,6 +37,7 @@ class UsuarioModel {
       'pontos': pontos,
       'avatarUrl': avatarUrl,
       'admin': admin,
+      'temaAtual': temaAtual,
     };
   }
 }

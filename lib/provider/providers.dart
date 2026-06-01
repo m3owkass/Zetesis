@@ -29,7 +29,9 @@ final temasProvider = FutureProvider((ref) {
   return ref.watch(databaseServiceProvider).getAllTemas();
 });
 
-final temaSelecionadoProvider = StateProvider<String?>((ref) => null);
+final temaSelecionadoProvider = StateProvider<String?>((ref) {
+  return ref.watch(userProvider).value?.temaAtual;
+});
 
 final temaAtualProvider = FutureProvider<TemaModel?>((ref) async {
   final nome = ref.watch(temaSelecionadoProvider);

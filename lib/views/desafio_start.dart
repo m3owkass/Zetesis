@@ -16,8 +16,11 @@ class _DesafioStartState extends ConsumerState<DesafioStart> {
     final temaSelecionadoAsync = ref.watch(temaAtualProvider);
 
     return temaSelecionadoAsync.when(
-      data: (tema) => Column(
-        children: [
+      data: (tema) => SizedBox(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
           Padding(
             padding: EdgeInsets.only(
               top: MediaQuery.heightOf(context) * 0.05,
@@ -33,6 +36,7 @@ class _DesafioStartState extends ConsumerState<DesafioStart> {
                   borderRadius: BorderRadius.circular(180),
                 ),
                 height: MediaQuery.heightOf(context) * 0.35,
+                width: MediaQuery.heightOf(context) * 0.35,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: tema != null
@@ -103,7 +107,8 @@ class _DesafioStartState extends ConsumerState<DesafioStart> {
               ),
             ),
           ),
-        ],
+          ],
+        ),
       ),
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, stack) => Center(child: Text('Erro: $err')),
