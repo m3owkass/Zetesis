@@ -1,20 +1,23 @@
 class ItemLojaModel {
+  final String? id;
   final String nome;
   final int custo;
   final String? assetUrl;
   final bool status;
 
   ItemLojaModel({
+    this.id,
     required this.nome,
     required this.custo,
     this.assetUrl,
-    required this.status
+    required this.status,
   });
 
-  factory ItemLojaModel.fromMap(Map<String, dynamic> map) {
+  factory ItemLojaModel.fromMap(Map<String, dynamic> map, {String? id}) {
     return ItemLojaModel(
-      nome: map['nome'],
-      custo: map['custo'],
+      id: id ?? map['id'],
+      nome: map['nome'] ?? '',
+      custo: (map['custo'] as num?)?.toInt() ?? 0,
       assetUrl: map['assetUrl'],
       status: map['status'] ?? false,
     );

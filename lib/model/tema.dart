@@ -1,24 +1,24 @@
 
 
- class TemaModel{
-   String? id;
-   String nome;
-   String descricao;
-   String assetUrl;
+class TemaModel {
+  String? id;
+  String nome;
+  String descricao;
+  String assetUrl;
 
   TemaModel({
-
     this.id,
     required this.nome,
     required this.descricao,
-    required this.assetUrl
+    required this.assetUrl,
   });
 
-  factory TemaModel.fromMap(Map<String, dynamic> map) {
+  factory TemaModel.fromMap(Map<String, dynamic> map, {String? id}) {
     return TemaModel(
-      nome: map['nome'],
-      assetUrl: map['assetUrl'],
-      descricao: map['descricao']
+      id: id ?? map['id'],
+      nome: map['nome'] ?? '',
+      assetUrl: map['assetUrl'] ?? '',
+      descricao: map['descricao'] ?? '',
     );
   }
 
