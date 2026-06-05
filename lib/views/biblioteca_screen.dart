@@ -7,16 +7,11 @@ class BibliotecaScreen extends ConsumerWidget {
   const BibliotecaScreen({super.key});
 
   @override
-  Widget build(BuildContext context,  WidgetRef ref) {
-    final gruposAsync = ref.watch(gruposProviders);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final gruposAsync = ref.watch(gruposProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        title: const Text('Selecionar Tema'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
-      ),
       body: gruposAsync.when(
         data: (items) => GridView.builder(
           padding: const EdgeInsets.all(16),
@@ -27,7 +22,6 @@ class BibliotecaScreen extends ConsumerWidget {
           ),
           itemCount: items.length,
           itemBuilder: (context, index) => GrupoBiblioteca(item: items[index]),
-          
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, _) => Center(child: Text('Erro: $err')),

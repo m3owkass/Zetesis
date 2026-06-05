@@ -38,7 +38,7 @@ class _CustomStatefulAppBarState extends ConsumerState<CustomStatefulAppBar> {
             ],
           ),
 
-          error: (_, __) => const Text("Erro"),
+          error: (_, _) => const Text("Erro"),
 
           data: (user) {
             return Row(

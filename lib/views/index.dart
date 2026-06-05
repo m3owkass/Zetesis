@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/views/desafio_start.dart';
-import 'package:zetesis/views/login_screen.dart';
 import 'package:zetesis/views/biblioteca_screen.dart';
 import 'package:zetesis/views/loja_screen.dart';
 import 'package:zetesis/widgets/components/appbar.dart';

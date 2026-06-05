@@ -53,16 +53,14 @@ class _ItemTemaState extends ConsumerState<ItemTema> {
                   radius: 66,
                   backgroundColor: Colors.grey.shade300,
                   backgroundImage:
-                      (widget.tema?.assetUrl != null &&
-                          widget.tema!.assetUrl.isNotEmpty)
+                      widget.tema.assetUrl.isNotEmpty
                       ? NetworkImage(widget.tema.assetUrl)
                       : null,
                   child:
-                      (widget.tema?.assetUrl == null ||
-                          widget.tema!.assetUrl.isEmpty)
+                      widget.tema.assetUrl.isEmpty
                       ? Text(
-                          widget.tema?.nome.isNotEmpty == true
-                              ? widget.tema!.nome[0].toUpperCase()
+                          widget.tema.nome.isNotEmpty
+                              ? widget.tema.nome[0].toUpperCase()
                               : '?',
                           style: const TextStyle(
                             fontSize: 36,
@@ -74,7 +72,7 @@ class _ItemTemaState extends ConsumerState<ItemTema> {
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Container(
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

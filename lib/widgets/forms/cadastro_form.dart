@@ -7,21 +7,21 @@ class CadastroForm extends ConsumerStatefulWidget {
   const CadastroForm({super.key});
 
   @override
-  ConsumerState<CadastroForm> createState() => CadastroFormState();
+  ConsumerState<CadastroForm> createState() => _CadastroFormState();
 }
 
-class CadastroFormState extends ConsumerState<CadastroForm> {
+class _CadastroFormState extends ConsumerState<CadastroForm> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _secondPasswordController = TextEditingController();
   final _nomeController = TextEditingController();
 
-  final strongPasswordRegex = RegExp(
+  final _strongPasswordRegex = RegExp(
     r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._\-])[A-Za-z\d@$!%*?&._\-]{8,}$',
   );
 
-  final emailRegex = RegExp(r'^[\w\.-]+@[\w\.-]+\.\w{2,}$');
+  final _emailRegex = RegExp(r'^[\w\.-]+@[\w\.-]+\.\w{2,}$');
 
   @override
   void dispose() {
@@ -32,7 +32,7 @@ class CadastroFormState extends ConsumerState<CadastroForm> {
     super.dispose();
   }
 
-  void _registerLogin() async {
+  void _register() async {
     if (!_formKey.currentState!.validate()) return;
 
     final controller = ref.read(authControllerProvider.notifier);
@@ -68,7 +68,7 @@ class CadastroFormState extends ConsumerState<CadastroForm> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Form(
           key: _formKey,
           child: Center(
@@ -79,11 +79,11 @@ class CadastroFormState extends ConsumerState<CadastroForm> {
                   fieldType: FieldType.email,
                   label: "Email",
                   hint: 'exemplo@dominio.com',
-                  preffixIcon: Icon(Icons.email, color: Color(0xff4c4666)),
+                  prefixIcon: const Icon(Icons.email, color: Color(0xff4c4666)),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor, digite seu email';
-                    } else if (!emailRegex.hasMatch(value)) {
+                    } else if (!_emailRegex.hasMatch(value)) {
                       return 'Digite um email válido';
                     }
                     return null;
@@ -96,7 +96,7 @@ class CadastroFormState extends ConsumerState<CadastroForm> {
                     fieldType: FieldType.username,
                     label: 'Nome',
                     hint: 'Nome de usuário',
-                    preffixIcon: Icon(Icons.person, color: Color(0xff4c4666)),
+                    prefixIcon: const Icon(Icons.person, color: Color(0xff4c4666)),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, digite um nome';
@@ -113,11 +113,11 @@ class CadastroFormState extends ConsumerState<CadastroForm> {
                     fieldType: FieldType.password,
                     label: 'Senha',
                     hint: 'Senha segura',
-                    preffixIcon: Icon(Icons.lock, color: Color(0xff4c4666)),
+                    prefixIcon: const Icon(Icons.lock, color: Color(0xff4c4666)),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, digite uma senha';
-                      } else if (!strongPasswordRegex.hasMatch(value)) {
+                      } else if (!_strongPasswordRegex.hasMatch(value)) {
                         return 'Senha deve ter 8+ caracteres, incluir maiúscula e minúscula, número, e símbolo';
                       }
                       return null;
@@ -131,7 +131,7 @@ class CadastroFormState extends ConsumerState<CadastroForm> {
                     fieldType: FieldType.password,
                     label: 'Confirme sua Senha',
                     hint: 'Senha segura',
-                    preffixIcon: Icon(Icons.lock, color: Color(0xff4c4666)),
+                    prefixIcon: const Icon(Icons.lock, color: Color(0xff4c4666)),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, digite uma senha';
@@ -144,9 +144,9 @@ class CadastroFormState extends ConsumerState<CadastroForm> {
                 ),
 
                 Padding(
-                  padding: EdgeInsets.only(top: 30.0),
+                  padding: const EdgeInsets.only(top: 30.0),
                   child: ElevatedButton(
-                    onPressed: _registerLogin,
+                    onPressed: _register,
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Theme.of(context).colorScheme.primary,

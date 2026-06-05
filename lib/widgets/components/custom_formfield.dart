@@ -10,7 +10,7 @@ class CustomFormField extends StatefulWidget {
   final FormFieldValidator<String>? validator;
   final TextStyle? labelStyle;
   final TextStyle? hintStyle;
-  final Icon? preffixIcon;
+  final Icon? prefixIcon;
 
   const CustomFormField({
     super.key,
@@ -21,7 +21,7 @@ class CustomFormField extends StatefulWidget {
     this.validator,
     this.labelStyle,
     this.hintStyle,
-    this.preffixIcon
+    this.prefixIcon,
   });
 
   @override
@@ -68,7 +68,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
         labelText: widget.label,
         hintText: widget.hint,
         hintStyle: widget.hintStyle,
-        prefixIcon: widget.preffixIcon,
+        prefixIcon: widget.prefixIcon,
         border: OutlineInputBorder(borderSide: BorderSide(color: Color(0xff4c4666))),
         
         

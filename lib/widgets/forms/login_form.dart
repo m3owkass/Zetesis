@@ -90,7 +90,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                   fieldType: FieldType.email,
                   label: 'Email',
                   hint: 'exemplo@dominio.com',
-                  preffixIcon: const Icon(
+                  prefixIcon: const Icon(
                     Icons.email,
                     color: Color(0xff4c4666),
                   ),
@@ -111,7 +111,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                     fieldType: FieldType.password,
                     label: 'Senha',
                     hint: 'Senha segura',
-                    preffixIcon: const Icon(
+                    prefixIcon: const Icon(
                       Icons.lock,
                       color: Color(0xff4c4666),
                     ),

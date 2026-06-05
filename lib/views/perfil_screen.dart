@@ -52,7 +52,7 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
 
       body: userAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, __) => const Center(child: Text('Erro ao carregar perfil')),
+        error: (_, _) => const Center(child: Text('Erro ao carregar perfil')),
         data: (user) {
           if (_nomeController.text.isEmpty) {
             _nomeController.text = user?.nome ?? '';
@@ -283,6 +283,7 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
                             await ref
                                 .read(authControllerProvider.notifier)
                                 .updateNome(_nomeController.text.trim());
+                            if (!context.mounted) return;
                             showDialog(
                               context: context,
                               builder: (BuildContext context) => Dialog(

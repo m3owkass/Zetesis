@@ -4,16 +4,17 @@ import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/widgets/components/item_biblioteca.dart';
 
 class MaterialBibliotecaScreen extends ConsumerWidget {
-
   const MaterialBibliotecaScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final materiaisAsync = ref.watch(materiaisProvider);
+    final grupoNome = ref.watch(grupoSelecionadoProvider) ?? 'Materiais';
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
+        title: Text(grupoNome),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
       ),
