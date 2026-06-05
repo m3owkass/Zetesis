@@ -120,6 +120,7 @@ class AuthController extends StateNotifier<AuthState> {
   Future<void> logout() async {
     await _auth.logout();
     await _storage.clear();
+    _ref.read(temaSelecionadoProvider.notifier).state = null;
     state = const AuthState.idle();
   }
 
@@ -128,8 +129,9 @@ class AuthController extends StateNotifier<AuthState> {
   Future<void> _afterLogin(User user, {String? nome}) async {
     final existing = await _db.getUser(user.uid);
 
+    final UsuarioModel usuario;
     if (existing == null) {
-      final novoUsuario = UsuarioModel(
+      usuario = UsuarioModel(
         email: user.email,
         nome: nome ?? user.displayName ?? 'Usuário',
         ranking: 'Bronze',
@@ -137,12 +139,13 @@ class AuthController extends StateNotifier<AuthState> {
         avatarUrl: user.photoURL ?? '',
         admin: false,
       );
-      await _db.saveUser(user.uid, novoUsuario);
-      await _storage.saveUser(novoUsuario.toMap());
+      await _db.saveUser(user.uid, usuario);
     } else {
-      await _storage.saveUser(existing.toMap());
+      usuario = existing;
     }
 
+    await _storage.saveUser(usuario.toMap());
+    _ref.read(temaSelecionadoProvider.notifier).state = usuario.temaAtual;
     _ref.invalidate(userProvider);
   }
 
