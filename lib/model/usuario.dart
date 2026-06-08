@@ -5,6 +5,7 @@ class UsuarioModel {
   final int pontos;
   final String avatarUrl;
   final bool admin;
+  final bool developer;
   final String? temaAtual;
 
   UsuarioModel({
@@ -14,6 +15,7 @@ class UsuarioModel {
     required this.pontos,
     required this.avatarUrl,
     required this.admin,
+    this.developer = false,
     this.temaAtual,
   });
 
@@ -25,6 +27,7 @@ class UsuarioModel {
       pontos: map['pontos'],
       avatarUrl: map['avatarUrl'],
       admin: map['admin'] ?? false,
+      developer: map['developer'] ?? false,
       temaAtual: map['temaAtual'],
     );
   }
@@ -37,6 +40,7 @@ class UsuarioModel {
       'pontos': pontos,
       'avatarUrl': avatarUrl,
       'admin': admin,
+      'developer': developer,
       'temaAtual': temaAtual,
     };
   }

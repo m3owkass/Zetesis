@@ -19,16 +19,33 @@ class MaterialBibliotecaScreen extends ConsumerWidget {
         foregroundColor: Colors.white,
       ),
       body: materiaisAsync.when(
-        data: (materiais) => GridView.builder(
-          padding: const EdgeInsets.all(16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-          ),
-          itemCount: materiais.length,
-          itemBuilder: (context, index) => ItemBiblioteca(item: materiais[index]),
-        ),
+        data: (materiais) {
+          final favoritos = ref.watch(favoritosProvider).value ?? {};
+          return ListView.separated(
+            padding: const EdgeInsets.all(16),
+            itemCount: materiais.length,
+            separatorBuilder: (_, _) => const SizedBox(height: 16),
+            itemBuilder: (context, index) {
+              final item = materiais[index];
+              return ItemBiblioteca(
+                item: item,
+                isFavorito: favoritos.contains(item.id),
+                onFavorite: item.id == null
+                    ? null
+                    : () {
+                        final user =
+                            ref.read(authStateProvider).value;
+                        if (user == null) return;
+                        ref.read(databaseServiceProvider).toggleFavorito(
+                              user.uid,
+                              item.id!,
+                              add: !favoritos.contains(item.id),
+                            );
+                      },
+              );
+            },
+          );
+        },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, _) => Center(child: Text('Erro: $err')),
       ),

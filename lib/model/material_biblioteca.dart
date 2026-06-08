@@ -4,6 +4,8 @@ class MaterialBibliotecaModel {
   final String tipo;
   final String? descricao;
   final String? assetUrl;
+  final String? autor;
+  final String? dataEnvio;
 
   const MaterialBibliotecaModel({
     this.id,
@@ -11,6 +13,8 @@ class MaterialBibliotecaModel {
     required this.tipo,
     this.descricao,
     this.assetUrl,
+    this.autor,
+    this.dataEnvio,
   });
 
   factory MaterialBibliotecaModel.fromMap(
@@ -23,6 +27,8 @@ class MaterialBibliotecaModel {
       tipo: map['tipo'] ?? '',
       descricao: map['descricao'],
       assetUrl: map['assetUrl'],
+      autor: map['autor'],
+      dataEnvio: map['dataEnvio'],
     );
   }
 
@@ -31,5 +37,7 @@ class MaterialBibliotecaModel {
     'tipo': tipo,
     'descricao': descricao,
     'assetUrl': assetUrl,
+    'autor': autor,
+    'dataEnvio': dataEnvio,
   };
 }

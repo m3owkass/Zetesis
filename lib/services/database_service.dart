@@ -64,6 +64,14 @@ class DatabaseService {
     }
   }
 
+  Stream<List<TemaModel>> watchAllTemas() {
+    return _db.collection('temas').snapshots().map(
+          (s) => s.docs
+              .map((doc) => TemaModel.fromMap(doc.data(), id: doc.id))
+              .toList(),
+        );
+  }
+
   Future<TemaModel?> getTema(String tid) async {
     final doc = await _db.collection('temas').doc(tid).get();
     if (doc.exists && doc.data() != null) {
@@ -124,6 +132,14 @@ class DatabaseService {
     }
   }
 
+  Stream<List<ItemLojaModel>> watchAllItems() {
+    return _db.collection('items').snapshots().map(
+          (s) => s.docs
+              .map((doc) => ItemLojaModel.fromMap(doc.data(), id: doc.id))
+              .toList(),
+        );
+  }
+
   // Materiais da Biblioteca
 
   Future<void> addMaterial(MaterialBibliotecaModel material) async {
@@ -165,6 +181,19 @@ class DatabaseService {
     }
   }
 
+  Stream<List<MaterialBibliotecaModel>> watchMaterialsByType(String tipo) {
+    return _db
+        .collection('materiais')
+        .where('tipo', isEqualTo: tipo)
+        .snapshots()
+        .map(
+          (s) => s.docs
+              .map((doc) =>
+                  MaterialBibliotecaModel.fromMap(doc.data(), id: doc.id))
+              .toList(),
+        );
+  }
+
   Future<List<String>> getMateriaisNames() async {
     try {
       final materiais = await getAllMateriais();
@@ -173,6 +202,32 @@ class DatabaseService {
       debugPrint('Erro ao buscar nomes dos materiais: $e');
       return [];
     }
+  }
+
+  // Favoritos
+
+  Stream<Set<String>> watchFavoritos(String uid) {
+    return _db.collection('users').doc(uid).snapshots().map((doc) {
+      if (!doc.exists || doc.data() == null) return {};
+      final raw = doc.data()!['favoritos'];
+      if (raw == null) return <String>{};
+      return Set<String>.from((raw as List).whereType<String>());
+    });
+  }
+
+  Future<void> toggleFavorito(
+    String uid,
+    String materialId, {
+    required bool add,
+  }) async {
+    await _db.collection('users').doc(uid).set(
+      {
+        'favoritos': add
+            ? FieldValue.arrayUnion([materialId])
+            : FieldValue.arrayRemove([materialId]),
+      },
+      SetOptions(merge: true),
+    );
   }
 
   // Grupos da Biblioteca
@@ -202,6 +257,14 @@ class DatabaseService {
       debugPrint('Erro ao buscar grupos da biblioteca: $e');
       return [];
     }
+  }
+
+  Stream<List<GrupoBibliotecaModel>> watchAllGruposBiblioteca() {
+    return _db.collection('grupos_biblioteca').snapshots().map(
+          (s) => s.docs
+              .map((doc) => GrupoBibliotecaModel.fromMap(doc.data(), id: doc.id))
+              .toList(),
+        );
   }
 
   // Filósofos

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/provider/providers.dart';
+import 'package:zetesis/views/developer_screen.dart';
 import 'package:zetesis/widgets/components/grupo_biblioteca.dart';
 
 class BibliotecaScreen extends ConsumerWidget {
@@ -12,6 +13,23 @@ class BibliotecaScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
+      floatingActionButton: ref
+          .watch(userProvider)
+          .maybeWhen(
+            data: (user) => user?.developer == true
+                ? FloatingActionButton.small(
+                    backgroundColor: Colors.red.shade800,
+                    foregroundColor: Colors.white,
+                    tooltip: 'Admin',
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const AdminScreen()),
+                    ),
+                    child: const Icon(Icons.settings),
+                  )
+                : null,
+            orElse: () => null,
+          ),
       body: gruposAsync.when(
         data: (items) => GridView.builder(
           padding: const EdgeInsets.all(16),
