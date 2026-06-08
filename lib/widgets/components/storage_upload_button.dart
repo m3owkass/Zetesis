@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:zetesis/config/supabase_config.dart';
+import 'package:zetesis/config/supabase_config.example.dart';
+
 
 /// Botão de upload de imagem para o Supabase Storage.
 ///

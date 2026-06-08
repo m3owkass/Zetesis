@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/views/selecao_tema.dart';
+import 'package:zetesis/views/tarefa_screen.dart';
 
 class DesafioStart extends ConsumerStatefulWidget {
   const DesafioStart({super.key});
@@ -102,7 +103,10 @@ class _DesafioStartState extends ConsumerState<DesafioStart> {
             ],
             SizedBox(height: MediaQuery.heightOf(context) * 0.1),
             TextButton(
-              onPressed: () {},
+              onPressed: () {Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>  TarefaScreen()));
+                },
               child: Container(
                 width: MediaQuery.widthOf(context) * 0.7,
                 height: MediaQuery.heightOf(context) * 0.063,
