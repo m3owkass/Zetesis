@@ -98,7 +98,7 @@ class _CustomStatefulAppBarState extends ConsumerState<CustomStatefulAppBar> {
 
                 Expanded(
                   child: Text(
-                    user?.nome ?? "",
+                    'Olá ${user?.nome ?? ""}',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
@@ -125,9 +125,9 @@ class _CustomStatefulAppBarState extends ConsumerState<CustomStatefulAppBar> {
                 height: 35,
               ),
               const SizedBox(width: 8),
-              const Text(
-                '000',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Text(
+                '${userAsync.valueOrNull?.pontos ?? 0}',
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ],
           ),

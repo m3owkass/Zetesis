@@ -88,12 +88,11 @@ class _DesafioStartState extends ConsumerState<DesafioStart> {
                   borderRadius: BorderRadius.circular(20),
                   color: const Color(0xff8175c8),
                 ),
-                child: Center(
+                child: const Center(
                   child: Text(
-                    tema.descricao,
-                    overflow: TextOverflow.ellipsis,
+                    'Tarefa 1',
                     style: TextStyle(
-                      fontSize: MediaQuery.heightOf(context) * 0.02,
+                      fontSize: 16,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
