@@ -50,3 +50,19 @@ app.*.map.json
 
 # Android local config
 android/local.properties
+
+# Firebase
+google-services.json
+GoogleService-Info.plist
+lib/config/firebase_options.dart
+
+# Supabase / credenciais
+lib/config/supabase_config.dart
+
+# Env
+.env
+*.env
+
+# Scripts de setup com credenciais (compartilhar de forma privada)
+setup.bat
+setup.ps1
