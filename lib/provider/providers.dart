@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:zetesis/model/grupo_biblioteca.dart';
 import 'package:zetesis/model/item_loja.dart';
 import 'package:zetesis/model/material_biblioteca.dart';
+import 'package:zetesis/model/tarefa.dart';
 import 'package:zetesis/model/tema.dart';
 import 'package:zetesis/model/usuario.dart';
 import 'package:zetesis/services/auth_service.dart';
@@ -46,6 +47,25 @@ final temaAtualProvider = FutureProvider<TemaModel?>((ref) async {
   final nome = ref.watch(temaSelecionadoProvider);
   if (nome == null) return null;
   return ref.read(databaseServiceProvider).getTemaByName(nome);
+});
+
+// Tarefas
+final todasTarefasProvider = StreamProvider<List<TarefaModel>>((ref) {
+  return ref.read(databaseServiceProvider).watchAllTarefas();
+});
+
+final tarefaSelecionadoProvider = StateProvider<String?>((ref) => null);
+
+final tarefaAtualProvider = FutureProvider<TarefaModel?>((ref) async {
+  final nome = ref.watch(tarefaSelecionadoProvider);
+  if (nome == null) return null;
+  return ref.read(databaseServiceProvider).getTarefaByName(nome);
+});
+
+final tarefasProvider = StreamProvider<List<TarefaModel>>((ref) {
+  final tema = ref.watch(temaSelecionadoProvider);
+  if (tema == null) return Stream.value([]);
+  return ref.read(databaseServiceProvider).watchTarefasByTema(tema);
 });
 
 // Biblioteca

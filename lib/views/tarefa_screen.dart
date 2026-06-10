@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zetesis/model/tarefa.dart';
 import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/widgets/components/bottom_navigation.dart';
 
 class TarefaScreen extends ConsumerWidget {
   TarefaScreen({super.key});
 
-  void _returnIndex(context){
+  void _returnIndex(context) {
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final temaSelecionadoAsync = ref.watch(temaAtualProvider);
+    final tarefaAtualAsync = ref.watch(tarefaAtualProvider);
     final userAsync = ref.watch(userProvider);
 
-    return temaSelecionadoAsync.when(
-      data: (tema) => Scaffold(
+    return tarefaAtualAsync.when(
+      data: (tarefa) => Scaffold(
         body: Column(
           children: [
             Container(
@@ -32,16 +33,37 @@ class TarefaScreen extends ConsumerWidget {
                       children: [
                         Container(
                           height: MediaQuery.heightOf(context) / 25,
-                          width: MediaQuery.widthOf(context) / 5,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: Color(0xff38344f),
                           ),
-                          child: Text(
-                            'tarefa 1',
-                            style: TextStyle(fontSize: 25, color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ),
+                          child: tarefa?.nome != null
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 15,
+                                  ),
+                                  child: Text(
+                                    tarefa!.nome,
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 15,
+                                  ),
+                                  child: Text(
+                                    "nome não encontrado",
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
                         ),
                         Container(
                           height: MediaQuery.heightOf(context) / 25,
@@ -61,11 +83,17 @@ class TarefaScreen extends ConsumerWidget {
 
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
-                      child: Text(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel augue malesuada. Nulla commodo arcu augue?",
-                        style: TextStyle(fontSize: 20),
-                        textAlign: TextAlign.center,
-                      ),
+                      child: tarefa?.descricao != null
+                          ? Text(
+                              tarefa!.descricao,
+                              style: TextStyle(fontSize: 20),
+                              textAlign: TextAlign.center,
+                            )
+                          : Text(
+                              "Descrição não encontrada",
+                              style: TextStyle(fontSize: 20),
+                              textAlign: TextAlign.center,
+                            ),
                     ),
                   ],
                 ),
@@ -74,18 +102,40 @@ class TarefaScreen extends ConsumerWidget {
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(16),
-                itemCount: 4,
-                itemBuilder: (context, index) => ListTile(
-                  title: Text(
-                    'pergunta ${index + 1}',
-                    style: TextStyle(color: Colors.white),
+                itemCount: tarefa?.respostas.length != null
+                    ? tarefa!.respostas.length
+                    : 4,
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FilledButton(
+                    onPressed: (){},
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Expanded(
+                        child: Text(
+                          tarefa?.respostas[index] != null
+                              ? tarefa!.respostas[index]
+                              : 'Placeholder',
+                              textAlign: TextAlign.left,
+                          style: TextStyle(color: Colors.white, fontSize: 23),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
             Row(
-              children: [IconButton(onPressed: () => _returnIndex(context), icon: Icon(Icons.logout))],
-            )
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: IconButton(
+                    onPressed: () => _returnIndex(context),
+                    icon: Icon(Icons.logout, color: Color(0xff6055a2),size: MediaQuery.heightOf(context)/20,),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

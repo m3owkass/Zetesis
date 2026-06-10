@@ -6,6 +6,7 @@ import 'package:zetesis/model/grupo_biblioteca.dart';
 import 'package:zetesis/model/item_loja.dart';
 import 'package:zetesis/model/material_biblioteca.dart';
 import 'package:zetesis/model/musica.dart';
+import 'package:zetesis/model/tarefa.dart';
 import 'package:zetesis/model/tema.dart';
 import 'package:zetesis/model/texto.dart';
 import 'package:zetesis/model/usuario.dart';
@@ -94,6 +95,52 @@ class DatabaseService {
       debugPrint('Erro ao buscar tema por nome: $e');
       return null;
     }
+  }
+
+   Stream<List<TarefaModel>> watchAllTarefas() {
+    return _db.collection('tarefas').snapshots().map(
+          (s) => s.docs
+              .map((doc) => TarefaModel.fromMap(doc.data(), id: doc.id))
+              .toList(),
+        );
+  }
+
+
+  Future<TarefaModel?> getTarefa(String tid) async {
+    final doc = await _db.collection('tarefas').doc(tid).get();
+    if (doc.exists && doc.data() != null) {
+      return TarefaModel.fromMap(doc.data()!, id: doc.id);
+    }
+    return null;
+  }
+
+  Future<TarefaModel?> getTarefaByName(String name) async {
+    try {
+      final query = await _db
+          .collection('tarefas')
+          .where('nome', isEqualTo: name)
+          .limit(1)
+          .get();
+      if (query.docs.isEmpty) return null;
+      final doc = query.docs.first;
+      return TarefaModel.fromMap(doc.data(), id: doc.id);
+    } catch (e) {
+      debugPrint('Erro ao buscar tarefa por nome: $e');
+      return null;
+    }
+  }
+
+  Stream<List<TarefaModel>> watchTarefasByTema(String tema) {
+    return _db
+        .collection('tarefas')
+        .where('tema', isEqualTo: tema)
+        .snapshots()
+        .map(
+          (s) => s.docs
+              .map((doc) =>
+                  TarefaModel.fromMap(doc.data(), id: doc.id))
+              .toList(),
+        );
   }
 
   Future<List<String>> getNamesTemas() async {

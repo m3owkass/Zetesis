@@ -7,6 +7,7 @@ class UsuarioModel {
   final bool admin;
   final bool developer;
   final String? temaAtual;
+  final String? tarefaAtual;
 
   UsuarioModel({
     this.email,
@@ -17,6 +18,7 @@ class UsuarioModel {
     required this.admin,
     this.developer = false,
     this.temaAtual,
+    this.tarefaAtual
   });
 
   factory UsuarioModel.fromMap(Map<String, dynamic> map) {
@@ -29,6 +31,7 @@ class UsuarioModel {
       admin: map['admin'] ?? false,
       developer: map['developer'] ?? false,
       temaAtual: map['temaAtual'],
+      tarefaAtual: map['tarefaAtual']
     );
   }
 
@@ -42,6 +45,7 @@ class UsuarioModel {
       'admin': admin,
       'developer': developer,
       'temaAtual': temaAtual,
+      'tarefaAtual':tarefaAtual,
     };
   }
 }
