@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:zetesis/config/supabase_config.example.dart';
-
+import 'package:zetesis/config/supabase_config.dart';
 
 class StorageImage extends StatelessWidget {
   final String? path;
@@ -19,8 +18,6 @@ class StorageImage extends StatelessWidget {
     this.placeholder,
   });
 
-  /// Converte path curto em URL pública do Supabase
-  /// Se já for uma URL completa, retorna direto
   static String? resolveUrl(String? path) {
     if (path == null || path.isEmpty) return null;
     if (path.startsWith('http')) return path;

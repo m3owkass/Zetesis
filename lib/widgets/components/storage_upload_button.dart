@@ -1,23 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:zetesis/config/supabase_config.example.dart';
+import 'package:zetesis/config/supabase_config.dart';
 
-
-/// Botão de upload de imagem para o Supabase Storage.
-///
-/// Exemplo de uso:
-/// ```dart
-/// StorageUploadButton(
-///   storagePath: 'grupos/$id',
-///   onUploaded: (path) => db.updateGrupoBiblioteca(id, {'assetUrl': path}),
-/// )
-/// ```
 class StorageUploadButton extends StatefulWidget {
-  /// Caminho no bucket onde a imagem será salva (ex: 'grupos/abc123').
   final String storagePath;
 
-  /// Chamado após upload bem-sucedido, recebendo o path salvo.
   final Future<void> Function(String path) onUploaded;
 
   final String label;

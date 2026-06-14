@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/provider/providers.dart';
+import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/widgets/components/item_biblioteca.dart';
+import 'package:zetesis/widgets/components/mensagem_estado.dart';
 
 class MaterialBibliotecaScreen extends ConsumerWidget {
   const MaterialBibliotecaScreen({super.key});
@@ -14,17 +16,29 @@ class MaterialBibliotecaScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text(grupoNome),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
+        title: Text(
+          grupoNome,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: materiaisAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, _) => const MensagemEstado.erro(
+          subtitulo: 'Não foi possível carregar os materiais.',
+        ),
         data: (materiais) {
+          if (materiais.isEmpty) {
+            return const MensagemEstado(
+              icon: Icons.inbox_outlined,
+              titulo: 'Nada por aqui ainda',
+              subtitulo: 'Este grupo não tem materiais no momento.',
+            );
+          }
           final favoritos = ref.watch(favoritosProvider).value ?? {};
           return ListView.separated(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.md),
             itemCount: materiais.length,
-            separatorBuilder: (_, _) => const SizedBox(height: 16),
+            separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
             itemBuilder: (context, index) {
               final item = materiais[index];
               return ItemBiblioteca(
@@ -33,10 +47,11 @@ class MaterialBibliotecaScreen extends ConsumerWidget {
                 onFavorite: item.id == null
                     ? null
                     : () {
-                        final user =
-                            ref.read(authStateProvider).value;
+                        final user = ref.read(authStateProvider).value;
                         if (user == null) return;
-                        ref.read(databaseServiceProvider).toggleFavorito(
+                        ref
+                            .read(usuarioRepositoryProvider)
+                            .toggleFavorito(
                               user.uid,
                               item.id!,
                               add: !favoritos.contains(item.id),
@@ -46,8 +61,6 @@ class MaterialBibliotecaScreen extends ConsumerWidget {
             },
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, _) => Center(child: Text('Erro: $err')),
       ),
     );
   }

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/model/grupo_biblioteca.dart';
 import 'package:zetesis/provider/providers.dart';
-import 'package:zetesis/views/materialbiblioteca_screen.dart';
+import 'package:zetesis/theme/app_colors.dart';
+import 'package:zetesis/views/material_biblioteca_screen.dart';
 import 'package:zetesis/widgets/components/item_card.dart';
 
 class GrupoBiblioteca extends ConsumerWidget {
@@ -18,7 +19,10 @@ class GrupoBiblioteca extends ConsumerWidget {
       footer: (item.descricao != null && item.descricao!.isNotEmpty)
           ? Text(
               item.descricao!,
-              style: const TextStyle(fontSize: 12, color: Colors.black54),
+              style: const TextStyle(
+                fontSize: 12,
+                color: AppColors.textSecondary,
+              ),
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
