@@ -6,7 +6,7 @@ import 'package:zetesis/model/item_loja.dart';
 import 'package:zetesis/model/usuario.dart';
 import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/services/auth_service.dart';
-import 'package:zetesis/services/database_service.dart';
+import 'package:zetesis/services/repositories/usuario_repository.dart';
 import 'package:zetesis/services/secure_storage_service.dart';
 
 enum AuthStatus { idle, loading, success, error }
@@ -38,7 +38,7 @@ class AuthController extends StateNotifier<AuthState> {
   AuthController(this._ref) : super(const AuthState.idle());
 
   AuthService get _auth => _ref.read(authServiceProvider);
-  DatabaseService get _db => _ref.read(databaseServiceProvider);
+  UsuarioRepository get _usuarios => _ref.read(usuarioRepositoryProvider);
   SecureStorageService get _storage => _ref.read(secureStorageProvider);
 
   Future<void> login(String email, String senha) async {
@@ -46,7 +46,7 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final user = await _auth.login(email, senha);
       if (user != null) await _afterLogin(user);
-      
+
       state = const AuthState.success();
     } on FirebaseAuthException catch (e) {
       state = AuthState.error(_mapError(e.code));
@@ -93,7 +93,9 @@ class AuthController extends StateNotifier<AuthState> {
           'Erro de configuração do Google Sign-In. Adicione o SHA-1 deste dispositivo no Firebase.',
         );
       } else {
-        state = AuthState.error('Erro no login com Google: ${e.message ?? e.code}');
+        state = AuthState.error(
+          'Erro no login com Google: ${e.message ?? e.code}',
+        );
       }
     } catch (e, stackTrace) {
       debugPrint('Erro no login com Google: $e');
@@ -127,7 +129,7 @@ class AuthController extends StateNotifier<AuthState> {
   void resetState() => state = const AuthState.idle();
 
   Future<void> _afterLogin(User user, {String? nome}) async {
-    final existing = await _db.getUser(user.uid);
+    final existing = await _usuarios.getById(user.uid);
 
     final UsuarioModel usuario;
     if (existing == null) {
@@ -139,7 +141,7 @@ class AuthController extends StateNotifier<AuthState> {
         avatarUrl: user.photoURL ?? '',
         admin: false,
       );
-      await _db.saveUser(user.uid, usuario);
+      await _usuarios.save(user.uid, usuario);
     } else {
       usuario = existing;
     }
@@ -153,7 +155,7 @@ class AuthController extends StateNotifier<AuthState> {
     state = const AuthState.loading();
     try {
       final uid = _ref.read(authServiceProvider).currentUser?.uid;
-      if (uid != null) await _ref.read(databaseServiceProvider).removeUser(uid);
+      if (uid != null) await _usuarios.remove(uid);
       await _auth.deleteAccount();
       await _storage.clear();
       state = const AuthState.idle();
@@ -162,14 +164,15 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> updateNome(String nome) async {
+  Future<bool> updateNome(String nome) async {
     try {
       final uid = _ref.read(authServiceProvider).currentUser?.uid;
-      if (uid == null) return;
-      await _ref.read(databaseServiceProvider).updateUser(uid, {'nome': nome});
-      _ref.invalidate(userProvider);
+      if (uid == null) return false;
+      await _usuarios.update(uid, {'nome': nome});
+      return true;
     } catch (e) {
       state = AuthState.error('Erro ao atualizar nome: $e');
+      return false;
     }
   }
 
@@ -199,6 +202,6 @@ class AuthController extends StateNotifier<AuthState> {
       assetUrl: assetUrl,
       status: status,
     );
-    await _ref.read(databaseServiceProvider).addItem(item);
+    await _ref.read(itemLojaRepositoryProvider).add(item);
   }
 }
