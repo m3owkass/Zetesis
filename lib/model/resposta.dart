@@ -1,29 +1,15 @@
-import 'dart:ffi';
-
-import 'package:zetesis/model/tema.dart';
-
-class RespostaModal {
-  final String? id;
+class RespostaModel {
   final String texto;
-  final Bool isCorrect;
-  final String tarefa;
+  final bool isCorrect;
 
+  const RespostaModel({required this.texto, this.isCorrect = false});
 
-  const RespostaModal({this.id, required this.texto, required this.isCorrect, required this.tarefa});
+  factory RespostaModel.fromMap(Map<String, dynamic> map) => RespostaModel(
+    texto: map['texto'] ?? '',
+    isCorrect: map['isCorrect'] == true,
+  );
 
-  factory RespostaModal.fromMap(Map<String, dynamic> map, {String? id}) =>
-      RespostaModal(
-        id: id ?? map['id'],
-        texto: map['texto'] ?? '',
-        tarefa:map['tarefa'],
-        isCorrect: map['isCorrect']?? false,
-      );
-
-  Map<String, dynamic> toMap(){
-    return{
-      'texto': texto,
-      'isCorrect':isCorrect,
-      'tarefa':tarefa
-    };
+  Map<String, dynamic> toMap() {
+    return {'texto': texto, 'isCorrect': isCorrect};
   }
 }

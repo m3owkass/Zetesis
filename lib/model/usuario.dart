@@ -1,4 +1,5 @@
 class UsuarioModel {
+  final String? uid;
   final String? email;
   final String nome;
   final String ranking;
@@ -7,9 +8,13 @@ class UsuarioModel {
   final bool admin;
   final bool developer;
   final String? temaAtual;
-  final String? tarefaAtual;
+
+  final List<String> tarefasConcluidas;
+
+  final List<String> itensComprados;
 
   UsuarioModel({
+    this.uid,
     this.email,
     required this.nome,
     required this.ranking,
@@ -18,20 +23,33 @@ class UsuarioModel {
     required this.admin,
     this.developer = false,
     this.temaAtual,
-    this.tarefaAtual
+    this.tarefasConcluidas = const [],
+    this.itensComprados = const [],
   });
 
-  factory UsuarioModel.fromMap(Map<String, dynamic> map) {
+  bool concluiu(String? tarefaId) =>
+      tarefaId != null && tarefasConcluidas.contains(tarefaId);
+
+  bool comprou(String? itemId) =>
+      itemId != null && itensComprados.contains(itemId);
+
+  factory UsuarioModel.fromMap(Map<String, dynamic> map, {String? id}) {
     return UsuarioModel(
+      uid: id ?? map['uid'],
       email: map['email'],
-      nome: map['nome'],
-      ranking: map['ranking'],
-      pontos: map['pontos'],
-      avatarUrl: map['avatarUrl'],
+      nome: map['nome'] ?? 'Usuário',
+      ranking: map['ranking'] ?? 'Bronze',
+      pontos: (map['pontos'] as num?)?.toInt() ?? 0,
+      avatarUrl: map['avatarUrl'] ?? '',
       admin: map['admin'] ?? false,
       developer: map['developer'] ?? false,
       temaAtual: map['temaAtual'],
-      tarefaAtual: map['tarefaAtual']
+      tarefasConcluidas: List<String>.from(
+        (map['tarefasConcluidas'] as List? ?? []).whereType<String>(),
+      ),
+      itensComprados: List<String>.from(
+        (map['itensComprados'] as List? ?? []).whereType<String>(),
+      ),
     );
   }
 
@@ -45,7 +63,8 @@ class UsuarioModel {
       'admin': admin,
       'developer': developer,
       'temaAtual': temaAtual,
-      'tarefaAtual':tarefaAtual,
+      'tarefasConcluidas': tarefasConcluidas,
+      'itensComprados': itensComprados,
     };
   }
 }

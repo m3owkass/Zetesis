@@ -4,8 +4,13 @@ class MaterialBibliotecaModel {
   final String tipo;
   final String? descricao;
   final String? assetUrl;
+
+  /// autor da obra em si, tipo o autor do livro
   final String? autor;
   final String? dataEnvio;
+
+  /// nome de quem enviou o conteudo na hora do envio
+  final String? enviadoPor;
 
   const MaterialBibliotecaModel({
     this.id,
@@ -15,6 +20,7 @@ class MaterialBibliotecaModel {
     this.assetUrl,
     this.autor,
     this.dataEnvio,
+    this.enviadoPor,
   });
 
   factory MaterialBibliotecaModel.fromMap(
@@ -29,6 +35,7 @@ class MaterialBibliotecaModel {
       assetUrl: map['assetUrl'],
       autor: map['autor'],
       dataEnvio: map['dataEnvio'],
+      enviadoPor: map['enviadoPor'],
     );
   }
 
@@ -39,5 +46,6 @@ class MaterialBibliotecaModel {
     'assetUrl': assetUrl,
     'autor': autor,
     'dataEnvio': dataEnvio,
+    'enviadoPor': enviadoPor,
   };
 }
