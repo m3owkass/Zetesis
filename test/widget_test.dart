@@ -1,30 +1,47 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:zetesis/main.dart';
+import 'package:zetesis/widgets/components/app_button.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  Widget wrap(Widget child) => MaterialApp(
+    home: Scaffold(body: Center(child: child)),
+  );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  group('AppButton', () {
+    testWidgets('mostra o label e dispara onPressed', (tester) async {
+      var toques = 0;
+      await tester.pumpWidget(
+        wrap(AppButton(label: 'Entrar', onPressed: () => toques++)),
+      );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      expect(find.text('Entrar'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      await tester.tap(find.byType(AppButton));
+      expect(toques, 1);
+    });
+
+    testWidgets('em loading, esconde o label e ignora toques', (tester) async {
+      var toques = 0;
+      await tester.pumpWidget(
+        wrap(
+          AppButton(label: 'Entrar', loading: true, onPressed: () => toques++),
+        ),
+      );
+
+      expect(find.text('Entrar'), findsNothing);
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+      await tester.tap(find.byType(AppButton));
+      expect(toques, 0);
+    });
+
+    testWidgets('com onPressed nulo, fica desabilitado', (tester) async {
+      await tester.pumpWidget(
+        wrap(const AppButton(label: 'Entrar', onPressed: null)),
+      );
+
+      final botao = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+      expect(botao.onPressed, isNull);
+    });
   });
 }
