@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:zetesis/theme/app_colors.dart';
+import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/widgets/components/storage_image.dart';
 
 class ItemCard extends StatelessWidget {
@@ -21,8 +23,9 @@ class ItemCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xffddd6d2),
-          borderRadius: BorderRadius.circular(14),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          border: Border.all(color: AppColors.border),
         ),
         clipBehavior: Clip.hardEdge,
         child: Column(
@@ -33,25 +36,36 @@ class ItemCard extends StatelessWidget {
                 child: StorageImage(
                   path: imageUrl,
                   fit: BoxFit.cover,
-                  placeholder: const Center(
-                    child: Icon(Icons.image_not_supported_outlined, size: 48, color: Colors.black26),
+                  placeholder: ColoredBox(
+                    color: AppColors.primary.withValues(alpha: 0.1),
+                    child: const Center(
+                      child: Icon(
+                        Icons.auto_stories_rounded,
+                        size: 44,
+                        color: AppColors.primary,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              padding: const EdgeInsets.all(AppSpacing.sm),
               child: Column(
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: AppColors.primaryDark,
+                    ),
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   if (footer != null) ...[
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.xs),
                     footer!,
                   ],
                 ],
