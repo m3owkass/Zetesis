@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:zetesis/controller/auth_controller.dart';
+import 'package:zetesis/theme/app_colors.dart';
+import 'package:zetesis/theme/app_theme.dart';
+import 'package:zetesis/widgets/components/app_button.dart';
 import 'package:zetesis/widgets/components/custom_formfield.dart';
 import 'package:zetesis/widgets/components/password_recovery_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,9 +20,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   final _passwordController = TextEditingController();
 
   final _emailRegex = RegExp(r'^[\w\.-]+@[\w\.-]+\.\w{2,}$');
-  final _strongPasswordRegex = RegExp(
-    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._\-])[A-Za-z\d@$!%*?&._\-]{8,}$',
-  );
 
   @override
   void dispose() {
@@ -64,7 +64,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(next.errorMessage!),
-              backgroundColor: Colors.red.shade700,
+              backgroundColor: AppColors.danger,
             ),
           );
           ref.read(authControllerProvider.notifier).resetState();
@@ -77,132 +77,96 @@ class _LoginFormState extends ConsumerState<LoginForm> {
       }
     });
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: Center(
-            child: Column(
-              children: [
-                CustomFormField(
-                  controller: _emailController,
-                  fieldType: FieldType.email,
-                  label: 'Email',
-                  hint: 'exemplo@dominio.com',
-                  prefixIcon: const Icon(
-                    Icons.email,
-                    color: Color(0xff4c4666),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, digite seu email';
-                    }
-                    if (!_emailRegex.hasMatch(value)) {
-                      return 'Digite um email válido';
-                    }
-                    return null;
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: CustomFormField(
-                    controller: _passwordController,
-                    fieldType: FieldType.password,
-                    label: 'Senha',
-                    hint: 'Senha segura',
-                    prefixIcon: const Icon(
-                      Icons.lock,
-                      color: Color(0xff4c4666),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, digite uma senha';
-                      }
-                      if (!_strongPasswordRegex.hasMatch(value)) {
-                        return 'Senha deve ter 8+ caracteres, maiúscula, minúscula, número e símbolo';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: authState.isLoading
-                        ? null
-                        : _openRecoverPasswordDialog,
-                    child: const Text('Esqueci minha senha'),
-                  ),
-                ),
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          CustomFormField(
+            controller: _emailController,
+            fieldType: FieldType.email,
+            label: 'Email',
+            hint: 'exemplo@dominio.com',
+            prefixIcon: const Icon(Icons.email, color: AppColors.primary),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Por favor, digite seu email';
+              }
+              if (!_emailRegex.hasMatch(value)) {
+                return 'Digite um email válido';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: AppSpacing.md),
+          CustomFormField(
+            controller: _passwordController,
+            fieldType: FieldType.password,
+            label: 'Senha',
+            hint: 'Sua senha',
+            prefixIcon: const Icon(Icons.lock, color: AppColors.primary),
 
-                Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                  child: ElevatedButton(
-                    onPressed: authState.isLoading ? null : _login,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      foregroundColor: Colors.white,
-                      minimumSize: Size(
-                        MediaQuery.of(context).size.width / 1.5,
-                        MediaQuery.of(context).size.height / 13,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    child: authState.isLoading
-                        ? const SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : Text(
-                            'Entrar',
-                            style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.height * 0.027,
-                            ),
-                          ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: ElevatedButton(
-                    onPressed: authState.isLoading ? null : _loginGoogle,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      minimumSize: const Size(0, 60),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/icon_google.png', height: 32),
-                        const SizedBox(width: 12),
-                        const Flexible(
-                          child: Text(
-                            'Entrar com Google',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+            validator: (value) => (value == null || value.isEmpty)
+                ? 'Por favor, digite sua senha'
+                : null,
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: authState.isLoading
+                  ? null
+                  : _openRecoverPasswordDialog,
+              child: const Text('Esqueci minha senha'),
             ),
           ),
+          const SizedBox(height: AppSpacing.md),
+          AppButton(
+            label: 'Entrar',
+            loading: authState.isLoading,
+            onPressed: _login,
+          ),
+          const SizedBox(height: AppSpacing.md),
+          _GoogleButton(onPressed: authState.isLoading ? null : _loginGoogle),
+        ],
+      ),
+    );
+  }
+}
+
+class _GoogleButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+
+  const _GoogleButton({required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: AppColors.textPrimary,
+          minimumSize: const Size(0, 52),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.pill),
+            side: const BorderSide(color: AppColors.border),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/icon_google.png', height: 26),
+            const SizedBox(width: 12),
+            const Flexible(
+              child: Text(
+                'Entrar com Google',
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
         ),
       ),
     );

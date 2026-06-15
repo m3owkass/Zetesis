@@ -50,29 +50,30 @@ class _CustomFormFieldState extends State<CustomFormField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final errorColor = theme.colorScheme.error;
-    final normalColor = widget.labelStyle?.color ??  Color.fromARGB(255, 110, 99, 156);
+    final normalColor =
+        widget.labelStyle?.color ?? Color.fromARGB(255, 110, 99, 156);
 
     return TextFormField(
       controller: widget.controller,
       obscureText: widget.fieldType == FieldType.password ? _obscure : false,
       validator: widget.validator,
       keyboardType: _getKeyboardType(),
-      style: WidgetStateTextStyle.resolveWith((states){
-        if(states.contains(WidgetState.focused)){
+      style: WidgetStateTextStyle.resolveWith((states) {
+        if (states.contains(WidgetState.focused)) {
           return TextStyle(color: Color.fromARGB(255, 146, 126, 228));
-        }return TextStyle(color: normalColor);
+        }
+        return TextStyle(color: normalColor);
       }),
-      
+
       cursorColor: Colors.white70,
       decoration: InputDecoration(
         labelText: widget.label,
         hintText: widget.hint,
         hintStyle: widget.hintStyle,
         prefixIcon: widget.prefixIcon,
-        border: OutlineInputBorder(borderSide: BorderSide(color: Color(0xff4c4666))),
-        
-        
-        
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xff4c4666)),
+        ),
 
         labelStyle: WidgetStateTextStyle.resolveWith((states) {
           if (states.contains(WidgetState.error)) {
@@ -98,7 +99,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                 icon: Icon(
                   _obscure
                       ? Icons.visibility_off_outlined
-                      : Icons.visibility_outlined,  
+                      : Icons.visibility_outlined,
                   color: Color(0xff5f54a0),
                 ),
                 onPressed: () {

@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/controller/auth_controller.dart';
 import 'package:zetesis/provider/providers.dart';
+import 'package:zetesis/theme/app_colors.dart';
+import 'package:zetesis/theme/app_theme.dart';
+import 'package:zetesis/widgets/components/app_button.dart';
 import 'package:zetesis/widgets/components/password_recovery_dialog.dart';
+import 'package:zetesis/widgets/components/pontos_badge.dart';
+import 'package:zetesis/widgets/perfil/campo_perfil.dart';
+import 'package:zetesis/widgets/perfil/perfil_chip.dart';
 
 class PerfilScreen extends ConsumerStatefulWidget {
   const PerfilScreen({super.key});
@@ -12,32 +18,44 @@ class PerfilScreen extends ConsumerStatefulWidget {
 }
 
 class _PerfilScreenState extends ConsumerState<PerfilScreen> {
-  late TextEditingController _nomeController;
-  final _emailController = TextEditingController();
+  final _nomeController = TextEditingController();
   bool _editandoNome = false;
+  bool _salvando = false;
+  String? _ultimoNomeCarregado;
 
   final _emailRegex = RegExp(r'^[\w\.-]+@[\w\.-]+\.\w{2,}$');
 
   @override
-  void initState() {
-    super.initState();
-    _nomeController = TextEditingController();
-  }
-
-  @override
   void dispose() {
     _nomeController.dispose();
-    _emailController.dispose();
     super.dispose();
   }
 
-  Future<void> _openRecoverPasswordDialog() async {
+  Future<void> _openRecoverPasswordDialog(String email) async {
     await PasswordRecoveryDialog.show(
       context: context,
-      initialEmail: _emailController.text.trim(),
+      initialEmail: email,
       emailRegex: _emailRegex,
-      onRecoverPassword: (email) =>
-          ref.read(authControllerProvider.notifier).recoverPassword(email),
+      onRecoverPassword: (e) =>
+          ref.read(authControllerProvider.notifier).recoverPassword(e),
+    );
+  }
+
+  Future<void> _salvarNome() async {
+    final nome = _nomeController.text.trim();
+    if (nome.isEmpty) return;
+    setState(() => _salvando = true);
+    final ok = await ref.read(authControllerProvider.notifier).updateNome(nome);
+    if (!mounted) return;
+    setState(() {
+      _salvando = false;
+      _editandoNome = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(ok ? 'Nome atualizado!' : 'Não foi possível salvar.'),
+        backgroundColor: ok ? AppColors.success : AppColors.danger,
+      ),
     );
   }
 
@@ -47,288 +65,128 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
     final authState = ref.watch(authControllerProvider);
 
     return Scaffold(
-      
       backgroundColor: Theme.of(context).colorScheme.surface,
-
+      appBar: AppBar(title: const Text('Perfil')),
       body: userAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, _) => const Center(child: Text('Erro ao carregar perfil')),
         data: (user) {
-          if (_nomeController.text.isEmpty) {
+          if (!_editandoNome && _ultimoNomeCarregado != user?.nome) {
+            _ultimoNomeCarregado = user?.nome;
             _nomeController.text = user?.nome ?? '';
           }
 
-          return Padding(
-            padding:  EdgeInsets.only(top:MediaQuery.heightOf(context)*0.05),
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(AppSpacing.lg),
             child: Column(
               children: [
-                Expanded( 
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            CircleAvatar(
-                              radius: 66,
-                              backgroundColor: Colors.grey.shade300,
-                              backgroundImage:
-                                  (user?.avatarUrl != null &&
-                                      user!.avatarUrl.isNotEmpty)
-                                  ? NetworkImage(user.avatarUrl)
-                                  : null,
-                              child:
-                                  (user?.avatarUrl == null ||
-                                      user!.avatarUrl.isEmpty)
-                                  ? Text(
-                                      user?.nome.isNotEmpty == true
-                                          ? user!.nome[0].toUpperCase()
-                                          : '?',
-                                      style: const TextStyle(
-                                        fontSize: 36,
-                                        color: Colors.black,
-                                      ),
-                                    )
-                                  : null,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xff8175c8),
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    minimumSize: Size(
-                                      MediaQuery.widthOf(context) * 0.55,
-                                      MediaQuery.heightOf(context) * 0.06,
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    'Trocar Ícone',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xff8175c8),
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    minimumSize: Size(
-                                      MediaQuery.widthOf(context) * 0.55,
-                                      MediaQuery.heightOf(context) * 0.06,
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    'Remover Ícone',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 28),
-                        const Text(
-                          'Nome de Usuário',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
+                const SizedBox(height: AppSpacing.sm),
+                CircleAvatar(
+                  radius: 56,
+                  backgroundColor: AppColors.field,
+                  backgroundImage:
+                      (user?.avatarUrl != null && user!.avatarUrl.isNotEmpty)
+                      ? NetworkImage(user.avatarUrl)
+                      : null,
+                  child: (user?.avatarUrl == null || user!.avatarUrl.isEmpty)
+                      ? Text(
+                          user?.nome.isNotEmpty == true
+                              ? user!.nome[0].toUpperCase()
+                              : '?',
+                          style: const TextStyle(
+                            fontSize: 40,
+                            color: AppColors.primaryDark,
                           ),
-                        ),
-                        const SizedBox(height: 6),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xffe8ddd8),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 4,
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: _editandoNome
-                                    ? TextField(
-                                        controller: _nomeController,
-                                        autofocus: true,
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                        ),
-                                        onSubmitted: (_) =>
-                                            setState(() => _editandoNome = false),
-                                      )
-                                    : Text(
-                                        _nomeController.text,
-                                        style: const TextStyle(fontSize: 15),
-                                      ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.edit, size: 18),
-                                onPressed: () =>
-                                    setState(() => _editandoNome = true),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        const Text(
-                          'Email',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xffe8ddd8),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 12,
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  user?.email ?? '',
-                                  style: const TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 28),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: authState.isLoading
-                                ? null
-                                : _openRecoverPasswordDialog,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff8175c8),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              minimumSize: const Size(220, 48),
-                            ),
-                            child: const Text(
-                              'Redefinir Senha',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        )
+                      : null,
                 ),
-                Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: Color(0xffcbafa2), width: 2),
+                const SizedBox(height: AppSpacing.md),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    PerfilChip(
+                      child: PontosBadge(
+                        valor: user?.pontos ?? 0,
+                        iconSize: 22,
+                      ),
                     ),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 12,
-                  ),
+                    const SizedBox(width: AppSpacing.sm),
+                    PerfilChip.icone(
+                      icon: Icons.military_tech,
+                      cor: AppColors.primary,
+                      texto: user?.ranking ?? 'Bronze',
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                CampoPerfil(
+                  label: 'Nome de usuário',
                   child: Row(
                     children: [
                       Expanded(
-                        child: ElevatedButton(
-                          onPressed: () => Navigator.pop(context),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xffef5350),
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            minimumSize: const Size(0, 48),
-                          ),
-                          child: const Text(
-                            'Cancelar',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await ref
-                                .read(authControllerProvider.notifier)
-                                .updateNome(_nomeController.text.trim());
-                            if (!context.mounted) return;
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) => Dialog(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: const Text('Editado com Sucesso.'),
-                                      ),
-                                      const SizedBox(height: 15),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  ),
+                        child: _editandoNome
+                            ? TextField(
+                                controller: _nomeController,
+                                autofocus: true,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  isCollapsed: true,
                                 ),
+                                onSubmitted: (_) => _salvarNome(),
+                              )
+                            : Text(
+                                _nomeController.text,
+                                style: Theme.of(context).textTheme.bodyLarge,
                               ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xff66bb6a),
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            minimumSize: const Size(0, 48),
-                          ),
-                          child: const Text(
-                            'Confirmar',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
                       ),
+                      if (_salvando)
+                        const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      else
+                        IconButton(
+                          icon: Icon(
+                            _editandoNome ? Icons.check : Icons.edit,
+                            size: 20,
+                            color: AppColors.primary,
+                          ),
+                          onPressed: () {
+                            if (_editandoNome) {
+                              _salvarNome();
+                            } else {
+                              setState(() => _editandoNome = true);
+                            }
+                          },
+                        ),
                     ],
                   ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                CampoPerfil(
+                  label: 'Email',
+                  child: Text(
+                    user?.email ?? '',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                AppButton(
+                  label: 'Redefinir senha',
+                  variant: AppButtonVariant.primary,
+                  onPressed: authState.isLoading
+                      ? null
+                      : () => _openRecoverPasswordDialog(user?.email ?? ''),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                AppButton(
+                  label: 'Sair',
+                  variant: AppButtonVariant.danger,
+                  icon: Icons.logout,
+                  onPressed: () =>
+                      ref.read(authControllerProvider.notifier).logout(),
                 ),
               ],
             ),

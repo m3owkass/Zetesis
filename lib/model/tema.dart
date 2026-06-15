@@ -1,5 +1,3 @@
-
-
 class TemaModel {
   String? id;
   String nome;
@@ -23,11 +21,6 @@ class TemaModel {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'nome': nome,
-      'descricao': descricao,
-      'assetUrl': assetUrl,
-    };
+    return {'nome': nome, 'descricao': descricao, 'assetUrl': assetUrl};
   }
-
- }
+}

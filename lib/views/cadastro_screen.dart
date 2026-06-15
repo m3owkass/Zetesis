@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:zetesis/theme/app_colors.dart';
+import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/views/login_screen.dart';
 import 'package:zetesis/widgets/forms/cadastro_form.dart';
 
@@ -8,65 +10,49 @@ class CadastroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * 0.07,
-              left: MediaQuery.of(context).size.height * 0.02,
-            ),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Text(
+      backgroundColor: AppColors.backgroundDark,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(24, 48, 24, 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
                 'Zetesis',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: MediaQuery.of(context).size.height * 0.06,
-                  fontWeight: FontWeight.normal,
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 44),
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              left: MediaQuery.of(context).size.height * 0.02,
-            ),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Text(
+              const Text(
                 'Cadastro',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: MediaQuery.of(context).size.height * 0.025,
-                  fontWeight: FontWeight.normal,
-                ),
+                style: TextStyle(color: Colors.white70, fontSize: 18),
               ),
-            ),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-          const Padding(padding: EdgeInsets.all(8.0), child: CadastroForm()),
-          TextButton(
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const LoginScreen()),
-            ),
-            child: RichText(
-              text: const TextSpan(
-                text: 'Já tem uma conta? ',
-                style: TextStyle(color: Colors.grey),
-                children: [
-                  TextSpan(
-                    text: 'Faça login',
-                    style: TextStyle(
-                      color: Color(0xff5f54a0),
-                      fontWeight: FontWeight.bold,
+              const SizedBox(height: AppSpacing.lg),
+              const CadastroForm(),
+              Center(
+                child: TextButton(
+                  onPressed: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  ),
+                  child: RichText(
+                    text: const TextSpan(
+                      text: 'Já tem uma conta? ',
+                      style: TextStyle(color: Colors.white60),
+                      children: [
+                        TextSpan(
+                          text: 'Faça login',
+                          style: TextStyle(
+                            color: AppColors.accent,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

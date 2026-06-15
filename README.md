@@ -135,7 +135,8 @@ lib/
 | `users/{uid}` | nome, email, ranking, pontos, avatarUrl, admin, temaAtual, favoritos[] | Perfil do usuário |
 | `temas/` | nome, descricao, assetUrl | Temas filosóficos |
 | `grupos_biblioteca/` | nome, descricao, assetUrl | Categorias de materiais |
-| `materiais/` | nome, tipo, descricao, assetUrl, autor, dataEnvio | Materiais por categoria |
+| `tarefas/` | nome, descricao, tema, enviadoPor, dataEnvio, perguntas[] | Tarefas/quizzes por tema |
+| `materiais/` | nome, tipo, descricao, assetUrl, autor, dataEnvio, enviadoPor | Materiais por categoria |
 | `items/` | nome, custo, assetUrl, status | Itens da loja |
 
 > O campo `tipo` em `materiais` deve corresponder exatamente ao campo `nome` do grupo em `grupos_biblioteca` (ex: `"Textos"`, `"Músicas"`, `"Vídeos"`, `"Imagens"`, `"Livros"`, `"Outros"`).

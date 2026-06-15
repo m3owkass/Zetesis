@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/model/usuario.dart';
 import 'package:zetesis/provider/providers.dart';
-import 'package:zetesis/views/index.dart';
+import 'package:zetesis/views/home_shell.dart';
 import 'package:zetesis/views/login_screen.dart';
 
 class AuthGate extends ConsumerWidget {
@@ -24,7 +24,7 @@ class AuthGate extends ConsumerWidget {
       loading: () =>
           const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(body: Text(e.toString())),
-      data: (user) => user != null ? const Index() : const LoginScreen(),
+      data: (user) => user != null ? const HomeShell() : const LoginScreen(),
     );
   }
 }

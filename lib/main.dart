@@ -4,8 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zetesis/auth_gate.dart';
-import 'package:zetesis/config/supabase_config.dart';
 import 'package:zetesis/config/firebase_options.dart';
+import 'package:zetesis/config/supabase_config.dart';
+import 'package:zetesis/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,22 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Zetesis',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xff251d30),
-        colorScheme: const ColorScheme.light(
-          primary: Color(0xff5f54a0),
-          onPrimary: Color(0xff38344f),
-          surface: Color(0xfff8efeb),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(14),
-            borderSide: const BorderSide(color: Color(0xffb7aac6)),
-          ),
-          hintStyle: const TextStyle(color: Color(0xffb7aac6)),
-          prefixIconColor: Color.fromARGB(255, 110, 99, 156),
-        ),
-      ),
+      theme: AppTheme.light,
       home: const AuthGate(),
     );
   }

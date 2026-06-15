@@ -11,10 +11,7 @@ class GrupoBibliotecaModel {
     this.assetUrl,
   });
 
-  factory GrupoBibliotecaModel.fromMap(
-    Map<String, dynamic> map, {
-    String? id,
-  }) {
+  factory GrupoBibliotecaModel.fromMap(Map<String, dynamic> map, {String? id}) {
     return GrupoBibliotecaModel(
       id: id ?? map['id'],
       nome: map['nome'] ?? '',

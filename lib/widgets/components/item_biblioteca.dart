@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zetesis/model/material_biblioteca.dart';
+import 'package:zetesis/theme/app_colors.dart';
+import 'package:zetesis/theme/app_theme.dart';
 
 class ItemBiblioteca extends StatelessWidget {
   final MaterialBibliotecaModel? item;
@@ -17,15 +19,18 @@ class ItemBiblioteca extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final item = this.item;
     if (item == null) return const SizedBox.shrink();
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xffddd6d2),
-          borderRadius: BorderRadius.circular(16),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          border: Border.all(color: AppColors.border),
         ),
+        clipBehavior: Clip.hardEdge,
         child: Stack(
           children: [
             Padding(
@@ -34,34 +39,33 @@ class ItemBiblioteca extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item!.nome,
+                    item.nome,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 22,
+                      fontSize: 18,
+                      color: AppColors.primaryDark,
                     ),
                   ),
-                  const SizedBox(height: 6),
-                  if (item!.autor != null)
+                  if (item.autor != null) ...[
+                    const SizedBox(height: AppSpacing.xs),
                     Text(
-                      'ENVIADO POR: ${item!.autor}',
+                      item.autor!,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
+                        color: AppColors.primary,
                       ),
                     ),
-                  if (item!.dataEnvio != null)
+                  ],
+                  if (item.descricao != null && item.descricao!.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.sm),
                     Text(
-                      'em ${item!.dataEnvio}',
+                      item.descricao!,
                       style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
+                        fontSize: 13,
+                        height: 1.4,
+                        color: AppColors.textSecondary,
                       ),
-                    ),
-                  if (item!.descricao != null && item!.descricao!.isNotEmpty) ...[
-                    const SizedBox(height: 10),
-                    Text(
-                      item!.descricao!,
-                      style: const TextStyle(fontSize: 12),
                     ),
                   ],
                 ],
@@ -70,24 +74,17 @@ class ItemBiblioteca extends StatelessWidget {
             Positioned(
               top: 0,
               right: 0,
-              child: GestureDetector(
-                onTap: onFavorite,
-                child: Container(
-                  width: 44,
-                  height: 54,
-                  decoration: BoxDecoration(
-                    color: isFavorito
-                        ? const Color(0xff4a7fc1)
-                        : const Color(0xff4a7fc1).withAlpha(80),
-                    borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(16),
-                      bottomLeft: Radius.circular(10),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: onFavorite,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Icon(
+                      isFavorito ? Icons.star : Icons.star_border,
+                      color: isFavorito ? AppColors.star : AppColors.border,
+                      size: 28,
                     ),
-                  ),
-                  child: Icon(
-                    isFavorito ? Icons.star : Icons.star_border,
-                    color: Colors.white,
-                    size: 24,
                   ),
                 ),
               ),
