@@ -26,9 +26,10 @@ class HomeScreen extends ConsumerWidget {
             .where((t) => concluidas.contains(t.id ?? t.nome))
             .length;
 
-        return SingleChildScrollView(
+        return Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CirculoTema(tema: tema),
               const SizedBox(height: AppSpacing.md),
