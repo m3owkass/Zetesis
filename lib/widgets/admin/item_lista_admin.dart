@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
 
-/// linha reutilizavel pras listas do painel admin
 class ItemListaAdmin extends StatelessWidget {
   final IconData icon;
   final Color cor;

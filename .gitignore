@@ -12,6 +12,7 @@
 .swiftpm/
 .claude
 migrate_working_dir/
+CHANGELOG.md
 
 # IntelliJ related
 *.iml

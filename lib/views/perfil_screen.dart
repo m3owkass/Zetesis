@@ -21,7 +21,6 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
   final _nomeController = TextEditingController();
   bool _editandoNome = false;
   bool _salvando = false;
-  String? _ultimoNomeCarregado;
 
   final _emailRegex = RegExp(r'^[\w\.-]+@[\w\.-]+\.\w{2,}$');
 
@@ -71,11 +70,6 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, _) => const Center(child: Text('Erro ao carregar perfil')),
         data: (user) {
-          if (!_editandoNome && _ultimoNomeCarregado != user?.nome) {
-            _ultimoNomeCarregado = user?.nome;
-            _nomeController.text = user?.nome ?? '';
-          }
-
           return SingleChildScrollView(
             padding: const EdgeInsets.all(AppSpacing.lg),
             child: Column(
@@ -136,7 +130,7 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
                                 onSubmitted: (_) => _salvarNome(),
                               )
                             : Text(
-                                _nomeController.text,
+                                user?.nome ?? '',
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                       ),
@@ -157,7 +151,10 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
                             if (_editandoNome) {
                               _salvarNome();
                             } else {
-                              setState(() => _editandoNome = true);
+                              setState(() {
+                                _nomeController.text = user?.nome ?? '';
+                                _editandoNome = true;
+                              });
                             }
                           },
                         ),

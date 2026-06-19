@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:zetesis/controller/auth_controller.dart';
 import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
-import 'package:zetesis/views/home_shell.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 import 'package:zetesis/widgets/components/custom_formfield.dart';
 import 'package:zetesis/widgets/components/password_recovery_dialog.dart';
@@ -36,11 +35,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     await controller.login(
       _emailController.text.trim(),
       _passwordController.text.trim(),
-    );
-    if (!mounted) return;
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const HomeShell()),
     );
   }
 
