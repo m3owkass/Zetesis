@@ -163,4 +163,4 @@ lib/
 |---|---|---|
 | Heitor Klaine Stella | [HeitorkStella](https://github.com/HeitorkStella) | Backend, telas, seleção de temas |
 | João Vitor Lino Lages Santos | [m3owkass](https://github.com/m3owkass) | Backend, banco de dados, telas, autenticação |
-| Lucas Antônio Dias Maschio | — | Design, reuniões, telas |
+| Lucas Antônio Dias Maschio | [luscaaas](https://github.com/luscaaas) | Design, reuniões, telas |
