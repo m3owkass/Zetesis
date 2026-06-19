@@ -30,11 +30,19 @@ class _SelecaoTemaScreenState extends ConsumerState<SelecaoTemaScreen> {
     Navigator.pop(context);
 
     if (uid != null) {
-      usuarios.update(uid, {'temaAtual': tema.nome}).ignore();
+      usuarios
+          .update(uid, {'temaAtual': tema.nome})
+          .catchError(
+            (e) => debugPrint('Erro ao salvar tema no Firestore: $e'),
+          );
       storage.getUser().then((userData) {
         if (userData != null) {
           userData['temaAtual'] = tema.nome;
-          storage.saveUser(userData).ignore();
+          storage
+              .saveUser(userData)
+              .catchError(
+                (e) => debugPrint('Erro ao salvar tema no storage: $e'),
+              );
         }
       });
     }

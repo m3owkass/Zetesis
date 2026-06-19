@@ -37,7 +37,6 @@ class ListaConteudosScreen extends ConsumerWidget {
           variant: AppButtonVariant.primary,
           onPressed: () {
             Navigator.pop(context);
-            // todo: abrir o form de edicao do conteudo
           },
         ),
         AcaoSecao(
@@ -65,7 +64,7 @@ class ListaConteudosScreen extends ConsumerWidget {
     );
     if (!confirmado || material.id == null) return;
     if (!context.mounted) return;
-    Navigator.pop(context); // fecha o dialog de detalhes
+    Navigator.pop(context);
     await ref.read(materialBibliotecaRepositoryProvider).remove(material.id!);
   }
 

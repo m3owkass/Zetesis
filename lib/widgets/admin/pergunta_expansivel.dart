@@ -3,8 +3,6 @@ import 'package:zetesis/model/pergunta.dart';
 import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
 
-/// dropdown que mostra uma pergunta, quando abre mostra as respostas com
-/// a certa destacada e a explicacao
 class PerguntaExpansivel extends StatelessWidget {
   final int numero;
   final PerguntaModel pergunta;
@@ -34,7 +32,6 @@ class PerguntaExpansivel extends StatelessWidget {
         border: Border.all(color: AppColors.border),
       ),
       child: Theme(
-        // tira a linha divisoria padrao do ExpansionTile
         data: theme.copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
           tilePadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),

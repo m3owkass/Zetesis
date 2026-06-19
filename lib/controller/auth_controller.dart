@@ -45,8 +45,11 @@ class AuthController extends StateNotifier<AuthState> {
     state = const AuthState.loading();
     try {
       final user = await _auth.login(email, senha);
-      if (user != null) await _afterLogin(user);
-
+      if (user == null) {
+        state = const AuthState.error('Falha ao autenticar');
+        return;
+      }
+      await _afterLogin(user);
       state = const AuthState.success();
     } on FirebaseAuthException catch (e) {
       state = AuthState.error(_mapError(e.code));
@@ -59,9 +62,11 @@ class AuthController extends StateNotifier<AuthState> {
     state = const AuthState.loading();
     try {
       final user = await _auth.register(email, senha);
-      if (user != null) {
-        await _afterLogin(user, nome: nome);
+      if (user == null) {
+        state = const AuthState.error('Falha ao criar conta');
+        return;
       }
+      await _afterLogin(user, nome: nome);
       state = const AuthState.success();
     } on FirebaseAuthException catch (e) {
       state = AuthState.error(_mapError(e.code));
@@ -83,9 +88,7 @@ class AuthController extends StateNotifier<AuthState> {
       state = const AuthState.success();
     } on FirebaseAuthException catch (e) {
       debugPrint('FirebaseAuthException: ${e.code} - ${e.message}');
-      state = AuthState.error(
-        '${_mapError(e.code)}: ${e.message ?? e.toString()}',
-      );
+      state = AuthState.error(_mapError(e.code));
     } on PlatformException catch (e) {
       debugPrint('PlatformException Google Sign-In: ${e.code} - ${e.message}');
       if (e.code == '10') {
@@ -120,10 +123,13 @@ class AuthController extends StateNotifier<AuthState> {
   }
 
   Future<void> logout() async {
-    await _auth.logout();
-    await _storage.clear();
-    _ref.read(temaSelecionadoProvider.notifier).state = null;
-    state = const AuthState.idle();
+    try {
+      await _auth.logout();
+    } finally {
+      await _storage.clear();
+      _ref.read(temaSelecionadoProvider.notifier).state = null;
+      state = const AuthState.idle();
+    }
   }
 
   void resetState() => state = const AuthState.idle();
@@ -171,7 +177,7 @@ class AuthController extends StateNotifier<AuthState> {
       await _usuarios.update(uid, {'nome': nome});
       return true;
     } catch (e) {
-      state = AuthState.error('Erro ao atualizar nome: $e');
+      debugPrint('Erro ao atualizar nome: $e');
       return false;
     }
   }

@@ -25,13 +25,13 @@ class AuthService {
     return cred.user;
   }
 
-  Future<void> sendPasswordResetEmail(String email) {
-    _auth.setLanguageCode('pt-BR');
+  Future<void> sendPasswordResetEmail(String email) async {
+    await _auth.setLanguageCode('pt-BR');
     final settings = ActionCodeSettings(
       url: 'https://zetesis-firebase.firebaseapp.com/',
       handleCodeInApp: false,
     );
-    return _auth.sendPasswordResetEmail(
+    await _auth.sendPasswordResetEmail(
       email: email,
       actionCodeSettings: settings,
     );

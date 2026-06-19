@@ -50,15 +50,24 @@ class UsuarioRepository {
         .toList(),
   );
 
-  Future<void> concluirTarefa(
+  Future<bool> concluirTarefa(
     String uid, {
     required String tarefaId,
     required int pontos,
   }) async {
-    await _doc(uid).set({
-      'pontos': FieldValue.increment(pontos),
-      'tarefasConcluidas': FieldValue.arrayUnion([tarefaId]),
-    }, SetOptions(merge: true));
+    final ref = _doc(uid);
+    return FirebaseFirestore.instance.runTransaction<bool>((tx) async {
+      final snap = await tx.get(ref);
+      final concluidas = List<String>.from(
+        (snap.data()?['tarefasConcluidas'] as List? ?? []).whereType<String>(),
+      );
+      if (concluidas.contains(tarefaId)) return false;
+      tx.set(ref, {
+        'pontos': FieldValue.increment(pontos),
+        'tarefasConcluidas': FieldValue.arrayUnion([tarefaId]),
+      }, SetOptions(merge: true));
+      return true;
+    });
   }
 
   Future<CompraResult> comprarItem(

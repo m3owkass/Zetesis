@@ -4,8 +4,6 @@ import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/widgets/components/storage_image.dart';
 
-/// cabecalho do usuario no dialog de detalhes com avatar, phatos, ranking
-/// e badges
 class UsuarioCabecalho extends StatelessWidget {
   final UsuarioModel usuario;
 
@@ -15,7 +13,6 @@ class UsuarioCabecalho extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // avatar
         Container(
           width: 72,
           height: 72,
@@ -36,7 +33,6 @@ class UsuarioCabecalho extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppSpacing.md),
-        // phatos e ranking lado a lado
         Row(
           children: [
             Expanded(
@@ -60,7 +56,6 @@ class UsuarioCabecalho extends StatelessWidget {
             ),
           ],
         ),
-        // badges de papel
         if (usuario.admin || usuario.developer) ...[
           const SizedBox(height: AppSpacing.sm),
           Wrap(

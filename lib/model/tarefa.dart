@@ -25,7 +25,7 @@ class TarefaModel {
         nome: map['nome'] ?? '',
         tema: map['tema'] ?? '',
         descricao: map['descricao'] ?? '',
-        enviadoPor: map['enviadoPor'] ?? '',
+        enviadoPor: map['enviadoPor'],
         dataEnvio: map['dataEnvio'],
         perguntas: (map['perguntas'] as List? ?? [])
             .whereType<Map>()

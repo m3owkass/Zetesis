@@ -8,6 +8,7 @@ class UsuarioModel {
   final bool admin;
   final bool developer;
   final String? temaAtual;
+  final bool modoEscuro;
 
   final List<String> tarefasConcluidas;
 
@@ -23,6 +24,7 @@ class UsuarioModel {
     required this.admin,
     this.developer = false,
     this.temaAtual,
+    this.modoEscuro = false,
     this.tarefasConcluidas = const [],
     this.itensComprados = const [],
   });
@@ -44,6 +46,7 @@ class UsuarioModel {
       admin: map['admin'] ?? false,
       developer: map['developer'] ?? false,
       temaAtual: map['temaAtual'],
+      modoEscuro: map['modoEscuro'] ?? false,
       tarefasConcluidas: List<String>.from(
         (map['tarefasConcluidas'] as List? ?? []).whereType<String>(),
       ),
@@ -63,6 +66,7 @@ class UsuarioModel {
       'admin': admin,
       'developer': developer,
       'temaAtual': temaAtual,
+      'modoEscuro': modoEscuro,
       'tarefasConcluidas': tarefasConcluidas,
       'itensComprados': itensComprados,
     };

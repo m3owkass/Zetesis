@@ -52,7 +52,6 @@ class ListaTarefasScreen extends ConsumerWidget {
           variant: AppButtonVariant.primary,
           onPressed: () {
             Navigator.pop(context);
-            // todo: abrir o form de edicao da tarefa
           },
         ),
         AcaoSecao(
@@ -80,7 +79,7 @@ class ListaTarefasScreen extends ConsumerWidget {
     );
     if (!confirmado || tarefa.id == null) return;
     if (!context.mounted) return;
-    Navigator.pop(context); // fecha o dialog de detalhes
+    Navigator.pop(context);
     await ref.read(tarefaRepositoryProvider).remove(tarefa.id!);
   }
 

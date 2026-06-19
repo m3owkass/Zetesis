@@ -1,5 +1,89 @@
 # Changelog
 
+## 16/06/2026 | 17/06/2026 | 18/06/2026 | 19/06/2026
+
+### Adicionado
+
+- **Providers por domínio** — `provider/providers.dart` foi quebrado em arquivos por contexto: `auth_providers.dart`, `repository_providers.dart`, `usuario_providers.dart`, `tema_providers.dart`, `tarefa_providers.dart`, `biblioteca_providers.dart`, `loja_providers.dart` e `busca.dart` (helper de busca textual genérico)
+- **Campo `modoEscuro`** em `UsuarioModel` (bool, default `false`; round-trip em `fromMap`/`toMap`)
+- **Providers de suporte ao tema escuro** — `possuiTemaEscuroProvider` (checa se o usuário comprou o item "Tema Escuro") e `modoEscuroAtivoProvider` (comprou **e** ativou), em `loja_providers.dart`; ainda não ligados ao tema da UI
+- **`ordenarMateriais` + filtros da biblioteca** — ordenação por recentes/antigos/autor/nome (com parsing tolerante de `dataEnvio`) e providers de filtro (`ordenacaoMaterialProvider`, `filtroAutorProvider`, `filtroEnviadoPorProvider`) em `biblioteca_providers.dart`
+- **`CustomSearchBar`** — `widgets/components/search_bar.dart`: campo de busca com botão de limpar, sem colidir com o `SearchBar` nativo
+- **`lib/dev/seed_materiais.dart`** — seed de materiais da biblioteca para popular o ambiente de dev
+
+### Alterado
+
+- **`provider/providers.dart` virou barrel** — só reexporta os arquivos por domínio; as telas que importam `providers.dart` seguem funcionando sem mudança. Cada provider passa a viver num único arquivo (sem definição duplicada)
+- **`UsuarioRepository.concluirTarefa`** — reescrito como transação (`runTransaction<bool>`): só pontua se a tarefa ainda não está em `tarefasConcluidas`, eliminando pontuação duplicada quando a trava em memória se perde (retorno mudou de `void` para `bool`)
+- **`AuthGate`** — quando há usuário do Firebase, aguarda o `userProvider` resolver antes de entrar na `HomeShell` (evita a tela ler o doc do usuário como `null` no primeiro login); estado de erro agora mostra mensagem amigável + botão "Tentar de novo" em vez do `e.toString()` cru
+- **Login/cadastro** — navegação centralizada no `ref.listen` (sucesso/erro); removidos os `Navigator.push`/`pushReplacement` manuais que duplicavam o fluxo e, no cadastro, mandavam pro login mesmo em caso de erro
+- **`PerfilScreen`** — nome em modo leitura passa a vir direto de `user.nome`; o `TextEditingController` só é populado ao entrar em edição, eliminando escrita de estado dentro do `build`
+
+### Corrigido
+
+- **`AuthController.login`/`register`** — não marcam mais `success` quando o usuário volta `null` (antes seguiam "logado" sem doc no Firestore e sem secure storage populado); agora viram `error`
+- **`AuthController.logout`** — `try/finally` garante que `secure storage` e tema são limpos mesmo se o `signOut` lançar (ex: Google offline)
+- **`AuthController.loginGoogle`** — usa a mensagem amigável de `_mapError` em vez de vazar `e.message`/`e.toString()` técnicos na UI
+- **`AuthController.updateNome`** — reporta falha só pelo retorno `bool`; não escreve mais `error` no estado global de auth (que disparava SnackBars em telas não relacionadas)
+- **`SelecaoTemaScreen`** — persistência do tema (Firestore + secure storage) deixou de usar `.ignore()`; falhas agora são logadas em vez de sumirem silenciosamente
+- **`TarefaModel.fromMap`** — `enviadoPor` não força mais `''` num campo `String?`, preservando o `null` (round-trip consistente com `dataEnvio`)
+- **`AuthService.sendPasswordResetEmail`** — `setLanguageCode('pt-BR')` agora é aguardado antes do envio
+
+### Removido
+
+- **Comentários reintroduzidos no `lib/`** — `//` e `///` que voltaram com o painel admin (12/06) e nos ajustes desta leva foram removidos, mantendo a convenção de código sem comentários; explicações úteis migraram pro guia abaixo. Exceção segue sendo `lib/config/firebase_options.dart` (gerado)
+
+---
+
+## Guia: busca, ordenação e providers por domínio
+
+### Buscar dentro de uma lista — `filtrarPorTermo`
+
+Arquivo: `lib/provider/busca.dart`. Helper genérico e sem estado: filtra qualquer `Iterable<T>` por um termo, olhando os campos que você apontar.
+
+```dart
+final visiveis = filtrarPorTermo(
+  materiais,
+  termo,
+  (m) => [m.nome, m.autor, m.descricao],
+);
+```
+
+- termo vazio → devolve a lista inteira
+- comparação é case-insensitive e ignora campos `null`
+- combine com o `CustomSearchBar` (`widgets/components/search_bar.dart`), que entrega o texto digitado via `onBuscar` e já tem botão de limpar
+
+### Ordenar e filtrar materiais da biblioteca
+
+Arquivo: `lib/provider/biblioteca_providers.dart`.
+
+- `ordenarMateriais(lista, ordem)` — ordena por `OrdenacaoMaterial.{recentes, antigos, autor, nome}`; datas usam parsing tolerante de `dd/MM/yyyy` (`dataEnvio` nula/inválida vai pro fim da lista)
+- estado dos filtros fica nos providers `ordenacaoMaterialProvider`, `filtroAutorProvider` e `filtroEnviadoPorProvider`
+- `materiaisProvider` filtra pelo grupo selecionado em `grupoSelecionadoProvider`, que guarda o **nome** do grupo — e por convenção esse nome é igual à string `tipo` do material
+
+### Onde declarar um provider novo
+
+`provider/providers.dart` é só um **barrel**: não declare nada nele. Cada provider mora no arquivo do seu domínio:
+
+| Domínio | Arquivo |
+|---|---|
+| serviços + repositories | `repository_providers.dart` |
+| auth / usuário logado | `auth_providers.dart` |
+| usuários (total, lista admin, favoritos) | `usuario_providers.dart` |
+| temas | `tema_providers.dart` |
+| tarefas | `tarefa_providers.dart` |
+| biblioteca (grupos, materiais, filtros) | `biblioteca_providers.dart` |
+| loja (itens, tema escuro) | `loja_providers.dart` |
+
+Criou um arquivo de domínio novo? Adicione um `export` dele em `providers.dart`. Quem consome continua importando só `provider/providers.dart` e enxerga tudo.
+
+### Helpers de UI do painel admin
+
+- `confirmarAcao(context, titulo:, mensagem:, destrutivo: true)` (`widgets/components/confirmar_acao.dart`) — abre um dialog e devolve `true` se o usuário confirmar; use antes de excluir ou alterar algo
+- `DetalhesDialog.mostrar(...)` (`widgets/admin/detalhes_dialog.dart`) — dialog genérico de detalhes; linhas com valor vazio somem sozinhas, então dá pra passar todos os campos sem se preocupar com os opcionais. **Os botões de `acoes` não fecham o dialog sozinhos** — chame `Navigator.pop(context)` dentro do `onPressed` se quiser fechar
+
+---
+
 ## 12/06/2026
 
 ### Adicionado

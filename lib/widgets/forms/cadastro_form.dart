@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/controller/auth_controller.dart';
 import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
-import 'package:zetesis/views/login_screen.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 import 'package:zetesis/widgets/components/custom_formfield.dart';
 
@@ -44,10 +43,6 @@ class _CadastroFormState extends ConsumerState<CadastroForm> {
       _nomeController.text.trim(),
       _emailController.text.trim(),
       _passwordController.text.trim(),
-    );
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const LoginScreen()),
     );
   }
 

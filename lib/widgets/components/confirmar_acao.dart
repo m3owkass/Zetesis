@@ -2,14 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
 
-/// mostra um dialog de confirmacao e devolve `true` se o usuario confirmar
-///
-/// uso tipico:
-/// ```dart
-/// if (await confirmarAcao(context, titulo: 'Excluir?', mensagem: '...')) {
-///   // prossegue
-/// }
-/// ```
 Future<bool> confirmarAcao(
   BuildContext context, {
   required String titulo,

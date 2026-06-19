@@ -63,7 +63,7 @@ class ListaUsuariosScreen extends ConsumerWidget {
     );
     if (!confirmado) return;
     if (!context.mounted) return;
-    Navigator.pop(context); // fecha o dialog de detalhes
+    Navigator.pop(context);
     await ref.read(usuarioRepositoryProvider).update(usuario.uid!, {
       'admin': tornar,
     });
@@ -85,7 +85,7 @@ class ListaUsuariosScreen extends ConsumerWidget {
     );
     if (!confirmado || usuario.uid == null) return;
     if (!context.mounted) return;
-    Navigator.pop(context); // fecha o dialog de detalhes
+    Navigator.pop(context);
     await ref.read(usuarioRepositoryProvider).remove(usuario.uid!);
   }
 

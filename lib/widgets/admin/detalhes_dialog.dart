@@ -4,10 +4,6 @@ import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/widgets/admin/acao_secao.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 
-/// uma linha rotulo: valor dentro do dialog de detalhes
-///
-/// linha com valor vazio some sozinha, entao da pra listar todos os
-/// campos sem se preocupar com os opcionais
 class DetalheLinha {
   final String rotulo;
   final String? valor;
@@ -15,26 +11,16 @@ class DetalheLinha {
   const DetalheLinha(this.rotulo, this.valor);
 }
 
-/// dialog de detalhes generico, o visual e fixo e cada tela so passa o
-/// titulo e a lista de linhas
 class DetalhesDialog extends StatelessWidget {
   final IconData icon;
   final Color cor;
   final String titulo;
   final List<DetalheLinha> linhas;
 
-  /// botoes de acao da tela, como editar, excluir e tornar admin, eles
-  /// ficam embaixo dos dados, o dialog nao fecha sozinho quando voce clica,
-  /// entao chame `Navigator.pop(context)` dentro do `onPressed` se quiser fechar
   final List<AcaoSecao> acoes;
 
-  /// conteudo livre que aparece acima das linhas, serve pra coisas como o
-  /// avatar e os dados do usuario
   final Widget? cabecalho;
 
-  /// conteudo livre que aparece abaixo das linhas e acima dos botoes, serve
-  /// pra coisa que nao cabe num par rotulo/valor, tipo a lista de perguntas
-  /// de uma tarefa
   final Widget? conteudoExtra;
 
   const DetalhesDialog({
@@ -48,7 +34,6 @@ class DetalhesDialog extends StatelessWidget {
     this.conteudoExtra,
   });
 
-  /// abre o dialog, atalho pro `showDialog`
   static Future<void> mostrar(
     BuildContext context, {
     required IconData icon,
