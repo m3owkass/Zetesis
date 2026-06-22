@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/model/tema.dart';
 import 'package:zetesis/provider/repository_providers.dart';
 
-final temasProvider = StreamProvider<List<TemaModel>>((ref) {
+final temasProvider = StreamProvider.autoDispose<List<TemaModel>>((ref) {
   return ref.read(temaRepositoryProvider).watchAll();
 });
 

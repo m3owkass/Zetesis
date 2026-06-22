@@ -3,23 +3,25 @@ import 'package:zetesis/model/grupo_biblioteca.dart';
 import 'package:zetesis/model/material_biblioteca.dart';
 import 'package:zetesis/provider/repository_providers.dart';
 
-final gruposProvider = StreamProvider<List<GrupoBibliotecaModel>>((ref) {
+final gruposProvider = StreamProvider.autoDispose<List<GrupoBibliotecaModel>>((
+  ref,
+) {
   return ref.read(grupoBibliotecaRepositoryProvider).watchAll();
 });
 
 final grupoSelecionadoProvider = StateProvider<String?>((ref) => null);
 
-final todosMateriaisProvider = StreamProvider<List<MaterialBibliotecaModel>>((
-  ref,
-) {
-  return ref.read(materialBibliotecaRepositoryProvider).watchAll();
-});
+final todosMateriaisProvider =
+    StreamProvider.autoDispose<List<MaterialBibliotecaModel>>((ref) {
+      return ref.read(materialBibliotecaRepositoryProvider).watchAll();
+    });
 
-final materiaisProvider = StreamProvider<List<MaterialBibliotecaModel>>((ref) {
-  final tipo = ref.watch(grupoSelecionadoProvider);
-  if (tipo == null) return Stream.value([]);
-  return ref.read(materialBibliotecaRepositoryProvider).watchByType(tipo);
-});
+final materiaisProvider =
+    StreamProvider.autoDispose<List<MaterialBibliotecaModel>>((ref) {
+      final tipo = ref.watch(grupoSelecionadoProvider);
+      if (tipo == null) return Stream.value([]);
+      return ref.read(materialBibliotecaRepositoryProvider).watchByType(tipo);
+    });
 
 enum OrdenacaoMaterial { recentes, antigos, autor, nome }
 
@@ -71,3 +73,7 @@ List<MaterialBibliotecaModel> ordenarMateriais(
   }
   return lista;
 }
+
+final termoBuscaMaterialProvider = StateProvider.autoDispose<String>(
+  (ref) => '',
+);

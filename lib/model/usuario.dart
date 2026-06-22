@@ -1,9 +1,13 @@
+import 'package:zetesis/model/ranking.dart';
+
 class UsuarioModel {
   final String? uid;
   final String? email;
   final String nome;
-  final String ranking;
   final int pontos;
+  final int xp;
+  final int acertosTotais;
+  final int questoesRespondidas;
   final String avatarUrl;
   final bool admin;
   final bool developer;
@@ -18,8 +22,10 @@ class UsuarioModel {
     this.uid,
     this.email,
     required this.nome,
-    required this.ranking,
     required this.pontos,
+    this.xp = 0,
+    this.acertosTotais = 0,
+    this.questoesRespondidas = 0,
     required this.avatarUrl,
     required this.admin,
     this.developer = false,
@@ -35,13 +41,24 @@ class UsuarioModel {
   bool comprou(String? itemId) =>
       itemId != null && itensComprados.contains(itemId);
 
+  double get acuracia =>
+      questoesRespondidas == 0 ? 0.0 : acertosTotais / questoesRespondidas;
+
+  String get ranking => rankingTierDe(
+    xp: xp,
+    acuracia: acuracia,
+    questoesRespondidas: questoesRespondidas,
+  ).nome;
+
   factory UsuarioModel.fromMap(Map<String, dynamic> map, {String? id}) {
     return UsuarioModel(
       uid: id ?? map['uid'],
       email: map['email'],
       nome: map['nome'] ?? 'Usuário',
-      ranking: map['ranking'] ?? 'Bronze',
       pontos: (map['pontos'] as num?)?.toInt() ?? 0,
+      xp: (map['xp'] as num?)?.toInt() ?? 0,
+      acertosTotais: (map['acertosTotais'] as num?)?.toInt() ?? 0,
+      questoesRespondidas: (map['questoesRespondidas'] as num?)?.toInt() ?? 0,
       avatarUrl: map['avatarUrl'] ?? '',
       admin: map['admin'] ?? false,
       developer: map['developer'] ?? false,
@@ -60,8 +77,10 @@ class UsuarioModel {
     return {
       'email': email,
       'nome': nome,
-      'ranking': ranking,
       'pontos': pontos,
+      'xp': xp,
+      'acertosTotais': acertosTotais,
+      'questoesRespondidas': questoesRespondidas,
       'avatarUrl': avatarUrl,
       'admin': admin,
       'developer': developer,

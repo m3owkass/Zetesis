@@ -142,7 +142,6 @@ class AuthController extends StateNotifier<AuthState> {
       usuario = UsuarioModel(
         email: user.email,
         nome: nome ?? user.displayName ?? 'Usuário',
-        ranking: 'Bronze',
         pontos: 0,
         avatarUrl: user.photoURL ?? '',
         admin: false,

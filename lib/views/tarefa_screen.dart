@@ -92,7 +92,13 @@ class _TarefaScreenState extends ConsumerState<TarefaScreen> {
     if (uid == null) return;
     ref
         .read(usuarioRepositoryProvider)
-        .concluirTarefa(uid, tarefaId: _tarefaId, pontos: _pontosGanhos);
+        .concluirTarefa(
+          uid,
+          tarefaId: _tarefaId,
+          pontos: _pontosGanhos,
+          acertos: _acertos,
+          questoes: _total,
+        );
   }
 
   TarefaModel? _proximaTarefa() {

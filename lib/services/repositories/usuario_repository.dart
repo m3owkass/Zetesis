@@ -54,6 +54,8 @@ class UsuarioRepository {
     String uid, {
     required String tarefaId,
     required int pontos,
+    required int acertos,
+    required int questoes,
   }) async {
     final ref = _doc(uid);
     return FirebaseFirestore.instance.runTransaction<bool>((tx) async {
@@ -64,6 +66,9 @@ class UsuarioRepository {
       if (concluidas.contains(tarefaId)) return false;
       tx.set(ref, {
         'pontos': FieldValue.increment(pontos),
+        'xp': FieldValue.increment(pontos),
+        'acertosTotais': FieldValue.increment(acertos),
+        'questoesRespondidas': FieldValue.increment(questoes),
         'tarefasConcluidas': FieldValue.arrayUnion([tarefaId]),
       }, SetOptions(merge: true));
       return true;
