@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zetesis/controller/auth_controller.dart';
-import 'package:zetesis/theme/app_colors.dart';
-import 'package:zetesis/theme/app_theme.dart';
-import 'package:zetesis/widgets/components/app_button.dart';
+import 'package:zetesis/provider/tarefa_providers.dart';
 import 'package:zetesis/widgets/components/custom_formfield.dart';
 
 class AddTaskForm extends ConsumerStatefulWidget {
@@ -14,39 +11,51 @@ class AddTaskForm extends ConsumerStatefulWidget {
 }
 
 class _CadastroFormState extends ConsumerState<AddTaskForm> {
-  final _formKey = GlobalKey<FormState>();
-  final _nomeController= TextEditingController();
-  final _descricaoController = TextEditingController();
-  final _perguntaController = TextEditingController();
+  final List<TextEditingController> _textEditingControllers = [
+    TextEditingController(),
+  ];
+
+  void addPergunta() {
+    setState(() {
+      _textEditingControllers.add(TextEditingController());
+    });
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _textEditingControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var stringListReturnedFromApiCall = ["first", "second", "third", "fourth", "..."];
-    // This list of controllers can be used to set and get the text from/to the TextFields
-    Map<String,TextEditingController> textEditingControllers = {};
-    var textFields = <TextField>[];
-    stringListReturnedFromApiCall.forEach((str) {
-      var textEditingController = new TextEditingController(text: str);
-      textEditingControllers.putIfAbsent(str, ()=>textEditingController);
-      return textFields.add( TextField(controller: textEditingController));
-    });
+    final tarefasAsync = ref.watch(tarefasProvider);
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text("oi"),
-        ),
-        body: SingleChildScrollView(
-            child: new Column(
-              children:[
-              Column(children:  textFields),
-                TextButton(
-                  child: Text("Print Values"),
-                    onPressed: (){
-                    stringListReturnedFromApiCall.forEach((str){
-                      print(textEditingControllers[str]?.text);
-                    });
-                  })
-              ]
-            )));
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: _textEditingControllers.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: TextField(
+                    decoration: InputDecoration(label: Text('Pergunta ${index+1}')),
+                    controller: _textEditingControllers[index],
+                  ),
+                );
+              },
+            ),
+          ),
+          TextButton(
+            onPressed: addPergunta,
+            child: const Text('Adicione pergunta'),
+          ),
+        ],
+      ),
+    );
   }
 }
