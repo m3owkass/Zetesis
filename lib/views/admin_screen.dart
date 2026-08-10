@@ -12,6 +12,7 @@ import 'package:zetesis/views/admin/lista_usuarios_screen.dart';
 import 'package:zetesis/widgets/admin/acao_secao.dart';
 import 'package:zetesis/widgets/admin/card_estatistica.dart';
 import 'package:zetesis/widgets/admin/card_secao.dart';
+import 'package:zetesis/widgets/admin/material_cadastro_screen.dart';
 import 'package:zetesis/widgets/admin/tasks_cadastro_screen.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 
@@ -104,8 +105,10 @@ class AdminScreen extends ConsumerWidget {
               AcaoSecao(
                 label: 'Novo conteúdo',
                 variant: AppButtonVariant.primary,
-                onPressed: () => null,
-              ),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const MaterialDialog()),
+                ),              ),
             ],
           ),
           const SizedBox(height: AppSpacing.md),

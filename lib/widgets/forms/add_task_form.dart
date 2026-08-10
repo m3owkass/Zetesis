@@ -1,13 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zetesis/model/tema.dart';
 import 'package:zetesis/provider/providers.dart';
-import 'package:zetesis/provider/tarefa_providers.dart';
-import 'package:zetesis/theme/app_colors.dart';
-import 'package:zetesis/widgets/components/custom_formfield.dart';
 import 'package:zetesis/widgets/components/mensagem_estado.dart';
-import 'package:zetesis/widgets/forms/pergunta_draft_form.dart';
+import 'package:zetesis/widgets/forms/resposta_draft.dart';
 
 class AddTaskForm extends ConsumerStatefulWidget {
   const AddTaskForm({super.key});
@@ -94,8 +89,6 @@ class _CadastroFormState extends ConsumerState<AddTaskForm> {
               ),
             ),
           ),
-
-          PerguntaDraftForm()
         ],
       ),
     );

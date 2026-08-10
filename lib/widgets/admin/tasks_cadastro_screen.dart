@@ -20,18 +20,13 @@ class TasksDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Adicionar Tarefa'),
-          Icon(Icons.note_add)
-        ],
-      )),
-      body: Column(
-        children: [
-          Expanded(child: AddTaskForm())
-        ],
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [Text('Adicionar Tarefa'), Icon(Icons.note_add)],
+        ),
       ),
+      body: Column(children: [Expanded(child: (AddTaskForm()))]),
     );
   }
 }
