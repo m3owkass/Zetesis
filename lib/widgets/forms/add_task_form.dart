@@ -95,7 +95,7 @@ class _CadastroFormState extends ConsumerState<AddTaskForm> {
             ),
           ),
 
-          PerguntaDraftForm()
+          PerguntaDraftForm(perguntasControllers: [],)
         ],
       ),
     );

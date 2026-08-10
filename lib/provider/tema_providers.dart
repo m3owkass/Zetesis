@@ -13,3 +13,7 @@ final temaAtualProvider = FutureProvider<TemaModel?>((ref) async {
   if (nome == null) return null;
   return ref.read(temaRepositoryProvider).getByName(nome);
 });
+
+final todosTemasProvider = StreamProvider<List<TemaModel>>((ref) {
+  return ref.read(temaRepositoryProvider).watchAll();
+});
