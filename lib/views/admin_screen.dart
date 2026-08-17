@@ -8,11 +8,13 @@ import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/views/admin/lista_conteudos_screen.dart';
 import 'package:zetesis/views/admin/lista_tarefas_screen.dart';
+import 'package:zetesis/views/admin/lista_temas_screen.dart';
 import 'package:zetesis/views/admin/lista_usuarios_screen.dart';
 import 'package:zetesis/widgets/admin/acao_secao.dart';
 import 'package:zetesis/widgets/admin/card_estatistica.dart';
 import 'package:zetesis/widgets/admin/card_secao.dart';
 import 'package:zetesis/widgets/admin/tasks_cadastro_screen.dart';
+import 'package:zetesis/widgets/admin/tema_cadastro_screen.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 
 class AdminScreen extends ConsumerWidget {
@@ -21,6 +23,7 @@ class AdminScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tarefas = ref.watch(todasTarefasProvider).valueOrNull?.length;
+    final temas = ref.watch(todosTemasProvider).valueOrNull?.length;
     final conteudos = ref.watch(todosMateriaisProvider).valueOrNull?.length;
     final usuarios = ref.watch(totalUsuariosProvider).valueOrNull;
 
@@ -36,6 +39,15 @@ class AdminScreen extends ConsumerWidget {
                   icon: Icons.assignment_outlined,
                   cor: AppColors.accent,
                   valor: tarefas,
+                  label: 'Tarefas',
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: CardEstatistica(
+                  icon: Icons.archive_outlined,
+                  cor: AppColors.primary,
+                  valor: temas,
                   label: 'Tarefas',
                 ),
               ),
@@ -80,6 +92,31 @@ class AdminScreen extends ConsumerWidget {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const TasksDialog()),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          CardSecao(
+            icon: Icons.assignment_outlined,
+            cor: AppColors.primary,
+            titulo: 'Temas',
+            descricao: 'Revise envios e crie novas tarefas.',
+            acoes: [
+              AcaoSecao(
+                label: 'Ver enviadas',
+                variant: AppButtonVariant.neutral,
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ListaTemasScreen()),
+                ),
+              ),
+              AcaoSecao(
+                label: 'Novo Tema',
+                variant: AppButtonVariant.accent,
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const TemaDialog()),
                 ),
               ),
             ],

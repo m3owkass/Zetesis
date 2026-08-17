@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zetesis/theme/app_colors.dart';
 
 class PerguntaDraftForm extends StatefulWidget {
   final List<TextEditingController> perguntasControllers;
@@ -58,7 +59,7 @@ class _MyWidgetState extends State<PerguntaDraftForm> {
                       side: const BorderSide(color: Colors.black),
                     ),
                     trailing: IconButton(
-                      onPressed: () => deletePergunta(index),
+                      onPressed: () => deleteResposta(index),
                       icon: Icon(Icons.close),
                     ),
                     title: Column(
@@ -67,7 +68,7 @@ class _MyWidgetState extends State<PerguntaDraftForm> {
 
                         TextField(
                           decoration: InputDecoration(label: Text('Enunciado')),
-                          controller: [index],
+                          controller: _respostasControllers[index],
                         ),
                       ],
                     ),
