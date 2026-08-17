@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/dev/seed_screen.dart';
+import 'package:zetesis/model/tarefa.dart';
 import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
@@ -11,16 +12,11 @@ import 'package:zetesis/views/admin/lista_usuarios_screen.dart';
 import 'package:zetesis/widgets/admin/acao_secao.dart';
 import 'package:zetesis/widgets/admin/card_estatistica.dart';
 import 'package:zetesis/widgets/admin/card_secao.dart';
+import 'package:zetesis/widgets/admin/tasks_cadastro_screen.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 
 class AdminScreen extends ConsumerWidget {
   const AdminScreen({super.key});
-
-  void _emConstrucao(BuildContext context, String recurso) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('$recurso — em construção.')));
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -81,7 +77,10 @@ class AdminScreen extends ConsumerWidget {
               AcaoSecao(
                 label: 'Nova tarefa',
                 variant: AppButtonVariant.accent,
-                onPressed: () => _emConstrucao(context, 'Nova tarefa'),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const TasksDialog()),
+                ),
               ),
             ],
           ),
@@ -105,7 +104,7 @@ class AdminScreen extends ConsumerWidget {
               AcaoSecao(
                 label: 'Novo conteúdo',
                 variant: AppButtonVariant.primary,
-                onPressed: () => _emConstrucao(context, 'Novo conteúdo'),
+                onPressed: () => null,
               ),
             ],
           ),
