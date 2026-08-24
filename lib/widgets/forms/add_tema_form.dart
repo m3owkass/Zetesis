@@ -58,13 +58,7 @@ class _CadastroFormState extends ConsumerState<AddTemaForm> {
                 controller: _descricaoController,
               )
             ),
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: TextFormField(
-                decoration:  InputDecoration(label: Text("URL Imagem")),
-                controller: _assetController,
-              )
-            ),
+
           
             TextButton(onPressed:(){
               _saveTema();
