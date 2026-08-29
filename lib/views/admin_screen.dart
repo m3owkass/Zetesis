@@ -48,7 +48,7 @@ class AdminScreen extends ConsumerWidget {
                   icon: Icons.archive_outlined,
                   cor: AppColors.primary,
                   valor: temas,
-                  label: 'Tarefas',
+                  label: 'Temas',
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),
