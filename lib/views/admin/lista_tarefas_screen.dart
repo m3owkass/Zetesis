@@ -8,6 +8,7 @@ import 'package:zetesis/widgets/admin/acao_secao.dart';
 import 'package:zetesis/widgets/admin/detalhes_dialog.dart';
 import 'package:zetesis/widgets/admin/item_lista_admin.dart';
 import 'package:zetesis/widgets/admin/pergunta_expansivel.dart';
+import 'package:zetesis/widgets/admin/tasks_cadastro_screen.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 import 'package:zetesis/widgets/components/confirmar_acao.dart';
 import 'package:zetesis/widgets/components/mensagem_estado.dart';
@@ -52,6 +53,10 @@ class ListaTarefasScreen extends ConsumerWidget {
           variant: AppButtonVariant.primary,
           onPressed: () {
             Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => TasksDialog(tarefa: tarefa)),
+            );
           },
         ),
         AcaoSecao(

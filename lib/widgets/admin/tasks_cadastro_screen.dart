@@ -1,37 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:zetesis/theme/app_colors.dart';
-import 'package:zetesis/theme/app_theme.dart';
+import 'package:zetesis/model/tarefa.dart';
 import 'package:zetesis/widgets/forms/add_task_form.dart';
 
-class DetalheLinha {
-  final String rotulo;
-  final String? valor;
-
-  const DetalheLinha(this.rotulo, this.valor);
-}
-
 class TasksDialog extends StatelessWidget {
-  const TasksDialog({super.key});
+  final TarefaModel? tarefa;
 
-  final cor = AppColors.primary;
-  final icon = Icons.note_add;
-  final titulo = "Adicionar Tarefa";
+  const TasksDialog({super.key, this.tarefa});
 
   @override
   Widget build(BuildContext context) {
+    final editando = tarefa != null;
+
     return Scaffold(
-      appBar: AppBar(title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Adicionar Tarefa'),
-          Icon(Icons.note_add)
-        ],
-      )),
-      body: Column(
-        children: [
-          Expanded(child: AddTaskForm())
-        ],
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(editando ? 'Editar Tarefa' : 'Adicionar Tarefa'),
+            const Icon(Icons.note_add),
+          ],
+        ),
       ),
+      body: Column(children: [Expanded(child: AddTaskForm(tarefa: tarefa))]),
     );
   }
 }
