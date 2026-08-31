@@ -7,7 +7,7 @@ import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/widgets/admin/acao_secao.dart';
 import 'package:zetesis/widgets/admin/detalhes_dialog.dart';
 import 'package:zetesis/widgets/admin/item_lista_admin.dart';
-import 'package:zetesis/widgets/admin/update_tema_screen.dart';
+import 'package:zetesis/widgets/admin/tema_cadastro_screen.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 import 'package:zetesis/widgets/components/confirmar_acao.dart';
 import 'package:zetesis/widgets/components/mensagem_estado.dart';
@@ -43,9 +43,11 @@ class _ListaTemasScreenState extends ConsumerState<ListaTemasScreen> {
           label: 'Editar',
           variant: AppButtonVariant.primary,
           onPressed: () {
-            ref.read(temaSelecionadoAtualizarProvider.notifier).state = tema.nome;
-            Navigator.push(context, MaterialPageRoute(builder: (_)=> const UpdateTemaDialog()));
-          
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => TemaDialog(tema: tema)),
+            );
           },
         ),
         AcaoSecao(

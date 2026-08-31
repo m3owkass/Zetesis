@@ -17,11 +17,3 @@ final temaAtualProvider = FutureProvider<TemaModel?>((ref) async {
 final todosTemasProvider = StreamProvider<List<TemaModel>>((ref) {
   return ref.read(temaRepositoryProvider).watchAll();
 });
-
-final temaSelecionadoAtualizarProvider = StateProvider<String?>((ref) => null);
-
-final temaAtualizarProvider = FutureProvider<TemaModel?>((ref) async {
-  final nome = ref.watch(temaSelecionadoAtualizarProvider);
-  if (nome == null) return null;
-  return ref.read(temaRepositoryProvider).getByName(nome);
-});
