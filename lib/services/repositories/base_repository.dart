@@ -21,6 +21,8 @@ abstract class BaseRepository<T> {
 
   Future<void> remove(String id) => col.doc(id).delete();
 
+  
+
   Future<T?> getById(String id) async {
     final doc = await col.doc(id).get();
     final data = doc.data();

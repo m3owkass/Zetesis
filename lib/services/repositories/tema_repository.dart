@@ -23,4 +23,20 @@ class TemaRepository extends BaseRepository<TemaModel> {
       return null;
     }
   }
+
+  Future<void> removeCascade(String parentId,String parentName,)async{
+  final batch = db.batch();
+
+  final parentRef = db.collection("tema").doc(parentId);
+
+  final childrenQuery = await db.collection("tarefas").where("tema", isEqualTo: parentName).get();
+
+  for (var doc in childrenQuery.docs) {
+    batch.delete(doc.reference);
+    
+  }
+  batch.delete(parentRef);
+
+  await batch.commit();
+}
 }

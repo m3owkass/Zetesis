@@ -65,6 +65,7 @@ class _ListaTemasScreenState extends ConsumerState<ListaTemasScreen> {
     WidgetRef ref,
     TemaModel tema,
   ) async {
+    
     final confirmado = await confirmarAcao(
       context,
       titulo: 'Excluir tema?',
@@ -77,7 +78,7 @@ class _ListaTemasScreenState extends ConsumerState<ListaTemasScreen> {
     if (!confirmado || tema.id == null) return;
     if (!context.mounted) return;
     Navigator.pop(context);
-    await ref.read(temaRepositoryProvider).remove(tema.id!);
+    await ref.read(temaRepositoryProvider).removeCascade(tema.id!, tema.nome);
   }
 
   @override
