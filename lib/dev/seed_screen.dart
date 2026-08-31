@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/dev/seed_tarefas.dart';
 import 'package:zetesis/model/grupo_biblioteca.dart';
@@ -72,14 +73,169 @@ class _SeedScreenState extends ConsumerState<SeedScreen> {
     }
   });
 
+  static const _formatoPorGrupo = {
+    'Textos': FormatoConteudo.texto,
+    'Músicas': FormatoConteudo.link,
+    'Vídeos': FormatoConteudo.link,
+    'Imagens': FormatoConteudo.arquivo,
+    'Livros': FormatoConteudo.arquivo,
+    'Outros': FormatoConteudo.arquivo,
+  };
+
+  static const _assetLocalPorGrupo = {
+    'Textos': 'assets/groups/txt.png',
+    'Músicas': 'assets/groups/msc.png',
+    'Vídeos': 'assets/groups/vdo.png',
+    'Imagens': 'assets/groups/img.png',
+    'Livros': 'assets/groups/lvr.png',
+    'Outros': 'assets/groups/otr.png',
+  };
+
   Future<void> _criarGrupos() => _run('Criar grupos', () async {
     final repo = ref.read(grupoBibliotecaRepositoryProvider);
+    final uploadService = ref.read(storageUploadServiceProvider);
+
     for (final nome in _gruposNomes) {
-      await repo.add(
-        GrupoBibliotecaModel(nome: nome, descricao: '', assetUrl: ''),
+      final id = await repo.add(
+        GrupoBibliotecaModel(
+          nome: nome,
+          descricao: '',
+          assetUrl: '',
+          formatoConteudo: _formatoPorGrupo[nome] ?? FormatoConteudo.arquivo,
+        ),
       );
+
+      final assetLocal = _assetLocalPorGrupo[nome];
+      if (assetLocal == null) continue;
+
+      final bytes = (await rootBundle.load(assetLocal)).buffer.asUint8List();
+      final path = 'grupos/$id';
+      await uploadService.upload(path: path, bytes: bytes);
+      await repo.update(id, {'assetUrl': path});
     }
   });
+
+  static const _materiaisData = [
+    (
+      tipo: 'Textos',
+      nome: 'A Alegoria da Caverna',
+      autor: 'Platão',
+      dataEnvio: '03/02/2025',
+      descricao:
+          'Um dos textos fundamentais da filosofia ocidental sobre percepção, ilusão e conhecimento.',
+      conteudoTexto:
+          'Imagine homens presos desde a infância no fundo de uma caverna, de costas para a entrada, vendo apenas sombras projetadas na parede à sua frente. Para eles, essas sombras são a única realidade que conhecem. Se um deles fosse libertado e conduzido para fora, à luz do sol, sofreria para enxergar — mas, aos poucos, compreenderia que o mundo das sombras era apenas um reflexo distorcido de algo maior. Ao retornar à caverna para contar o que viu, seria recebido com desconfiança pelos que ainda acreditam que as sombras são tudo o que existe.',
+      assetUrl: '',
+    ),
+    (
+      tipo: 'Textos',
+      nome: 'Sobre a Brevidade da Vida',
+      autor: 'Sêneca',
+      dataEnvio: '10/02/2025',
+      descricao:
+          'Uma reflexão estoica sobre o uso do tempo e a diferença entre vida longa e vida bem vivida.',
+      conteudoTexto:
+          'Não é que tenhamos pouco tempo, mas que desperdiçamos muito dele. A vida é suficientemente longa, e nos foi dada em medida generosa para a realização das maiores coisas, se toda ela for bem investida. Mas quando se dissipa em luxo e negligência, quando não é empregada para nenhum bom propósito, somos finalmente forçados pela última necessidade a perceber que ela passou antes que soubéssemos que estava passando.',
+      assetUrl: '',
+    ),
+    (
+      tipo: 'Músicas',
+      nome: 'Clair de Lune',
+      autor: 'Claude Debussy',
+      dataEnvio: '15/02/2025',
+      descricao:
+          'Peça para piano solo, inspirada no poema homônimo de Paul Verlaine — contemplação e melancolia.',
+      conteudoTexto: '',
+      assetUrl: 'https://www.youtube.com/results?search_query=Debussy+Clair+de+Lune',
+    ),
+    (
+      tipo: 'Músicas',
+      nome: 'Gymnopédie No. 1',
+      autor: 'Erik Satie',
+      dataEnvio: '18/02/2025',
+      descricao:
+          'Composição minimalista associada ao ócio contemplativo e à lentidão do tempo.',
+      conteudoTexto: '',
+      assetUrl:
+          'https://www.youtube.com/results?search_query=Erik+Satie+Gymnopedie+No+1',
+    ),
+    (
+      tipo: 'Vídeos',
+      nome: 'O que é Filosofia?',
+      autor: 'Canal Filosofia Pop',
+      dataEnvio: '20/02/2025',
+      descricao: 'Introdução acessível aos grandes temas e perguntas da filosofia.',
+      conteudoTexto: '',
+      assetUrl: 'https://www.youtube.com/results?search_query=o+que+e+filosofia',
+    ),
+    (
+      tipo: 'Vídeos',
+      nome: 'A Alegoria da Caverna Explicada',
+      autor: 'Canal Filosofia Pop',
+      dataEnvio: '22/02/2025',
+      descricao:
+          'Vídeo explicativo sobre o mito da caverna de Platão e suas interpretações modernas.',
+      conteudoTexto: '',
+      assetUrl:
+          'https://www.youtube.com/results?search_query=alegoria+da+caverna+explicada',
+    ),
+    (
+      tipo: 'Imagens',
+      nome: 'Retrato de Sócrates',
+      autor: 'Desconhecido',
+      dataEnvio: '25/02/2025',
+      descricao: 'Representação clássica do filósofo grego Sócrates.',
+      conteudoTexto: '',
+      assetUrl: 'https://placehold.co/600x400/2b2b2b/f5f5f5.png',
+    ),
+    (
+      tipo: 'Imagens',
+      nome: 'Mapa Mental: Estoicismo',
+      autor: 'Prof. Exemplo',
+      dataEnvio: '27/02/2025',
+      descricao: 'Esquema visual com os principais conceitos da escola estoica.',
+      conteudoTexto: '',
+      assetUrl: 'https://placehold.co/600x400/1c3d5a/f5f5f5.png',
+    ),
+    (
+      tipo: 'Livros',
+      nome: 'Meditações',
+      autor: 'Marco Aurélio',
+      dataEnvio: '01/03/2025',
+      descricao:
+          'Reflexões pessoais do imperador filósofo sobre virtude, dever e aceitação.',
+      conteudoTexto: '',
+      assetUrl: 'https://placehold.co/400x600/4a3728/f5f5f5.png',
+    ),
+    (
+      tipo: 'Livros',
+      nome: 'Assim Falou Zaratustra',
+      autor: 'Friedrich Nietzsche',
+      dataEnvio: '03/03/2025',
+      descricao:
+          'Obra que apresenta conceitos como o eterno retorno e o além-do-homem.',
+      conteudoTexto: '',
+      assetUrl: 'https://placehold.co/400x600/6b1d1d/f5f5f5.png',
+    ),
+    (
+      tipo: 'Outros',
+      nome: 'Roteiro de Estudo — Semana 1',
+      autor: 'Prof. Exemplo',
+      dataEnvio: '05/03/2025',
+      descricao: 'Planejamento semanal de leituras e atividades para a turma.',
+      conteudoTexto: '',
+      assetUrl: '',
+    ),
+    (
+      tipo: 'Outros',
+      nome: 'Infográfico — Correntes Filosóficas',
+      autor: 'Prof. Exemplo',
+      dataEnvio: '07/03/2025',
+      descricao: 'Linha do tempo visual com as principais correntes de pensamento.',
+      conteudoTexto: '',
+      assetUrl: 'https://placehold.co/800x400/333333/ffffff.png',
+    ),
+  ];
 
   Future<void> _limparMateriais() => _run('Limpar materiais', () async {
     final repo = ref.read(materialBibliotecaRepositoryProvider);
@@ -91,19 +247,19 @@ class _SeedScreenState extends ConsumerState<SeedScreen> {
   Future<void> _criarMateriais() =>
       _run('Criar materiais placeholder', () async {
         final repo = ref.read(materialBibliotecaRepositoryProvider);
-        for (final tipo in _gruposNomes) {
-          for (var i = 1; i <= 2; i++) {
-            await repo.add(
-              MaterialBibliotecaModel(
-                nome: '$tipo — exemplo $i',
-                tipo: tipo,
-                descricao: 'Conteúdo de exemplo para o grupo $tipo.',
-                autor: 'Prof. Exemplo',
-                dataEnvio: '01/01/2025',
-                enviadoPor: 'Admin Exemplo',
-              ),
-            );
-          }
+        for (final m in _materiaisData) {
+          await repo.add(
+            MaterialBibliotecaModel(
+              nome: m.nome,
+              tipo: m.tipo,
+              descricao: m.descricao,
+              autor: m.autor,
+              dataEnvio: m.dataEnvio,
+              enviadoPor: 'Admin Exemplo',
+              conteudoTexto: m.conteudoTexto.isEmpty ? null : m.conteudoTexto,
+              assetUrl: m.assetUrl.isEmpty ? null : m.assetUrl,
+            ),
+          );
         }
       });
 
@@ -206,7 +362,7 @@ class _SeedScreenState extends ConsumerState<SeedScreen> {
                 _limparMateriais,
               ),
               _acao(
-                'Criar materiais placeholder (2 por grupo)',
+                'Criar materiais de exemplo (com conteúdo, links e imagens)',
                 AppButtonVariant.success,
                 _criarMateriais,
               ),

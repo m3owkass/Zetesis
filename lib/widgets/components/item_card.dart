@@ -32,10 +32,11 @@ class ItemCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: SizedBox.expand(
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.sm),
                 child: StorageImage(
                   path: imageUrl,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                   placeholder: ColoredBox(
                     color: AppColors.primary.withValues(alpha: 0.1),
                     child: const Center(
