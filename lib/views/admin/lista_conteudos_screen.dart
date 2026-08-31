@@ -4,9 +4,11 @@ import 'package:zetesis/model/material_biblioteca.dart';
 import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
+import 'package:zetesis/utils/abrir_anexo.dart';
 import 'package:zetesis/widgets/admin/acao_secao.dart';
 import 'package:zetesis/widgets/admin/detalhes_dialog.dart';
 import 'package:zetesis/widgets/admin/item_lista_admin.dart';
+import 'package:zetesis/widgets/admin/material_cadastro_screen.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 import 'package:zetesis/widgets/components/confirmar_acao.dart';
 import 'package:zetesis/widgets/components/mensagem_estado.dart';
@@ -27,16 +29,29 @@ class ListaConteudosScreen extends ConsumerWidget {
       linhas: [
         DetalheLinha('Tipo', material.tipo),
         DetalheLinha('Descrição', material.descricao),
+        DetalheLinha('Conteúdo', material.conteudoTexto),
         DetalheLinha('Autor', material.autor),
         DetalheLinha('Enviado por', material.enviadoPor),
         DetalheLinha('Data de envio', material.dataEnvio),
       ],
       acoes: [
+        if (material.assetUrl != null && material.assetUrl!.isNotEmpty)
+          AcaoSecao(
+            label: 'Abrir anexo',
+            variant: AppButtonVariant.neutral,
+            onPressed: () => abrirAnexo(context, material.assetUrl),
+          ),
         AcaoSecao(
           label: 'Editar',
           variant: AppButtonVariant.primary,
           onPressed: () {
             Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => MaterialDialog(material: material),
+              ),
+            );
           },
         ),
         AcaoSecao(
