@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zetesis/config/supabase_config.dart';
 
 class StorageImage extends StatelessWidget {
@@ -21,7 +22,9 @@ class StorageImage extends StatelessWidget {
   static String? resolveUrl(String? path) {
     if (path == null || path.isEmpty) return null;
     if (path.startsWith('http')) return path;
-    return '$supabaseUrl/storage/v1/object/public/$supabaseBucket/$path';
+    return Supabase.instance.client.storage
+        .from(supabaseBucket)
+        .getPublicUrl(path);
   }
 
   @override

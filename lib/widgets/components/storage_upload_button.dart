@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:zetesis/config/supabase_config.dart';
+import 'package:zetesis/services/storage_upload_service.dart';
 
 class StorageUploadButton extends StatefulWidget {
   final String storagePath;
@@ -26,6 +25,8 @@ class StorageUploadButton extends StatefulWidget {
 }
 
 class _StorageUploadButtonState extends State<StorageUploadButton> {
+  static const _service = StorageUploadService();
+
   bool _loading = false;
 
   Future<void> _upload() async {
@@ -38,13 +39,7 @@ class _StorageUploadButtonState extends State<StorageUploadButton> {
     setState(() => _loading = true);
     try {
       final bytes = await picked.readAsBytes();
-      await Supabase.instance.client.storage
-          .from(supabaseBucket)
-          .uploadBinary(
-            widget.storagePath,
-            bytes,
-            fileOptions: const FileOptions(upsert: true),
-          );
+      await _service.upload(path: widget.storagePath, bytes: bytes);
       await widget.onUploaded(widget.storagePath);
     } catch (e) {
       if (mounted) {

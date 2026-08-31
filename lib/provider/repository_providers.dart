@@ -7,10 +7,14 @@ import 'package:zetesis/services/repositories/tarefa_repository.dart';
 import 'package:zetesis/services/repositories/tema_repository.dart';
 import 'package:zetesis/services/repositories/usuario_repository.dart';
 import 'package:zetesis/services/secure_storage_service.dart';
+import 'package:zetesis/services/storage_upload_service.dart';
 
 final authServiceProvider = Provider<AuthService>((ref) => AuthService());
 final secureStorageProvider = Provider<SecureStorageService>(
   (ref) => SecureStorageService(),
+);
+final storageUploadServiceProvider = Provider<StorageUploadService>(
+  (ref) => const StorageUploadService(),
 );
 
 final usuarioRepositoryProvider = Provider<UsuarioRepository>(
