@@ -78,7 +78,8 @@ class _ListaTemasScreenState extends ConsumerState<ListaTemasScreen> {
     if (!confirmado || tema.id == null) return;
     if (!context.mounted) return;
     Navigator.pop(context);
-    await ref.read(temaRepositoryProvider).removeCascade(tema.id!, tema.nome);
+    await ref.read(temaRepositoryProvider).removeCascade(tema.id!,ref,await ref.read(tarefaRepositoryProvider).watchByTema(tema.nome).first);
+    
   }
 
   @override

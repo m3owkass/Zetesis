@@ -1,5 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zetesis/model/tarefa.dart';
 import 'package:zetesis/model/tema.dart';
+import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/services/repositories/base_repository.dart';
 
 class TemaRepository extends BaseRepository<TemaModel> {
@@ -24,19 +27,13 @@ class TemaRepository extends BaseRepository<TemaModel> {
     }
   }
 
-  Future<void> removeCascade(String parentId,String parentName,)async{
-  final batch = db.batch();
-
-  final parentRef = db.collection("tema").doc(parentId);
-
-  final childrenQuery = await db.collection("tarefas").where("tema", isEqualTo: parentName).get();
-
-  for (var doc in childrenQuery.docs) {
-    batch.delete(doc.reference);
+  Future<void> removeCascade(String temaId, WidgetRef ref, List<TarefaModel> tarefas)async{
+  
+  for (var tarefa in tarefas) {
+    ref.read(tarefaRepositoryProvider).remove(tarefa.id!);
     
   }
-  batch.delete(parentRef);
-
-  await batch.commit();
+  ref.read(temaRepositoryProvider).remove(temaId);
+  
 }
 }
