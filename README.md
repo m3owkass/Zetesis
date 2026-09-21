@@ -22,14 +22,12 @@ O **Zetesis** é um app mobile de estudo da filosofia. O usuário escolhe um tem
 - Loja — exibição de itens disponíveis com atualizações em tempo real
 - Painel de administração — seed de dados (grupos, materiais, temas) e upload de imagens por item
 - Upload de imagens — armazenamento no Supabase Storage com path curto no Firestore; exibição via `StorageImage` com cache em memória e disco
-
-### Em desenvolvimento
-
 - Modo desafio — botão de início implementado, lógica de perguntas/respostas pendente
 - Tela de detalhe de material — abertura e leitura de conteúdo individual
 - Compra de itens na loja
 - Upload e troca de avatar
 - Funções de administrador avançadas (gestão de usuários)
+- CRUD de administrador
 
 ---
 
