@@ -92,36 +92,141 @@ O **Zetesis** é um app mobile de estudo da filosofia. O usuário escolhe um tem
 ```
 lib/
 ├── config/
-│   └── supabase_config.dart   # URL e chave do Supabase
+│   ├──  supabase_config.dart   # URL e chave do Supabase
+│   ├── supabase_config.example.dart
+│   └── firebase_options.dart
 ├── controller/                # Lógica de negócio (AuthController)
+│   └── auth_controller.dart
+├── dev/
+│   ├── seed_materials.dart
+│   ├── seed_sceen.dart
+│   └── seed_tarefas.dart
 ├── model/                     # Modelos de dados
-│   ├── usuario.dart
-│   ├── tema.dart
-│   ├── material_biblioteca.dart
 │   ├── grupo_biblioteca.dart
 │   ├── item_loja.dart
-│   ├── filosofo.dart
-│   ├── texto.dart
-│   ├── musica.dart
-│   └── filme.dart
+│   ├── material_biblioteca.dart
+│   ├── pergunta.dart
+│   ├── resposta.dart
+│   ├── tarefa.dart
+│   ├── tema.dart
+│   └── usuario.dart
 ├── provider/                  # Providers Riverpod (StreamProviders)
+│   ├── auth_providers.dart
+│   ├── biblioteca_providers.dart
+│   ├── busca.dart
+│   ├── loja_providers.dart
+│   ├── providers.dart
+│   ├── repository_providers.dart
+│   ├── tarefa_providers.dart
+│   ├── tema_providers.dart
+│   └── usuario_providers.dart
 ├── services/                  # Serviços (Auth, Database, SecureStorage)
+│   ├── auth_service.dart
+│   ├── secure_storage_service.dart
+│   ├── storage_upload_service.dart
+│   └── repositories/
+│       ├── base_repository.dart
+│       ├── grupo_biblioteca_repository.dart
+│       ├── item_loja_repository.dart
+│       ├── material_biblioteca_repository.dart
+│       ├── tarefa_repository.dart
+│       ├── tema_repository.dart
+│       └── usuario_repository.dart
+├── theme/
+│   ├── app_colors.dart
+│   ├── app_theme.dart
+├── utils/
+│   ├── abrir_anexo.dart
+│   └── embed_link.dart
 ├── views/                     # Telas
-│   ├── index.dart             # Navegação principal (3 abas)
-│   ├── login_screen.dart
-│   ├── cadastro_screen.dart
-│   ├── perfil_screen.dart
-│   ├── selecao_tema.dart
-│   ├── desafio_start.dart
+│   ├── admin/
+│   │   ├── lista_conteudos_screen.dart
+│   │   ├── lista_itens_loja_screen.dart
+│   │   ├── lista_tarefas_screen.dart
+│   │   ├── lista_temas_screen.dart
+│   │   └── lista_usuarios_screen.dart
+│   ├── auth_flow.dart
 │   ├── biblioteca_screen.dart
-│   ├── materialbiblioteca_screen.dart
+│   ├── cadastro_screen.dart
+│   ├── home_screen.dart
+│   ├── home_shell.dart
+│   ├── login_screen.dart
 │   ├── loja_screen.dart
-│   └── admin_screen.dart      # Painel de seed e upload (temporário)
-└── widgets/
-    ├── components/            # Componentes reutilizáveis
-    │   ├── storage_image.dart # Widget de imagem via Supabase Storage
-    │   └── ...
-    └── forms/                 # Formulários de login e cadastro
+│   ├── material_biblioteca_screen.dart
+│   ├── perfil_screen.dart
+│   ├── ranking_screen.dart
+│   ├── selecao_tarefa_screen.dart
+│   ├── selecao_tema_screen.dart
+│   ├── tarefa_screen.dart
+│   └── admin_screen.dart
+├── widgets/
+│   ├── admin/
+│   │   ├── acao_secao.dart
+│   │   ├── card_estatistica.dart
+│   │   ├── detalhes_dialog.dart
+│   │   ├── item_lista_admin.dart
+│   │   ├── item_loja_cadastro_screen.dart
+│   │   ├── material_cadastro_screen.dart
+│   │   ├── tasks_cadastro_screen.dart
+│   │   ├── tema_cadastro_screen.dart
+│   │   └── usuario_cabecalho.dart
+│   ├── components/
+│   │   ├── embed_frame
+│   │   │   ├── embed_frame.dart
+│   │   │   ├── embed_frame_io.dart
+│   │   │   └── embed_frame_web.dart
+│   │   ├── anexo.dart
+│   │   ├── app_buttom.dart
+│   │   ├── appbar.dart
+│   │   ├── attachment_picker.dart
+│   │   ├── attachment_preview.dart
+│   │   ├── biblioteca_filtros.dart
+│   │   ├── bottom_navigation.dart
+│   │   ├── confirmar_acao.dart
+│   │   ├── custom_formfield.dart
+│   │   ├── embed_player.dart
+│   │   ├── grupo_biblioteca.dart
+│   │   ├── item_biblioteca.dart
+│   │   ├── item_card.dart
+│   │   ├── item_tema.dart
+│   │   ├── mensagem_estado.dart
+│   │   ├── password_recovery_dialog.dart
+│   │   ├── pontos_badge.dart
+│   │   ├── search_bar.dart
+│   │   ├── storage_image.dart
+│   │   └── storage_upload_buttom0dart
+│   ├── forms/
+│   │   ├── add_item_loja_form.dart
+│   │   ├── add_material_form.dart
+│   │   ├── add_tema_form.dart
+│   │   ├── add_task_form.dart
+│   │   ├── cadastro_form.dart
+│   │   ├── login_form.dart
+│   │   └── stateful.dart
+│   ├── home/
+│   │   ├── circuito_tema.dart
+│   │   ├── convite_primeiro_tema.dart
+│   │   └── painel_tema.dart
+│   ├── loja/
+│   │   ├── item_loja_card.dart
+│   │   ├── loja_filtros.dart
+│   │   └── saldo_pontos_header.dart
+│   ├── perfil/
+│   │   ├── avatar_picker_dialog.dart
+│   │   ├── campo_perfil.dart
+│   │   └── perfil_chip.dart
+│   ├── quiz/
+│   │   ├── enunciado_pergunta.dart
+│   │   ├── opcoes_pergunta.dart
+│   │   ├── painel_feedback.dart
+│   │   ├── quiz_top_bar.dart
+│   │   └── resultado_tarefa.dart
+│   ├── auth_gate.dart
+│   └── main.dart
+
+
+
+
 ```
 
 ---
