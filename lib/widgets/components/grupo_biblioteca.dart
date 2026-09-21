@@ -19,9 +19,9 @@ class GrupoBiblioteca extends ConsumerWidget {
       footer: (item.descricao != null && item.descricao!.isNotEmpty)
           ? Text(
               item.descricao!,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
-                color: AppColors.textSecondary,
+                color: context.colors.textSecondary,
               ),
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -30,6 +30,10 @@ class GrupoBiblioteca extends ConsumerWidget {
           : null,
       onTap: () {
         ref.read(grupoSelecionadoProvider.notifier).state = item.nome;
+        ref.read(buscaMaterialProvider.notifier).state = '';
+        ref.read(filtroAutorProvider.notifier).state = null;
+        ref.read(ordenacaoMaterialProvider.notifier).state =
+            OrdenacaoMaterial.recentes;
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const MaterialBibliotecaScreen()),

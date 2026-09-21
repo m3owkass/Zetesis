@@ -26,10 +26,10 @@ class ItemTema extends StatelessWidget {
           AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             decoration: BoxDecoration(
-              color: isSelected ? AppColors.accent : AppColors.primary,
+              color: isSelected ? context.colors.accent : context.colors.primary,
               shape: BoxShape.circle,
               border: isSelected
-                  ? Border.all(color: AppColors.accent, width: 4)
+                  ? Border.all(color: context.colors.accent, width: 4)
                   : null,
             ),
             padding: const EdgeInsets.all(6),
@@ -40,15 +40,15 @@ class ItemTema extends StatelessWidget {
                 child: tema.assetUrl.isNotEmpty
                     ? StorageImage(path: tema.assetUrl, fit: BoxFit.cover)
                     : ColoredBox(
-                        color: AppColors.primary,
+                        color: context.colors.primary,
                         child: Center(
                           child: Text(
                             tema.nome.isNotEmpty
                                 ? tema.nome[0].toUpperCase()
                                 : '?',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 36,
-                              color: Colors.white,
+                              color: context.colors.onDark,
                             ),
                           ),
                         ),
@@ -61,15 +61,15 @@ class ItemTema extends StatelessWidget {
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
-              color: isSelected ? AppColors.accent : AppColors.primary,
+              color: isSelected ? context.colors.accent : context.colors.primary,
               borderRadius: BorderRadius.circular(AppRadius.lg),
             ),
             child: Text(
               tema.nome,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: context.colors.onDark,
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
               ),

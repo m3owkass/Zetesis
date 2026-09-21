@@ -23,9 +23,9 @@ class ItemCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.colors.card,
           borderRadius: BorderRadius.circular(AppRadius.md),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: context.colors.border),
         ),
         clipBehavior: Clip.hardEdge,
         child: Column(
@@ -38,12 +38,12 @@ class ItemCard extends StatelessWidget {
                   path: imageUrl,
                   fit: BoxFit.contain,
                   placeholder: ColoredBox(
-                    color: AppColors.primary.withValues(alpha: 0.1),
-                    child: const Center(
+                    color: context.colors.primary.withValues(alpha: 0.1),
+                    child: Center(
                       child: Icon(
                         Icons.auto_stories_rounded,
                         size: 44,
-                        color: AppColors.primary,
+                        color: context.colors.primary,
                       ),
                     ),
                   ),
@@ -56,10 +56,10 @@ class ItemCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
-                      color: AppColors.primaryDark,
+                      color: context.colors.primaryDark,
                     ),
                     textAlign: TextAlign.center,
                     maxLines: 2,

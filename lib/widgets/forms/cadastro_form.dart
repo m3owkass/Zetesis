@@ -58,15 +58,10 @@ class _CadastroFormState extends ConsumerState<CadastroForm> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(next.errorMessage!),
-              backgroundColor: AppColors.danger,
+              backgroundColor: context.colors.danger,
             ),
           );
           ref.read(authControllerProvider.notifier).resetState();
-        });
-      } else if (next.status == AuthStatus.success) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!mounted) return;
-          Navigator.of(context).popUntil((route) => route.isFirst);
         });
       }
     });
@@ -80,7 +75,7 @@ class _CadastroFormState extends ConsumerState<CadastroForm> {
             fieldType: FieldType.email,
             label: 'Email',
             hint: 'exemplo@dominio.com',
-            prefixIcon: const Icon(Icons.email, color: AppColors.primary),
+            prefixIcon: Icon(Icons.email, color: context.colors.primary),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Por favor, digite seu email';
@@ -96,7 +91,7 @@ class _CadastroFormState extends ConsumerState<CadastroForm> {
             fieldType: FieldType.username,
             label: 'Nome',
             hint: 'Nome de usuário',
-            prefixIcon: const Icon(Icons.person, color: AppColors.primary),
+            prefixIcon: Icon(Icons.person, color: context.colors.primary),
             validator: (value) => (value == null || value.isEmpty)
                 ? 'Por favor, digite um nome'
                 : null,
@@ -107,7 +102,7 @@ class _CadastroFormState extends ConsumerState<CadastroForm> {
             fieldType: FieldType.password,
             label: 'Senha',
             hint: 'Senha segura',
-            prefixIcon: const Icon(Icons.lock, color: AppColors.primary),
+            prefixIcon: Icon(Icons.lock, color: context.colors.primary),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Por favor, digite uma senha';
@@ -123,7 +118,7 @@ class _CadastroFormState extends ConsumerState<CadastroForm> {
             fieldType: FieldType.password,
             label: 'Confirme sua Senha',
             hint: 'Repita a senha',
-            prefixIcon: const Icon(Icons.lock, color: AppColors.primary),
+            prefixIcon: Icon(Icons.lock, color: context.colors.primary),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Por favor, digite uma senha';

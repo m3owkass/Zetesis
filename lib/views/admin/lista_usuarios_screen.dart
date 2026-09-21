@@ -23,7 +23,7 @@ class ListaUsuariosScreen extends ConsumerWidget {
     DetalhesDialog.mostrar(
       context,
       icon: Icons.person_outline,
-      cor: AppColors.primary,
+      cor: context.colors.primary,
       titulo: usuario.nome,
       cabecalho: UsuarioCabecalho(usuario: usuario),
       linhas: [
@@ -122,7 +122,7 @@ class ListaUsuariosScreen extends ConsumerWidget {
               return ItemListaAdmin(
                 icon: Icons.person_outline,
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                cor: AppColors.primary,
+                cor: context.colors.primary,
                 titulo: usuario.nome,
                 subtitulo: detalhes,
                 onTap: () => _exibirDetalhes(context, ref, usuario),

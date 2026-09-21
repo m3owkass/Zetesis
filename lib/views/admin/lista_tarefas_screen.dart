@@ -24,7 +24,7 @@ class ListaTarefasScreen extends ConsumerWidget {
     DetalhesDialog.mostrar(
       context,
       icon: Icons.assignment_outlined,
-      cor: AppColors.accent,
+      cor: context.colors.accent,
       titulo: tarefa.nome,
       linhas: [
         DetalheLinha('Tema', tarefa.tema),
@@ -38,7 +38,7 @@ class ListaTarefasScreen extends ConsumerWidget {
           Text(
             'Perguntas (${tarefa.perguntas.length})',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
+              color: context.colors.textSecondary,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -120,7 +120,7 @@ class ListaTarefasScreen extends ConsumerWidget {
 
               return ItemListaAdmin(
                 icon: Icons.assignment_outlined,
-                cor: AppColors.accent,
+                cor: context.colors.accent,
                 titulo: tarefa.nome,
                 subtitulo: detalhes,
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),

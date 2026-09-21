@@ -19,16 +19,16 @@ class UsuarioCabecalho extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.field,
-            border: Border.all(color: AppColors.border),
+            color: context.colors.field,
+            border: Border.all(color: context.colors.border),
           ),
           child: StorageImage(
             path: usuario.avatarUrl,
             fit: BoxFit.cover,
-            placeholder: const Icon(
+            placeholder: Icon(
               Icons.person,
               size: 36,
-              color: AppColors.hint,
+              color: context.colors.hint,
             ),
           ),
         ),
@@ -45,9 +45,9 @@ class UsuarioCabecalho extends StatelessWidget {
             const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: _Stat(
-                icone: const Icon(
+                icone: Icon(
                   Icons.military_tech_rounded,
-                  color: AppColors.primary,
+                  color: context.colors.primary,
                   size: 28,
                 ),
                 valor: usuario.ranking,
@@ -62,9 +62,9 @@ class UsuarioCabecalho extends StatelessWidget {
             spacing: AppSpacing.sm,
             children: [
               if (usuario.admin)
-                const _Badge(label: 'Admin', cor: AppColors.primary),
+                _Badge(label: 'Admin', cor: context.colors.primary),
               if (usuario.developer)
-                const _Badge(label: 'Developer', cor: AppColors.accent),
+                _Badge(label: 'Developer', cor: context.colors.accent),
             ],
           ),
         ],
@@ -85,9 +85,9 @@ class _Stat extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(AppRadius.sm),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         children: [

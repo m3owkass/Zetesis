@@ -65,7 +65,7 @@ class DetalhesDialog extends StatelessWidget {
         .toList();
 
     return AlertDialog(
-      backgroundColor: Colors.white,
+      backgroundColor: context.colors.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.lg),
       ),
@@ -101,7 +101,7 @@ class DetalhesDialog extends StatelessWidget {
                 Text(
                   linha.rotulo,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.colors.textSecondary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

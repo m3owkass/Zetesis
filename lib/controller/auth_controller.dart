@@ -128,6 +128,16 @@ class AuthController extends StateNotifier<AuthState> {
     } finally {
       await _storage.clear();
       _ref.read(temaSelecionadoProvider.notifier).state = null;
+      _ref.read(grupoSelecionadoProvider.notifier).state = null;
+      _ref.read(buscaMaterialProvider.notifier).state = '';
+      _ref.read(filtroAutorProvider.notifier).state = null;
+      _ref.read(filtroEnviadoPorProvider.notifier).state = null;
+      _ref.read(ordenacaoMaterialProvider.notifier).state =
+          OrdenacaoMaterial.recentes;
+      _ref.read(filtroTipoLojaProvider.notifier).state = FiltroTipoLoja.todos;
+      _ref.read(filtroPosseLojaProvider.notifier).state =
+          FiltroPosseLoja.todos;
+      _ref.read(ordenacaoLojaProvider.notifier).state = OrdenacaoLoja.padrao;
       state = const AuthState.idle();
     }
   }
@@ -142,9 +152,8 @@ class AuthController extends StateNotifier<AuthState> {
       usuario = UsuarioModel(
         email: user.email,
         nome: nome ?? user.displayName ?? 'Usuário',
-        ranking: 'Bronze',
         pontos: 0,
-        avatarUrl: user.photoURL ?? '',
+        avatarUrl: '',
         admin: false,
       );
       await _usuarios.save(user.uid, usuario);
@@ -178,6 +187,30 @@ class AuthController extends StateNotifier<AuthState> {
       return true;
     } catch (e) {
       debugPrint('Erro ao atualizar nome: $e');
+      return false;
+    }
+  }
+
+  Future<bool> updateAvatarUrl(String avatarUrl) async {
+    try {
+      final uid = _ref.read(authServiceProvider).currentUser?.uid;
+      if (uid == null) return false;
+      await _usuarios.update(uid, {'avatarUrl': avatarUrl});
+      return true;
+    } catch (e) {
+      debugPrint('Erro ao atualizar avatar: $e');
+      return false;
+    }
+  }
+
+  Future<bool> updateModoEscuro(bool ativo) async {
+    try {
+      final uid = _ref.read(authServiceProvider).currentUser?.uid;
+      if (uid == null) return false;
+      await _usuarios.update(uid, {'modoEscuro': ativo});
+      return true;
+    } catch (e) {
+      debugPrint('Erro ao atualizar modo escuro: $e');
       return false;
     }
   }

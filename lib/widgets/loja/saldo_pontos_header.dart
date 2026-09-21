@@ -23,21 +23,21 @@ class SaldoPontosHeader extends StatelessWidget {
         vertical: AppSpacing.md,
       ),
       decoration: BoxDecoration(
-        color: AppColors.primary,
+        color: context.colors.primary,
         borderRadius: BorderRadius.circular(AppRadius.md),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
+          Text(
             'Seus phatos: ',
             style: TextStyle(
-              color: Colors.white,
+              color: context.colors.onDark,
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
           ),
-          PontosBadge(valor: pontos, textColor: Colors.white),
+          PontosBadge(valor: pontos, textColor: context.colors.onDark),
         ],
       ),
     );

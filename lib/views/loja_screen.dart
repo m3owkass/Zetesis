@@ -4,6 +4,7 @@ import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/widgets/components/mensagem_estado.dart';
 import 'package:zetesis/widgets/loja/item_loja_card.dart';
+import 'package:zetesis/widgets/loja/loja_filtros.dart';
 import 'package:zetesis/widgets/loja/saldo_pontos_header.dart';
 
 class LojaScreen extends ConsumerWidget {
@@ -29,18 +30,30 @@ class LojaScreen extends ConsumerWidget {
               subtitulo: 'Novos itens chegam em breve. Volte mais tarde!',
             );
           }
+
+          final itensFiltrados = ref.watch(itensFiltradosProvider);
+
           return Column(
             children: [
               SaldoPontosHeader(pontos: user?.pontos ?? 0),
+              const LojaFiltros(),
               Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.all(AppSpacing.md),
-                  itemCount: items.length,
-                  separatorBuilder: (_, _) =>
-                      const SizedBox(height: AppSpacing.md),
-                  itemBuilder: (context, index) =>
-                      ItemLojaCard(item: items[index], user: user),
-                ),
+                child: itensFiltrados.isEmpty
+                    ? const MensagemEstado(
+                        icon: Icons.filter_alt_off_outlined,
+                        titulo: 'Nenhum item encontrado',
+                        subtitulo: 'Tente ajustar os filtros.',
+                      )
+                    : ListView.separated(
+                        padding: const EdgeInsets.all(AppSpacing.md),
+                        itemCount: itensFiltrados.length,
+                        separatorBuilder: (_, _) =>
+                            const SizedBox(height: AppSpacing.md),
+                        itemBuilder: (context, index) => ItemLojaCard(
+                          item: itensFiltrados[index],
+                          user: user,
+                        ),
+                      ),
               ),
             ],
           );

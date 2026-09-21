@@ -29,7 +29,7 @@ class ResultadoTarefa extends StatelessWidget {
     final perfeito = total > 0 && acertos == total;
 
     return Scaffold(
-      backgroundColor: AppColors.primary,
+      backgroundColor: context.colors.primary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),
@@ -38,22 +38,25 @@ class ResultadoTarefa extends StatelessWidget {
               const Spacer(),
               Icon(
                 perfeito ? Icons.emoji_events : Icons.flag,
-                color: AppColors.star,
+                color: context.colors.star,
                 size: 96,
               ),
               const SizedBox(height: AppSpacing.lg),
               Text(
                 perfeito ? 'Perfeito!' : 'Tarefa concluída!',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: context.colors.onDark,
                 ),
               ),
               const SizedBox(height: 12),
               Text(
                 'Você acertou $acertos de $total perguntas',
-                style: const TextStyle(fontSize: 18, color: Colors.white70),
+                style: TextStyle(
+                  fontSize: 18,
+                  color: context.colors.onDark.withValues(alpha: 0.7),
+                ),
               ),
               const SizedBox(height: AppSpacing.lg),
               Container(
@@ -62,7 +65,7 @@ class ResultadoTarefa extends StatelessWidget {
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryDark,
+                  color: context.colors.primaryDark,
                   borderRadius: BorderRadius.circular(AppRadius.pill),
                 ),
                 child: Row(
@@ -70,7 +73,7 @@ class ResultadoTarefa extends StatelessWidget {
                   children: [
                     Icon(
                       pratica ? Icons.replay : Icons.star,
-                      color: AppColors.star,
+                      color: context.colors.star,
                       size: 26,
                     ),
                     const SizedBox(width: 8),
@@ -78,10 +81,10 @@ class ResultadoTarefa extends StatelessWidget {
                       pratica
                           ? 'Prática — sem phatos'
                           : '+$pontosGanhos phatos',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: context.colors.onDark,
                       ),
                     ),
                   ],
@@ -92,17 +95,17 @@ class ResultadoTarefa extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.local_fire_department,
-                      color: AppColors.accent,
+                      color: context.colors.accent,
                       size: 20,
                     ),
                     const SizedBox(width: 6),
                     Text(
                       'Melhor sequência: $melhorSequencia',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
-                        color: Colors.white70,
+                        color: context.colors.onDark.withValues(alpha: 0.7),
                       ),
                     ),
                   ],

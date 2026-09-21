@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zetesis/config/supabase_config.dart';
+import 'package:zetesis/theme/app_colors.dart';
 
 class StorageImage extends StatelessWidget {
   final String? path;
@@ -32,7 +33,9 @@ class StorageImage extends StatelessWidget {
     final url = resolveUrl(path);
     final fallback =
         placeholder ??
-        const Center(child: Icon(Icons.image_outlined, color: Colors.white38));
+        Center(
+          child: Icon(Icons.image_outlined, color: context.colors.hint),
+        );
 
     if (url == null) return fallback;
 

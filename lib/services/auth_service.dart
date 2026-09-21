@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -57,6 +58,8 @@ class AuthService {
   Future<void> logout() async {
     await _auth.signOut();
     await _google.signOut();
+    await FirebaseFirestore.instance.disableNetwork();
+    await FirebaseFirestore.instance.enableNetwork();
   }
 
   Future<void> deleteAccount() async {

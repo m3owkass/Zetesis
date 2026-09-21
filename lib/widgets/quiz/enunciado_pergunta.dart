@@ -12,10 +12,10 @@ class EnunciadoPergunta extends StatelessWidget {
     required this.selectedIndex,
   });
 
-  static const _estilo = TextStyle(
+  TextStyle _estilo(BuildContext context) => TextStyle(
     fontSize: 22,
     fontWeight: FontWeight.w700,
-    color: AppColors.primaryDark,
+    color: context.colors.primaryDark,
     height: 1.35,
   );
 
@@ -23,7 +23,7 @@ class EnunciadoPergunta extends StatelessWidget {
   Widget build(BuildContext context) {
     if (pergunta.tipo != TipoPergunta.lacuna ||
         !pergunta.enunciado.contains('___')) {
-      return Text(pergunta.enunciado, style: _estilo);
+      return Text(pergunta.enunciado, style: _estilo(context));
     }
 
     final partes = pergunta.enunciado.split('___');
@@ -33,7 +33,7 @@ class EnunciadoPergunta extends StatelessWidget {
 
     return Text.rich(
       TextSpan(
-        style: _estilo,
+        style: _estilo(context),
         children: [
           for (int i = 0; i < partes.length; i++) ...[
             TextSpan(text: partes[i]),
@@ -49,23 +49,23 @@ class EnunciadoPergunta extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: selecionada != null
-                        ? AppColors.primary
-                        : AppColors.primary.withValues(alpha: 0.1),
+                        ? context.colors.primary
+                        : context.colors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: selecionada != null
-                          ? AppColors.primary
-                          : AppColors.border,
+                          ? context.colors.primary
+                          : context.colors.border,
                       width: 2,
                     ),
                   ),
                   child: Text(
                     selecionada ?? '          ',
-                    style: _estilo.copyWith(
+                    style: _estilo(context).copyWith(
                       fontSize: 19,
                       color: selecionada != null
-                          ? Colors.white
-                          : AppColors.primaryDark,
+                          ? context.colors.onDark
+                          : context.colors.primaryDark,
                     ),
                   ),
                 ),

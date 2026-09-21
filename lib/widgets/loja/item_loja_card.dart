@@ -47,7 +47,9 @@ class ItemLojaCard extends ConsumerWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(result.ok ? '"${item.nome}" adquirido!' : result.erro!),
-        backgroundColor: result.ok ? AppColors.success : AppColors.danger,
+        backgroundColor: result.ok
+            ? context.colors.success
+            : context.colors.danger,
       ),
     );
   }
@@ -60,14 +62,14 @@ class ItemLojaCard extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(AppRadius.md),
       ),
       child: Row(
         children: [
           CircleAvatar(
             radius: 40,
-            backgroundColor: AppColors.field,
+            backgroundColor: context.colors.field,
             backgroundImage:
                 (item.assetUrl != null && item.assetUrl!.isNotEmpty)
                 ? NetworkImage(StorageImage.resolveUrl(item.assetUrl)!)
@@ -75,9 +77,9 @@ class ItemLojaCard extends ConsumerWidget {
             child: (item.assetUrl == null || item.assetUrl!.isEmpty)
                 ? Text(
                     item.nome.isNotEmpty ? item.nome[0].toUpperCase() : '?',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 28,
-                      color: AppColors.primaryDark,
+                      color: context.colors.primaryDark,
                     ),
                   )
                 : null,
@@ -89,10 +91,10 @@ class ItemLojaCard extends ConsumerWidget {
               children: [
                 Text(
                   item.nome,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
-                    color: AppColors.primaryDark,
+                    color: context.colors.primaryDark,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
@@ -127,19 +129,23 @@ class _Adquirido extends StatelessWidget {
       height: 44,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: AppColors.success.withValues(alpha: 0.15),
+        color: context.colors.success.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(AppRadius.pill),
-        border: Border.all(color: AppColors.success),
+        border: Border.all(color: context.colors.success),
       ),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.check_circle, color: AppColors.successDark, size: 18),
-          SizedBox(width: 6),
+          Icon(
+            Icons.check_circle,
+            color: context.colors.successDark,
+            size: 18,
+          ),
+          const SizedBox(width: 6),
           Text(
             'Adquirido',
             style: TextStyle(
-              color: AppColors.successDark,
+              color: context.colors.successDark,
               fontWeight: FontWeight.bold,
             ),
           ),

@@ -84,6 +84,7 @@ flutter:
       - assets/desafio_placeholder.png
       - assets/icon_google.png
       - assets/groups/
+      - assets/store/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

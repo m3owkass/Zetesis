@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/model/grupo_biblioteca.dart';
 import 'package:zetesis/model/material_biblioteca.dart';
 import 'package:zetesis/provider/repository_providers.dart';
+import 'package:zetesis/provider/usuario_providers.dart';
 
 final gruposProvider = StreamProvider<List<GrupoBibliotecaModel>>((ref) {
   return ref.read(grupoBibliotecaRepositoryProvider).watchAll();
@@ -28,6 +29,49 @@ final ordenacaoMaterialProvider = StateProvider<OrdenacaoMaterial>(
 );
 final filtroEnviadoPorProvider = StateProvider<String?>((ref) => null);
 final filtroAutorProvider = StateProvider<String?>((ref) => null);
+final buscaMaterialProvider = StateProvider<String>((ref) => '');
+
+final autoresDoGrupoProvider = Provider<List<String>>((ref) {
+  final materiais = ref.watch(materiaisProvider).value ?? const [];
+  final autores = materiais
+      .map((m) => m.autor)
+      .whereType<String>()
+      .where((a) => a.trim().isNotEmpty)
+      .toSet()
+      .toList();
+  autores.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+  return autores;
+});
+
+bool _combinaComBusca(MaterialBibliotecaModel m, String busca) {
+  if (busca.trim().isEmpty) return true;
+  final termo = busca.trim().toLowerCase();
+  return m.nome.toLowerCase().contains(termo) ||
+      (m.autor ?? '').toLowerCase().contains(termo) ||
+      (m.descricao ?? '').toLowerCase().contains(termo);
+}
+
+final materiaisFiltradosProvider = Provider<List<MaterialBibliotecaModel>>((
+  ref,
+) {
+  final materiais = ref.watch(materiaisProvider).value ?? const [];
+  final favoritos = ref.watch(favoritosProvider).value ?? const {};
+  final busca = ref.watch(buscaMaterialProvider);
+  final autor = ref.watch(filtroAutorProvider);
+  final ordenacao = ref.watch(ordenacaoMaterialProvider);
+
+  final filtrados = materiais
+      .where((m) => _combinaComBusca(m, busca))
+      .where((m) => autor == null || m.autor == autor)
+      .toList();
+
+  final ordenados = ordenarMateriais(filtrados, ordenacao);
+
+  return [
+    ...ordenados.where((m) => favoritos.contains(m.id)),
+    ...ordenados.where((m) => !favoritos.contains(m.id)),
+  ];
+});
 
 DateTime? _parseDataEnvio(String? s) {
   if (s == null) return null;

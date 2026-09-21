@@ -26,10 +26,10 @@ class ItemTarefa extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : AppColors.card,
+          color: isSelected ? context.colors.primary : context.colors.card,
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(
-            color: isSelected ? AppColors.accent : Colors.transparent,
+            color: isSelected ? context.colors.accent : Colors.transparent,
             width: 3,
           ),
         ),
@@ -47,13 +47,15 @@ class ItemTarefa extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: isSelected ? Colors.white : AppColors.primaryDark,
+                      color: isSelected
+                          ? context.colors.onDark
+                          : context.colors.primaryDark,
                     ),
                   ),
                 ),
                 if (isSelected) ...[
                   const SizedBox(width: 6),
-                  const Icon(Icons.check_circle, color: Colors.white, size: 22),
+                  Icon(Icons.check_circle, color: context.colors.onDark, size: 22),
                 ],
               ],
             ),
@@ -66,7 +68,9 @@ class ItemTarefa extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13,
                   height: 1.3,
-                  color: isSelected ? Colors.white70 : AppColors.textSecondary,
+                  color: isSelected
+                      ? context.colors.onDark.withValues(alpha: 0.7)
+                      : context.colors.textSecondary,
                 ),
               ),
             ),
@@ -76,7 +80,9 @@ class ItemTarefa extends StatelessWidget {
                 Icon(
                   Icons.quiz_outlined,
                   size: 14,
-                  color: isSelected ? Colors.white70 : AppColors.textSecondary,
+                  color: isSelected
+                      ? context.colors.onDark.withValues(alpha: 0.7)
+                      : context.colors.textSecondary,
                 ),
                 const SizedBox(width: 4),
                 Expanded(
@@ -85,8 +91,8 @@ class ItemTarefa extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 11,
                       color: isSelected
-                          ? Colors.white70
-                          : AppColors.textSecondary,
+                          ? context.colors.onDark.withValues(alpha: 0.7)
+                          : context.colors.textSecondary,
                     ),
                   ),
                 ),
@@ -97,20 +103,24 @@ class ItemTarefa extends StatelessWidget {
                       vertical: 3,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.success,
+                      color: context.colors.success,
                       borderRadius: BorderRadius.circular(AppRadius.lg),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.check, size: 12, color: Colors.white),
-                        SizedBox(width: 3),
+                        Icon(
+                          Icons.check,
+                          size: 12,
+                          color: context.colors.onDark,
+                        ),
+                        const SizedBox(width: 3),
                         Text(
                           'Concluída',
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: context.colors.onDark,
                           ),
                         ),
                       ],

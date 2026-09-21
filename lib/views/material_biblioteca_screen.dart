@@ -10,6 +10,7 @@ import 'package:zetesis/widgets/admin/acao_secao.dart';
 import 'package:zetesis/widgets/admin/detalhes_dialog.dart';
 import 'package:zetesis/widgets/components/anexo.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
+import 'package:zetesis/widgets/components/biblioteca_filtros.dart';
 import 'package:zetesis/widgets/components/embed_player.dart';
 import 'package:zetesis/widgets/components/item_biblioteca.dart';
 import 'package:zetesis/widgets/components/mensagem_estado.dart';
@@ -26,7 +27,7 @@ class MaterialBibliotecaScreen extends ConsumerWidget {
     DetalhesDialog.mostrar(
       context,
       icon: Icons.menu_book_outlined,
-      cor: AppColors.primary,
+      cor: context.colors.primary,
       titulo: item.nome,
       cabecalho: embed != null
           ? EmbedPlayer(url: item.assetUrl!)
@@ -84,31 +85,51 @@ class MaterialBibliotecaScreen extends ConsumerWidget {
             );
           }
           final favoritos = ref.watch(favoritosProvider).value ?? {};
-          return ListView.separated(
-            padding: const EdgeInsets.all(AppSpacing.md),
-            itemCount: materiais.length,
-            separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
-            itemBuilder: (context, index) {
-              final item = materiais[index];
-              return ItemBiblioteca(
-                item: item,
-                isFavorito: favoritos.contains(item.id),
-                onTap: () => _exibirDetalhes(context, item),
-                onFavorite: item.id == null
-                    ? null
-                    : () {
-                        final user = ref.read(authStateProvider).value;
-                        if (user == null) return;
-                        ref
-                            .read(usuarioRepositoryProvider)
-                            .toggleFavorito(
-                              user.uid,
-                              item.id!,
-                              add: !favoritos.contains(item.id),
-                            );
-                      },
-              );
-            },
+          final filtrados = ref.watch(materiaisFiltradosProvider);
+
+          return Column(
+            children: [
+              const SizedBox(height: AppSpacing.md),
+              const BibliotecaFiltros(),
+              const SizedBox(height: AppSpacing.sm),
+              Expanded(
+                child: filtrados.isEmpty
+                    ? const MensagemEstado(
+                        icon: Icons.search_off,
+                        titulo: 'Nenhum material encontrado',
+                        subtitulo: 'Tente ajustar a busca ou os filtros.',
+                      )
+                    : ListView.separated(
+                        padding: const EdgeInsets.all(AppSpacing.md),
+                        itemCount: filtrados.length,
+                        separatorBuilder: (_, _) =>
+                            const SizedBox(height: AppSpacing.md),
+                        itemBuilder: (context, index) {
+                          final item = filtrados[index];
+                          return ItemBiblioteca(
+                            item: item,
+                            isFavorito: favoritos.contains(item.id),
+                            onTap: () => _exibirDetalhes(context, item),
+                            onFavorite: item.id == null
+                                ? null
+                                : () {
+                                    final user = ref
+                                        .read(authStateProvider)
+                                        .value;
+                                    if (user == null) return;
+                                    ref
+                                        .read(usuarioRepositoryProvider)
+                                        .toggleFavorito(
+                                          user.uid,
+                                          item.id!,
+                                          add: !favoritos.contains(item.id),
+                                        );
+                                  },
+                          );
+                        },
+                      ),
+              ),
+            ],
           );
         },
       ),

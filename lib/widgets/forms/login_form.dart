@@ -64,15 +64,10 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(next.errorMessage!),
-              backgroundColor: AppColors.danger,
+              backgroundColor: context.colors.danger,
             ),
           );
           ref.read(authControllerProvider.notifier).resetState();
-        });
-      } else if (next.status == AuthStatus.success) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!mounted) return;
-          Navigator.of(context).popUntil((route) => route.isFirst);
         });
       }
     });
@@ -86,7 +81,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             fieldType: FieldType.email,
             label: 'Email',
             hint: 'exemplo@dominio.com',
-            prefixIcon: const Icon(Icons.email, color: AppColors.primary),
+            prefixIcon: Icon(Icons.email, color: context.colors.primary),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Por favor, digite seu email';
@@ -103,7 +98,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             fieldType: FieldType.password,
             label: 'Senha',
             hint: 'Sua senha',
-            prefixIcon: const Icon(Icons.lock, color: AppColors.primary),
+            prefixIcon: Icon(Icons.lock, color: context.colors.primary),
 
             validator: (value) => (value == null || value.isEmpty)
                 ? 'Por favor, digite sua senha'
@@ -145,12 +140,12 @@ class _GoogleButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
-          foregroundColor: AppColors.textPrimary,
+          foregroundColor: context.colors.textPrimary,
           minimumSize: const Size(0, 52),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.pill),
-            side: const BorderSide(color: AppColors.border),
+            side: BorderSide(color: context.colors.border),
           ),
         ),
         child: Row(

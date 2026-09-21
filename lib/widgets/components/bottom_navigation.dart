@@ -20,7 +20,7 @@ class CustomBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: context.colors.card,
       child: SafeArea(
         top: false,
         child: Row(
@@ -62,9 +62,11 @@ class _NavItem extends StatelessWidget {
             duration: const Duration(milliseconds: 200),
             height: 3,
             width: selecionado ? 40 : 0,
-            decoration: const BoxDecoration(
-              color: AppColors.primary,
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(3)),
+            decoration: BoxDecoration(
+              color: context.colors.primary,
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(3),
+              ),
             ),
           ),
           AnimatedOpacity(

@@ -6,12 +6,14 @@ import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/views/admin/lista_conteudos_screen.dart';
+import 'package:zetesis/views/admin/lista_itens_loja_screen.dart';
 import 'package:zetesis/views/admin/lista_tarefas_screen.dart';
 import 'package:zetesis/views/admin/lista_temas_screen.dart';
 import 'package:zetesis/views/admin/lista_usuarios_screen.dart';
 import 'package:zetesis/widgets/admin/acao_secao.dart';
 import 'package:zetesis/widgets/admin/card_estatistica.dart';
 import 'package:zetesis/widgets/admin/card_secao.dart';
+import 'package:zetesis/widgets/admin/item_loja_cadastro_screen.dart';
 import 'package:zetesis/widgets/admin/material_cadastro_screen.dart';
 import 'package:zetesis/widgets/admin/tasks_cadastro_screen.dart';
 import 'package:zetesis/widgets/admin/tema_cadastro_screen.dart';
@@ -37,7 +39,7 @@ class AdminScreen extends ConsumerWidget {
               Expanded(
                 child: CardEstatistica(
                   icon: Icons.assignment_outlined,
-                  cor: AppColors.accent,
+                  cor: context.colors.accent,
                   valor: tarefas,
                   label: 'Tarefas',
                 ),
@@ -46,7 +48,7 @@ class AdminScreen extends ConsumerWidget {
               Expanded(
                 child: CardEstatistica(
                   icon: Icons.archive_outlined,
-                  cor: AppColors.primary,
+                  cor: context.colors.primary,
                   valor: temas,
                   label: 'Temas',
                 ),
@@ -55,7 +57,7 @@ class AdminScreen extends ConsumerWidget {
               Expanded(
                 child: CardEstatistica(
                   icon: Icons.menu_book_outlined,
-                  cor: AppColors.primaryLight,
+                  cor: context.colors.primaryLight,
                   valor: conteudos,
                   label: 'Conteúdos',
                 ),
@@ -64,7 +66,7 @@ class AdminScreen extends ConsumerWidget {
               Expanded(
                 child: CardEstatistica(
                   icon: Icons.people_outline,
-                  cor: AppColors.primary,
+                  cor: context.colors.primary,
                   valor: usuarios,
                   label: 'Usuários',
                 ),
@@ -74,7 +76,7 @@ class AdminScreen extends ConsumerWidget {
           const SizedBox(height: AppSpacing.md),
           CardSecao(
             icon: Icons.assignment_outlined,
-            cor: AppColors.accent,
+            cor: context.colors.accent,
             titulo: 'Tarefas',
             descricao: 'Revise envios e crie novas atividades.',
             acoes: [
@@ -99,7 +101,7 @@ class AdminScreen extends ConsumerWidget {
           const SizedBox(height: AppSpacing.md),
           CardSecao(
             icon: Icons.assignment_outlined,
-            cor: AppColors.primary,
+            cor: context.colors.primary,
             titulo: 'Temas',
             descricao: 'Revise envios e crie novas tarefas.',
             acoes: [
@@ -124,7 +126,7 @@ class AdminScreen extends ConsumerWidget {
           const SizedBox(height: AppSpacing.md),
           CardSecao(
             icon: Icons.menu_book_outlined,
-            cor: AppColors.primaryLight,
+            cor: context.colors.primaryLight,
             titulo: 'Conteúdos',
             descricao: 'Gerencie materiais e publicações.',
             acoes: [
@@ -150,8 +152,35 @@ class AdminScreen extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpacing.md),
           CardSecao(
+            icon: Icons.storefront_outlined,
+            cor: context.colors.accent,
+            titulo: 'Itens da Loja',
+            descricao: 'Gerencie os itens e avatares compráveis com pontos.',
+            acoes: [
+              AcaoSecao(
+                label: 'Ver itens',
+                variant: AppButtonVariant.neutral,
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ListaItensLojaScreen(),
+                  ),
+                ),
+              ),
+              AcaoSecao(
+                label: 'Novo item',
+                variant: AppButtonVariant.accent,
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ItemLojaDialog()),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          CardSecao(
             icon: Icons.people_outline,
-            cor: AppColors.primary,
+            cor: context.colors.primary,
             titulo: 'Usuários',
             descricao: 'Consulte dados e acompanhe cadastros.',
             acoes: [
@@ -171,7 +200,7 @@ class AdminScreen extends ConsumerWidget {
             const SizedBox(height: AppSpacing.md),
             CardSecao(
               icon: Icons.build_outlined,
-              cor: AppColors.dangerDark,
+              cor: context.colors.dangerDark,
               titulo: 'Seed de dados',
               descricao: 'Popular e limpar coleções do Firestore (só debug).',
               acoes: [

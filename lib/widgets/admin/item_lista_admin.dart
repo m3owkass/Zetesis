@@ -25,11 +25,11 @@ class ItemListaAdmin extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: Material(
-        color: Colors.white,
+        color: context.colors.card,
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.md),
-          side: const BorderSide(color: AppColors.border),
+          side: BorderSide(color: context.colors.border),
         ),
         child: ListTile(
           contentPadding: const EdgeInsets.symmetric(

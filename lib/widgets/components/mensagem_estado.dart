@@ -30,7 +30,7 @@ class MensagemEstado extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 64, color: AppColors.border),
+            Icon(icon, size: 64, color: context.colors.border),
             const SizedBox(height: AppSpacing.md),
             Text(
               titulo,

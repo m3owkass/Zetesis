@@ -27,9 +27,9 @@ class PerguntaExpansivel extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: AppSpacing.sm),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(AppRadius.sm),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Theme(
         data: theme.copyWith(dividerColor: Colors.transparent),
@@ -46,13 +46,13 @@ class PerguntaExpansivel extends StatelessWidget {
             height: 28,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: AppColors.accent.withValues(alpha: 0.15),
+              color: context.colors.accent.withValues(alpha: 0.15),
               shape: BoxShape.circle,
             ),
             child: Text(
               '$numero',
               style: theme.textTheme.bodySmall?.copyWith(
-                color: AppColors.accent,
+                color: context.colors.accent,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -72,8 +72,8 @@ class PerguntaExpansivel extends StatelessWidget {
                           : Icons.radio_button_unchecked,
                       size: 20,
                       color: resposta.isCorrect
-                          ? AppColors.success
-                          : AppColors.hint,
+                          ? context.colors.success
+                          : context.colors.hint,
                     ),
                     const SizedBox(width: AppSpacing.sm),
                     Expanded(
@@ -81,7 +81,7 @@ class PerguntaExpansivel extends StatelessWidget {
                         resposta.texto,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: resposta.isCorrect
-                              ? AppColors.successDark
+                              ? context.colors.successDark
                               : null,
                           fontWeight: resposta.isCorrect
                               ? FontWeight.w600
@@ -97,7 +97,7 @@ class PerguntaExpansivel extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(AppSpacing.sm),
                 decoration: BoxDecoration(
-                  color: AppColors.field,
+                  color: context.colors.field,
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
                 child: Text(

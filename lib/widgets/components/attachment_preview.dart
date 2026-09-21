@@ -4,9 +4,6 @@ import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/widgets/components/anexo.dart';
 import 'package:zetesis/widgets/components/storage_image.dart';
 
-/// Mostra o anexo atual de um formulário: um [PickedAttachment] recém
-/// selecionado (ainda não enviado) tem prioridade; senão, mostra o que já
-/// está salvo em [assetUrlExistente] (resolvido via [StorageImage]).
 class AttachmentPreview extends StatelessWidget {
   final PickedAttachment? anexo;
   final String? assetUrlExistente;
@@ -75,12 +72,12 @@ class AttachmentPreview extends StatelessWidget {
       height: altura,
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.field,
+        color: context.colors.field,
         borderRadius: BorderRadius.circular(AppRadius.sm),
       ),
       child: Row(
         children: [
-          const Icon(Icons.insert_drive_file_outlined, color: AppColors.primary),
+          Icon(Icons.insert_drive_file_outlined, color: context.colors.primary),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(

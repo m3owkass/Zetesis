@@ -5,14 +5,14 @@ class PontosBadge extends StatelessWidget {
   final int valor;
   final double iconSize;
   final double fontSize;
-  final Color textColor;
+  final Color? textColor;
 
   const PontosBadge({
     super.key,
     required this.valor,
     this.iconSize = 28,
     this.fontSize = 18,
-    this.textColor = AppColors.primaryDark,
+    this.textColor,
   });
 
   @override
@@ -27,7 +27,7 @@ class PontosBadge extends StatelessWidget {
           style: TextStyle(
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
-            color: textColor,
+            color: textColor ?? context.colors.primaryDark,
           ),
         ),
       ],

@@ -5,14 +5,6 @@ import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/widgets/components/anexo.dart';
 import 'package:zetesis/widgets/components/attachment_preview.dart';
 
-/// Campo de anexo reutilizável: escolhe um arquivo (imagem, documento ou
-/// qualquer um, conforme [tipo]), mostra o preview e permite remover.
-///
-/// Não faz upload sozinho — devolve o [PickedAttachment] escolhido via
-/// [onChanged] (`null` quando removido) pro formulário decidir quando enviar
-/// (normalmente depois de salvar o registro, usando o id gerado no caminho
-/// de armazenamento). Pra realizar o upload em si, use
-/// `storageUploadServiceProvider`.
 class AttachmentPicker extends StatefulWidget {
   final TipoAnexo tipo;
   final String label;
@@ -81,7 +73,7 @@ class _AttachmentPickerState extends State<AttachmentPicker> {
           widget.label,
           style: Theme.of(
             context,
-          ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+          ).textTheme.bodySmall?.copyWith(color: context.colors.textSecondary),
         ),
         const SizedBox(height: AppSpacing.xs),
         if (temAlgo) ...[

@@ -13,7 +13,7 @@ Future<bool> confirmarAcao(
   final resultado = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      backgroundColor: Colors.white,
+      backgroundColor: ctx.colors.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.lg),
       ),
@@ -27,7 +27,7 @@ Future<bool> confirmarAcao(
         TextButton(
           onPressed: () => Navigator.pop(ctx, true),
           style: TextButton.styleFrom(
-            foregroundColor: destrutivo ? AppColors.danger : AppColors.primary,
+            foregroundColor: destrutivo ? ctx.colors.danger : ctx.colors.primary,
           ),
           child: Text(confirmar),
         ),

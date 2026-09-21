@@ -24,37 +24,38 @@ class AppButton extends StatelessWidget {
     this.height = 52,
   });
 
-  ({Color bg, Color fg, BorderSide side}) get _colors => switch (variant) {
-    AppButtonVariant.primary => (
-      bg: AppColors.primary,
-      fg: Colors.white,
-      side: BorderSide.none,
-    ),
-    AppButtonVariant.success => (
-      bg: AppColors.success,
-      fg: Colors.white,
-      side: BorderSide.none,
-    ),
-    AppButtonVariant.danger => (
-      bg: AppColors.danger,
-      fg: Colors.white,
-      side: BorderSide.none,
-    ),
-    AppButtonVariant.accent => (
-      bg: AppColors.accent,
-      fg: AppColors.primaryDark,
-      side: BorderSide.none,
-    ),
-    AppButtonVariant.neutral => (
-      bg: Colors.white,
-      fg: AppColors.primary,
-      side: const BorderSide(color: AppColors.border),
-    ),
-  };
+  ({Color bg, Color fg, BorderSide side}) _colors(BuildContext context) =>
+      switch (variant) {
+        AppButtonVariant.primary => (
+          bg: context.colors.primary,
+          fg: context.colors.onDark,
+          side: BorderSide.none,
+        ),
+        AppButtonVariant.success => (
+          bg: context.colors.success,
+          fg: context.colors.onDark,
+          side: BorderSide.none,
+        ),
+        AppButtonVariant.danger => (
+          bg: context.colors.danger,
+          fg: context.colors.onDark,
+          side: BorderSide.none,
+        ),
+        AppButtonVariant.accent => (
+          bg: context.colors.accent,
+          fg: context.colors.primaryDark,
+          side: BorderSide.none,
+        ),
+        AppButtonVariant.neutral => (
+          bg: context.colors.card,
+          fg: context.colors.primary,
+          side: BorderSide(color: context.colors.border),
+        ),
+      };
 
   @override
   Widget build(BuildContext context) {
-    final c = _colors;
+    final c = _colors(context);
     final habilitado = onPressed != null && !loading;
 
     final botao = ElevatedButton(
@@ -62,8 +63,8 @@ class AppButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: c.bg,
         foregroundColor: c.fg,
-        disabledBackgroundColor: AppColors.border.withValues(alpha: 0.5),
-        disabledForegroundColor: Colors.white,
+        disabledBackgroundColor: context.colors.border.withValues(alpha: 0.5),
+        disabledForegroundColor: context.colors.onDark,
         elevation: 0,
         minimumSize: Size(0, height),
         shape: RoundedRectangleBorder(

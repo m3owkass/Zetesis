@@ -10,9 +10,9 @@ Future<void> abrirAnexo(BuildContext context, String? assetUrl) async {
   if (uri == null || !await launchUrl(uri, mode: LaunchMode.externalApplication)) {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Não foi possível abrir o anexo.'),
-          backgroundColor: AppColors.danger,
+        SnackBar(
+          content: const Text('Não foi possível abrir o anexo.'),
+          backgroundColor: context.colors.danger,
         ),
       );
     }

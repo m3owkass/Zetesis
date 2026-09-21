@@ -35,11 +35,16 @@ class _SeedScreenState extends ConsumerState<SeedScreen> {
   ];
 
   static const _lojaData = [
-    (nome: 'Avatar Filósofo', custo: 100),
-    (nome: 'Avatar Sábio', custo: 200),
     (nome: 'Tema Escuro', custo: 150),
     (nome: 'Moldura Dourada', custo: 300),
   ];
+
+  static const _avatarsData = {
+    'Arendt': 'assets/store/arendt_avatar.png',
+    'Confúcio': 'assets/store/confucio_avatar.png',
+    'Nietzsche': 'assets/store/nietzsche_avatar.png',
+    'Platão': 'assets/store/platao_avatar.png',
+  };
 
   static const _temasData = [
     (nome: 'Existência', descricao: 'Reflexões sobre o ser e o estar no mundo'),
@@ -273,7 +278,31 @@ class _SeedScreenState extends ConsumerState<SeedScreen> {
   Future<void> _criarLoja() => _run('Criar itens da loja', () async {
     final repo = ref.read(itemLojaRepositoryProvider);
     for (final d in _lojaData) {
-      await repo.add(ItemLojaModel(nome: d.nome, custo: d.custo, status: true));
+      await repo.add(
+        ItemLojaModel(nome: d.nome, custo: d.custo, status: true, tipo: 'geral'),
+      );
+    }
+  });
+
+  Future<void> _criarAvatares() => _run('Criar avatares', () async {
+    final repo = ref.read(itemLojaRepositoryProvider);
+    final uploadService = ref.read(storageUploadServiceProvider);
+
+    for (final entry in _avatarsData.entries) {
+      final id = await repo.add(
+        ItemLojaModel(
+          nome: entry.key,
+          custo: 100,
+          tipo: 'avatar',
+          status: true,
+          assetUrl: '',
+        ),
+      );
+
+      final bytes = (await rootBundle.load(entry.value)).buffer.asUint8List();
+      final path = 'items/$id';
+      await uploadService.upload(path: path, bytes: bytes);
+      await repo.update(id, {'assetUrl': path});
     }
   });
 
@@ -381,6 +410,11 @@ class _SeedScreenState extends ConsumerState<SeedScreen> {
                 AppButtonVariant.success,
                 _criarLoja,
               ),
+              _acao(
+                'Criar avatares padrão',
+                AppButtonVariant.success,
+                _criarAvatares,
+              ),
             ],
           ),
           _Secao(
@@ -462,7 +496,7 @@ class _SeedScreenState extends ConsumerState<SeedScreen> {
         child: Center(child: CircularProgressIndicator()),
       ),
       error: (e, _) =>
-          Text('Erro: $e', style: const TextStyle(color: AppColors.danger)),
+          Text('Erro: $e', style: TextStyle(color: context.colors.danger)),
       data: (itens) => itens.isEmpty
           ? Text(
               'Nada cadastrado.',
@@ -495,7 +529,7 @@ class _StatusPainel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.sm + AppSpacing.xs),
       decoration: BoxDecoration(
-        color: AppColors.field,
+        color: context.colors.field,
         borderRadius: BorderRadius.circular(AppRadius.sm),
       ),
       child: Text(
@@ -521,11 +555,11 @@ class _Secao extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: AppSpacing.sm),
           child: Text(
             titulo.toUpperCase(),
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 11,
               letterSpacing: 1.4,
-              color: AppColors.textSecondary,
+              color: context.colors.textSecondary,
             ),
           ),
         ),
@@ -565,11 +599,11 @@ class _ImagemTile extends StatelessWidget {
               child: assetUrl.isNotEmpty
                   ? StorageImage(path: assetUrl, fit: BoxFit.cover)
                   : Container(
-                      color: AppColors.field,
-                      child: const Icon(
+                      color: context.colors.field,
+                      child: Icon(
                         Icons.image_outlined,
                         size: 20,
-                        color: AppColors.hint,
+                        color: context.colors.hint,
                       ),
                     ),
             ),

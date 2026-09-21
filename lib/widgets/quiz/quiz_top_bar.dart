@@ -22,7 +22,7 @@ class QuizTopBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: onClose,
-            icon: const Icon(Icons.close, color: AppColors.primaryDark),
+            icon: Icon(Icons.close, color: context.colors.primaryDark),
           ),
           Expanded(
             child: ClipRRect(
@@ -33,8 +33,8 @@ class QuizTopBar extends StatelessWidget {
                 builder: (context, value, _) => LinearProgressIndicator(
                   value: value,
                   minHeight: 12,
-                  backgroundColor: AppColors.field,
-                  color: AppColors.success,
+                  backgroundColor: context.colors.field,
+                  color: context.colors.success,
                 ),
               ),
             ),

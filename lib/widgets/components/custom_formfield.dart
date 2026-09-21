@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:zetesis/theme/app_colors.dart';
 
 enum FieldType { username, email, password, platform, description }
+
+const _kFieldColors = AppColors.dark;
 
 class CustomFormField extends StatefulWidget {
   final TextEditingController controller;
@@ -50,8 +53,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final errorColor = theme.colorScheme.error;
-    final normalColor =
-        widget.labelStyle?.color ?? Color.fromARGB(255, 110, 99, 156);
+    final normalColor = widget.labelStyle?.color ?? _kFieldColors.hint;
+    final focusColor = _kFieldColors.primaryLight;
 
     return TextFormField(
       controller: widget.controller,
@@ -60,19 +63,19 @@ class _CustomFormFieldState extends State<CustomFormField> {
       keyboardType: _getKeyboardType(),
       style: WidgetStateTextStyle.resolveWith((states) {
         if (states.contains(WidgetState.focused)) {
-          return TextStyle(color: Color.fromARGB(255, 146, 126, 228));
+          return TextStyle(color: focusColor);
         }
         return TextStyle(color: normalColor);
       }),
 
-      cursorColor: Colors.white70,
+      cursorColor: _kFieldColors.onDark.withValues(alpha: 0.7),
       decoration: InputDecoration(
         labelText: widget.label,
         hintText: widget.hint,
         hintStyle: widget.hintStyle,
         prefixIcon: widget.prefixIcon,
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xff4c4666)),
+          borderSide: BorderSide(color: _kFieldColors.border),
         ),
 
         labelStyle: WidgetStateTextStyle.resolveWith((states) {
@@ -80,7 +83,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
             return TextStyle(color: errorColor);
           }
           if (states.contains(WidgetState.focused)) {
-            return const TextStyle(color: Color.fromARGB(255, 146, 126, 228));
+            return TextStyle(color: focusColor);
           }
           return TextStyle(color: normalColor);
         }),
@@ -90,7 +93,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
             return TextStyle(color: errorColor);
           }
           if (states.contains(WidgetState.focused)) {
-            return const TextStyle(color: Color.fromARGB(255, 146, 126, 228));
+            return TextStyle(color: focusColor);
           }
           return TextStyle(color: normalColor);
         }),
@@ -100,7 +103,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                   _obscure
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
-                  color: Color(0xff5f54a0),
+                  color: focusColor,
                 ),
                 onPressed: () {
                   setState(() {

@@ -128,7 +128,7 @@ class _TarefaScreenState extends ConsumerState<TarefaScreen> {
             child: const Text('Continuar'),
           ),
           FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
+            style: FilledButton.styleFrom(backgroundColor: dialogContext.colors.danger),
             onPressed: () => Navigator.pop(dialogContext, true),
             child: const Text('Sair'),
           ),
@@ -177,7 +177,7 @@ class _TarefaScreenState extends ConsumerState<TarefaScreen> {
         if (sair) Navigator.pop(context);
       },
       child: Scaffold(
-        backgroundColor: AppColors.surface,
+        backgroundColor: context.colors.surface,
         body: SafeArea(
           child: Column(
             children: [
@@ -194,11 +194,11 @@ class _TarefaScreenState extends ConsumerState<TarefaScreen> {
                     Text(
                       'Pergunta ${_perguntaIndex + 1} de $_total'
                       ' • ${_rotuloTipo(_pergunta.tipo)}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.1,
-                        color: AppColors.textSecondary,
+                        color: context.colors.textSecondary,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -242,14 +242,14 @@ class _TarefaScreenState extends ConsumerState<TarefaScreen> {
 
   Widget _semPerguntas() {
     return Scaffold(
-      backgroundColor: AppColors.surface,
+      backgroundColor: context.colors.surface,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               'Esta tarefa ainda não tem perguntas',
-              style: TextStyle(fontSize: 20, color: AppColors.primaryDark),
+              style: TextStyle(fontSize: 20, color: context.colors.primaryDark),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -266,20 +266,20 @@ class _TarefaScreenState extends ConsumerState<TarefaScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.12),
+        color: context.colors.primary.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(AppRadius.lg),
       ),
-      child: const Row(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.replay, size: 16, color: AppColors.primary),
-          SizedBox(width: 6),
+          Icon(Icons.replay, size: 16, color: context.colors.primary),
+          const SizedBox(width: 6),
           Text(
             'Modo prática — esta tarefa já foi pontuada',
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+              color: context.colors.primary,
             ),
           ),
         ],

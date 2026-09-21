@@ -11,6 +11,17 @@ final todosUsuariosProvider = StreamProvider<List<UsuarioModel>>((ref) {
   return ref.read(usuarioRepositoryProvider).watchAll();
 });
 
+final rankingProvider = Provider<List<UsuarioModel>>((ref) {
+  final usuarios = ref.watch(todosUsuariosProvider).value ?? const [];
+  final lista = [...usuarios]
+    ..sort(
+      (a, b) => b.tarefasConcluidas.length.compareTo(
+        a.tarefasConcluidas.length,
+      ),
+    );
+  return lista;
+});
+
 final favoritosProvider = StreamProvider<Set<String>>((ref) {
   final user = ref.watch(authStateProvider).value;
   if (user == null) return Stream.value({});

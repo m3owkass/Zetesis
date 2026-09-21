@@ -7,6 +7,8 @@ import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 import 'package:zetesis/widgets/components/password_recovery_dialog.dart';
 import 'package:zetesis/widgets/components/pontos_badge.dart';
+import 'package:zetesis/widgets/components/storage_image.dart';
+import 'package:zetesis/widgets/perfil/avatar_picker_dialog.dart';
 import 'package:zetesis/widgets/perfil/campo_perfil.dart';
 import 'package:zetesis/widgets/perfil/perfil_chip.dart';
 
@@ -53,7 +55,7 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(ok ? 'Nome atualizado!' : 'Não foi possível salvar.'),
-        backgroundColor: ok ? AppColors.success : AppColors.danger,
+        backgroundColor: ok ? context.colors.success : context.colors.danger,
       ),
     );
   }
@@ -62,6 +64,7 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
   Widget build(BuildContext context) {
     final userAsync = ref.watch(userProvider);
     final authState = ref.watch(authControllerProvider);
+    final possuiTemaEscuro = ref.watch(possuiTemaEscuroProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -75,24 +78,51 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
             child: Column(
               children: [
                 const SizedBox(height: AppSpacing.sm),
-                CircleAvatar(
-                  radius: 56,
-                  backgroundColor: AppColors.field,
-                  backgroundImage:
-                      (user?.avatarUrl != null && user!.avatarUrl.isNotEmpty)
-                      ? NetworkImage(user.avatarUrl)
-                      : null,
-                  child: (user?.avatarUrl == null || user!.avatarUrl.isEmpty)
-                      ? Text(
-                          user?.nome.isNotEmpty == true
-                              ? user!.nome[0].toUpperCase()
-                              : '?',
-                          style: const TextStyle(
-                            fontSize: 40,
-                            color: AppColors.primaryDark,
+                GestureDetector(
+                  onTap: user == null
+                      ? null
+                      : () => AvatarPickerDialog.mostrar(context, user),
+                  child: Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 56,
+                        backgroundColor: context.colors.field,
+                        backgroundImage:
+                            StorageImage.resolveUrl(user?.avatarUrl) != null
+                            ? NetworkImage(
+                                StorageImage.resolveUrl(user!.avatarUrl)!,
+                              )
+                            : null,
+                        child: StorageImage.resolveUrl(user?.avatarUrl) == null
+                            ? Text(
+                                user?.nome.isNotEmpty == true
+                                    ? user!.nome[0].toUpperCase()
+                                    : '?',
+                                style: TextStyle(
+                                  fontSize: 40,
+                                  color: context.colors.primaryDark,
+                                ),
+                              )
+                            : null,
+                      ),
+                      Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: context.colors.primary,
                           ),
-                        )
-                      : null,
+                          child: Icon(
+                            Icons.edit,
+                            size: 16,
+                            color: context.colors.onDark,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.md),
 
@@ -107,8 +137,9 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
                     ),
                     const SizedBox(width: AppSpacing.sm),
                     PerfilChip.icone(
+                      context: context,
                       icon: Icons.military_tech,
-                      cor: AppColors.primary,
+                      cor: context.colors.primary,
                       texto: user?.ranking ?? 'Bronze',
                     ),
                   ],
@@ -145,7 +176,7 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
                           icon: Icon(
                             _editandoNome ? Icons.check : Icons.edit,
                             size: 20,
-                            color: AppColors.primary,
+                            color: context.colors.primary,
                           ),
                           onPressed: () {
                             if (_editandoNome) {
@@ -167,6 +198,30 @@ class _PerfilScreenState extends ConsumerState<PerfilScreen> {
                   child: Text(
                     user?.email ?? '',
                     style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                CampoPerfil(
+                  label: 'Tema escuro',
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          possuiTemaEscuro
+                              ? 'Ativar tema escuro no app'
+                              : 'Compre "Tema Escuro" na loja para desbloquear',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                      Switch(
+                        value: possuiTemaEscuro && (user?.modoEscuro ?? false),
+                        onChanged: possuiTemaEscuro
+                            ? (ativo) => ref
+                                  .read(authControllerProvider.notifier)
+                                  .updateModoEscuro(ativo)
+                            : null,
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: AppSpacing.lg),

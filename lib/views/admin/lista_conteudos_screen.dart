@@ -24,7 +24,7 @@ class ListaConteudosScreen extends ConsumerWidget {
     DetalhesDialog.mostrar(
       context,
       icon: Icons.menu_book_outlined,
-      cor: AppColors.primaryLight,
+      cor: context.colors.primaryLight,
       titulo: material.nome,
       linhas: [
         DetalheLinha('Tipo', material.tipo),
@@ -120,7 +120,7 @@ class ListaConteudosScreen extends ConsumerWidget {
               return ItemListaAdmin(
                 icon: Icons.menu_book_outlined,
                 trailing: Icon(Icons.arrow_forward_ios),
-                cor: AppColors.primaryLight,
+                cor: context.colors.primaryLight,
                 titulo: material.nome,
                 subtitulo: detalhes.isNotEmpty ? detalhes : null,
                 onTap: () => _exibirDetalhes(context, ref, material),

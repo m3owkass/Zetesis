@@ -9,6 +9,7 @@ class PerfilChip extends StatelessWidget {
 
   factory PerfilChip.icone({
     Key? key,
+    required BuildContext context,
     required IconData icon,
     required Color cor,
     required String texto,
@@ -22,9 +23,9 @@ class PerfilChip extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             texto,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: AppColors.primaryDark,
+              color: context.colors.primaryDark,
             ),
           ),
         ],
@@ -40,9 +41,9 @@ class PerfilChip extends StatelessWidget {
         vertical: AppSpacing.sm,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(AppRadius.pill),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: child,
     );

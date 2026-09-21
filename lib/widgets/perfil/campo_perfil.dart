@@ -18,7 +18,7 @@ class CampoPerfil extends StatelessWidget {
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: AppColors.field,
+            color: context.colors.field,
             borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
           padding: const EdgeInsets.symmetric(

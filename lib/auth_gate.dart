@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/model/usuario.dart';
 import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/theme/app_theme.dart';
+import 'package:zetesis/views/auth_flow.dart';
 import 'package:zetesis/views/home_shell.dart';
-import 'package:zetesis/views/login_screen.dart';
 
 class AuthGate extends ConsumerWidget {
   const AuthGate({super.key});
@@ -25,7 +25,7 @@ class AuthGate extends ConsumerWidget {
       loading: () => const _Carregando(),
       error: (_, _) => _Erro(onRetry: () => ref.invalidate(authStateProvider)),
       data: (fbUser) {
-        if (fbUser == null) return const LoginScreen();
+        if (fbUser == null) return const AuthFlow();
         final usuario = ref.watch(userProvider);
         return usuario.isLoading ? const _Carregando() : const HomeShell();
       },

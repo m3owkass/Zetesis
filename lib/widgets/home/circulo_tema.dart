@@ -25,23 +25,23 @@ class CirculoTema extends StatelessWidget {
             width: size,
             height: size,
             padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-              color: AppColors.accent,
+            decoration: BoxDecoration(
+              color: context.colors.accent,
               shape: BoxShape.circle,
             ),
             child: ClipOval(
               child: (tema?.assetUrl != null && tema!.assetUrl.isNotEmpty)
                   ? StorageImage(path: tema!.assetUrl, fit: BoxFit.cover)
                   : Container(
-                      color: AppColors.primary,
+                      color: context.colors.primary,
                       alignment: Alignment.center,
                       child: Text(
                         tema?.nome.isNotEmpty == true
                             ? tema!.nome[0].toUpperCase()
                             : '?',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 56,
-                          color: Colors.white,
+                          color: context.colors.onDark,
                         ),
                       ),
                     ),
@@ -51,10 +51,10 @@ class CirculoTema extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
+              Icon(
                 Icons.touch_app_rounded,
                 size: 16,
-                color: AppColors.textSecondary,
+                color: context.colors.textSecondary,
               ),
               const SizedBox(width: 4),
               Text(

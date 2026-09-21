@@ -6,7 +6,9 @@ import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/views/admin_screen.dart';
 import 'package:zetesis/views/perfil_screen.dart';
+import 'package:zetesis/views/ranking_screen.dart';
 import 'package:zetesis/widgets/components/pontos_badge.dart';
+import 'package:zetesis/widgets/components/storage_image.dart';
 
 class CustomStatefulAppBar extends ConsumerWidget
     implements PreferredSizeWidget {
@@ -25,8 +27,8 @@ class CustomStatefulAppBar extends ConsumerWidget
         kDebugMode && ref.watch(userProvider).valueOrNull?.developer == true;
 
     return AppBar(
-      backgroundColor: Colors.white,
-      foregroundColor: AppColors.primaryDark,
+      backgroundColor: context.colors.card,
+      foregroundColor: context.colors.primaryDark,
       titleSpacing: 0,
       title: Padding(
         padding: const EdgeInsets.only(left: 12),
@@ -49,6 +51,11 @@ class CustomStatefulAppBar extends ConsumerWidget
                       context,
                       MaterialPageRoute(builder: (_) => const AdminScreen()),
                     );
+                  } else if (value == 'ranking') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const RankingScreen()),
+                    );
                   }
                 },
                 itemBuilder: (context) => [
@@ -59,6 +66,16 @@ class CustomStatefulAppBar extends ConsumerWidget
                         Icon(Icons.person),
                         SizedBox(width: 8),
                         Text('Perfil'),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'ranking',
+                    child: Row(
+                      children: [
+                        Icon(Icons.military_tech),
+                        SizedBox(width: 8),
+                        Text('Ranking'),
                       ],
                     ),
                   ),
@@ -86,17 +103,17 @@ class CustomStatefulAppBar extends ConsumerWidget
                 ],
                 child: CircleAvatar(
                   radius: 18,
-                  backgroundColor: AppColors.field,
+                  backgroundColor: context.colors.field,
                   backgroundImage:
-                      (user?.avatarUrl != null && user!.avatarUrl.isNotEmpty)
-                      ? NetworkImage(user.avatarUrl)
+                      StorageImage.resolveUrl(user?.avatarUrl) != null
+                      ? NetworkImage(StorageImage.resolveUrl(user!.avatarUrl)!)
                       : null,
-                  child: (user?.avatarUrl == null || user!.avatarUrl.isEmpty)
+                  child: StorageImage.resolveUrl(user?.avatarUrl) == null
                       ? Text(
                           user?.nome.isNotEmpty == true
                               ? user!.nome[0].toUpperCase()
                               : '?',
-                          style: const TextStyle(color: AppColors.primaryDark),
+                          style: TextStyle(color: context.colors.primaryDark),
                         )
                       : null,
                 ),
@@ -107,9 +124,9 @@ class CustomStatefulAppBar extends ConsumerWidget
           ),
         ),
       ),
-      bottom: const PreferredSize(
-        preferredSize: Size.fromHeight(2),
-        child: Divider(height: 2, thickness: 2, color: AppColors.border),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(2),
+        child: Divider(height: 2, thickness: 2, color: context.colors.border),
       ),
       actions: [
         Padding(
@@ -132,10 +149,10 @@ class _Saudacao extends StatelessWidget {
       'Olá $nome',
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: AppColors.primaryDark,
+        color: context.colors.primaryDark,
       ),
     );
   }

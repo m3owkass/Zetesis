@@ -4,6 +4,7 @@ class ItemLojaModel {
   final int custo;
   final String? assetUrl;
   final bool status;
+  final String tipo;
 
   ItemLojaModel({
     this.id,
@@ -11,6 +12,7 @@ class ItemLojaModel {
     required this.custo,
     this.assetUrl,
     required this.status,
+    this.tipo = 'geral',
   });
 
   factory ItemLojaModel.fromMap(Map<String, dynamic> map, {String? id}) {
@@ -20,6 +22,7 @@ class ItemLojaModel {
       custo: (map['custo'] as num?)?.toInt() ?? 0,
       assetUrl: map['assetUrl'],
       status: map['status'] ?? false,
+      tipo: map['tipo'] ?? 'geral',
     );
   }
 
@@ -29,6 +32,7 @@ class ItemLojaModel {
       'custo': custo,
       'assetUrl': assetUrl,
       'status': status,
+      'tipo': tipo,
     };
   }
 }

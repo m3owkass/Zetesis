@@ -1,42 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zetesis/model/tema.dart';
+import 'package:zetesis/model/item_loja.dart';
 import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/widgets/admin/acao_secao.dart';
 import 'package:zetesis/widgets/admin/detalhes_dialog.dart';
 import 'package:zetesis/widgets/admin/item_lista_admin.dart';
-import 'package:zetesis/widgets/admin/tema_cadastro_screen.dart';
+import 'package:zetesis/widgets/admin/item_loja_cadastro_screen.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 import 'package:zetesis/widgets/components/confirmar_acao.dart';
 import 'package:zetesis/widgets/components/mensagem_estado.dart';
 
-class ListaTemasScreen extends ConsumerStatefulWidget {
-  const ListaTemasScreen({super.key});
-@override
-  ConsumerState<ListaTemasScreen> createState() =>
-      _ListaTemasScreenState();
+class ListaItensLojaScreen extends ConsumerStatefulWidget {
+  const ListaItensLojaScreen({super.key});
 
+  @override
+  ConsumerState<ListaItensLojaScreen> createState() =>
+      _ListaItensLojaScreenState();
 }
-class _ListaTemasScreenState extends ConsumerState<ListaTemasScreen> {
 
-
-  void _exibirDetalhes(
-    BuildContext context,
-    WidgetRef ref,
-    TemaModel tema,
-    
-  ) {
-    
+class _ListaItensLojaScreenState extends ConsumerState<ListaItensLojaScreen> {
+  void _exibirDetalhes(BuildContext context, WidgetRef ref, ItemLojaModel item) {
     DetalhesDialog.mostrar(
-      
       context,
-      icon: Icons.assignment_outlined,
+      icon: Icons.storefront_outlined,
       cor: context.colors.accent,
-      titulo: tema.nome,
+      titulo: item.nome,
       linhas: [
-        DetalheLinha('Descrição', tema.descricao),
+        DetalheLinha('Custo', '${item.custo} phatos'),
+        DetalheLinha('Tipo', item.tipo == 'avatar' ? 'Avatar' : 'Geral'),
+        DetalheLinha('Status', item.status ? 'Ativo' : 'Inativo'),
       ],
       acoes: [
         AcaoSecao(
@@ -46,75 +40,74 @@ class _ListaTemasScreenState extends ConsumerState<ListaTemasScreen> {
             Navigator.pop(context);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => TemaDialog(tema: tema)),
+              MaterialPageRoute(builder: (_) => ItemLojaDialog(item: item)),
             );
           },
         ),
         AcaoSecao(
           label: 'Excluir',
           variant: AppButtonVariant.danger,
-          onPressed: () => _excluir(context, ref, tema),
+          onPressed: () => _excluir(context, ref, item),
         ),
       ],
     );
   }
 
-
   Future<void> _excluir(
     BuildContext context,
     WidgetRef ref,
-    TemaModel tema,
+    ItemLojaModel item,
   ) async {
     final confirmado = await confirmarAcao(
       context,
-      titulo: 'Excluir tema?',
+      titulo: 'Excluir item?',
       mensagem:
-          'Tem certeza que deseja excluir "${tema.nome}"? '
+          'Tem certeza que deseja excluir "${item.nome}"? '
           'Essa ação não pode ser desfeita.',
       confirmar: 'Excluir',
       destrutivo: true,
     );
-    if (!confirmado || tema.id == null) return;
+    if (!confirmado || item.id == null) return;
     if (!context.mounted) return;
     Navigator.pop(context);
-    await ref.read(temaRepositoryProvider).remove(tema.id!);
+    await ref.read(itemLojaRepositoryProvider).remove(item.id!);
   }
 
   @override
   Widget build(BuildContext context) {
-    final temasAsync = ref.watch(todosTemasProvider);
+    final itensAsync = ref.watch(itemsProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Temas')),
-      body: temasAsync.when(
+      appBar: AppBar(title: const Text('Itens da Loja')),
+      body: itensAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, _) => const MensagemEstado.erro(
-          subtitulo: 'Não foi possível carregar os temas.',
+          subtitulo: 'Não foi possível carregar os itens.',
         ),
-        data: (temas) {
-          if (temas.isEmpty) {
+        data: (itens) {
+          if (itens.isEmpty) {
             return const MensagemEstado(
-              icon: Icons.assignment_outlined,
-              titulo: 'Nenhum tema cadastrada',
-              subtitulo: 'Crie um novo tema para vê-lo aqui.',
+              icon: Icons.storefront_outlined,
+              titulo: 'Nenhum item cadastrado',
+              subtitulo: 'Crie um novo item para vê-lo aqui.',
             );
           }
 
           return ListView.builder(
             padding: const EdgeInsets.all(AppSpacing.md),
-            itemCount: temas.length,
+            itemCount: itens.length,
             itemBuilder: (context, index) {
-              final tema = temas[index];
-              
+              final item = itens[index];
 
               return ItemListaAdmin(
-                icon: Icons.assignment_outlined,
+                icon: item.tipo == 'avatar'
+                    ? Icons.face_outlined
+                    : Icons.storefront_outlined,
                 cor: context.colors.accent,
-                titulo: tema.nome,
-                subtitulo: tema.descricao,
+                titulo: item.nome,
+                subtitulo: '${item.custo} phatos · ${item.status ? 'Ativo' : 'Inativo'}',
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: () { 
-                  _exibirDetalhes(context, ref, tema);}
+                onTap: () => _exibirDetalhes(context, ref, item),
               );
             },
           );

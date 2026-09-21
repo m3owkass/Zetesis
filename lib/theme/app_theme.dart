@@ -16,65 +16,74 @@ abstract final class AppSpacing {
 }
 
 abstract final class AppTheme {
-  static ThemeData get light {
-    const scheme = ColorScheme.light(
-      primary: AppColors.primary,
-      onPrimary: Colors.white,
-      secondary: AppColors.accent,
-      surface: AppColors.surface,
-      onSurface: AppColors.textPrimary,
-      error: AppColors.danger,
+  static ThemeData get light => _build(AppColors.light, Brightness.light);
+
+  static ThemeData get dark => _build(AppColors.dark, Brightness.dark);
+
+  static ThemeData _build(AppColors colors, Brightness brightness) {
+    final scheme = ColorScheme(
+      brightness: brightness,
+      primary: colors.primary,
+      onPrimary: colors.onDark,
+      secondary: colors.accent,
+      onSecondary: colors.onDark,
+      surface: colors.surface,
+      onSurface: colors.textPrimary,
+      error: colors.danger,
+      onError: colors.onDark,
     );
 
-    const textTheme = TextTheme(
+    final textTheme = TextTheme(
       headlineLarge: TextStyle(
         fontSize: 30,
         fontWeight: FontWeight.bold,
-        color: AppColors.textPrimary,
+        color: colors.textPrimary,
       ),
       headlineMedium: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.bold,
-        color: AppColors.textPrimary,
+        color: colors.textPrimary,
       ),
       titleLarge: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: AppColors.textPrimary,
+        color: colors.textPrimary,
       ),
       titleMedium: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w600,
-        color: AppColors.textPrimary,
+        color: colors.textPrimary,
       ),
-      bodyLarge: TextStyle(fontSize: 16, color: AppColors.textPrimary),
-      bodyMedium: TextStyle(fontSize: 14, color: AppColors.textPrimary),
-      bodySmall: TextStyle(fontSize: 12, color: AppColors.textSecondary),
-      labelLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      bodyLarge: TextStyle(fontSize: 16, color: colors.textPrimary),
+      bodyMedium: TextStyle(fontSize: 14, color: colors.textPrimary),
+      bodySmall: TextStyle(fontSize: 12, color: colors.textSecondary),
+      labelLarge: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
     );
 
     return ThemeData(
       useMaterial3: true,
-      scaffoldBackgroundColor: AppColors.surface,
+      brightness: brightness,
+      scaffoldBackgroundColor: colors.surface,
       colorScheme: scheme,
       textTheme: textTheme,
-      appBarTheme: const AppBarTheme(
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+      extensions: [colors],
+      appBarTheme: AppBarTheme(
+        backgroundColor: colors.primary,
+        foregroundColor: colors.onDark,
         elevation: 0,
       ),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.sm),
-          borderSide: const BorderSide(color: AppColors.border),
+          borderSide: BorderSide(color: colors.border),
         ),
-        hintStyle: const TextStyle(color: AppColors.hint),
-        prefixIconColor: AppColors.primary,
+        hintStyle: TextStyle(color: colors.hint),
+        prefixIconColor: colors.primary,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
+          backgroundColor: colors.primary,
+          foregroundColor: colors.onDark,
           minimumSize: const Size.fromHeight(52),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.pill),

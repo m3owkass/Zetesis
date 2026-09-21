@@ -17,34 +17,36 @@ class OpcoesPergunta extends StatelessWidget {
     required this.onSelect,
   });
 
-  Color _corFundo(int index) {
+  Color _corFundo(BuildContext context, int index) {
     if (!checked) {
-      return index == selectedIndex ? AppColors.primary : Colors.white;
+      return index == selectedIndex ? context.colors.primary : context.colors.card;
     }
-    if (pergunta.respostas[index].isCorrect) return AppColors.success;
-    if (index == selectedIndex) return AppColors.danger;
-    return Colors.white;
+    if (pergunta.respostas[index].isCorrect) return context.colors.success;
+    if (index == selectedIndex) return context.colors.danger;
+    return context.colors.card;
   }
 
-  Color _corTexto(int index) {
+  Color _corTexto(BuildContext context, int index) {
     if (!checked) {
-      return index == selectedIndex ? Colors.white : AppColors.primaryDark;
+      return index == selectedIndex
+          ? context.colors.onDark
+          : context.colors.primaryDark;
     }
     if (pergunta.respostas[index].isCorrect || index == selectedIndex) {
-      return Colors.white;
+      return context.colors.onDark;
     }
-    return AppColors.primaryDark;
+    return context.colors.primaryDark;
   }
 
-  BoxDecoration _decoracao(int index) {
+  BoxDecoration _decoracao(BuildContext context, int index) {
     final selecionada = index == selectedIndex;
     return BoxDecoration(
-      color: _corFundo(index),
+      color: _corFundo(context, index),
       borderRadius: BorderRadius.circular(AppRadius.sm),
       border: Border.all(
         color: selecionada && !checked
-            ? AppColors.primaryDark
-            : AppColors.border,
+            ? context.colors.primaryDark
+            : context.colors.border,
         width: 2,
       ),
     );
@@ -61,7 +63,7 @@ class OpcoesPergunta extends StatelessWidget {
         children: [
           for (int i = 0; i < pergunta.respostas.length; i++) ...[
             if (i > 0) const SizedBox(width: 14),
-            Expanded(child: _cartaoVF(i)),
+            Expanded(child: _cartaoVF(context, i)),
           ],
         ],
       ),
@@ -69,13 +71,14 @@ class OpcoesPergunta extends StatelessWidget {
         spacing: 12,
         runSpacing: 12,
         children: [
-          for (int i = 0; i < pergunta.respostas.length; i++) _chipLacuna(i),
+          for (int i = 0; i < pergunta.respostas.length; i++)
+            _chipLacuna(context, i),
         ],
       ),
       TipoPergunta.multipla => Column(
         children: [
           for (int i = 0; i < pergunta.respostas.length; i++) ...[
-            _alternativa(i),
+            _alternativa(context, i),
             const SizedBox(height: 12),
           ],
         ],
@@ -83,8 +86,8 @@ class OpcoesPergunta extends StatelessWidget {
     };
   }
 
-  Widget _cartaoVF(int index) {
-    final corTexto = _corTexto(index);
+  Widget _cartaoVF(BuildContext context, int index) {
+    final corTexto = _corTexto(context, index);
     final ehVerdadeiro = pergunta.respostas[index].texto
         .toLowerCase()
         .startsWith('v');
@@ -94,15 +97,17 @@ class OpcoesPergunta extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(vertical: 24),
-        decoration: _decoracao(index),
+        decoration: _decoracao(context, index),
         child: Column(
           children: [
             Icon(
               ehVerdadeiro ? Icons.thumb_up_rounded : Icons.thumb_down_rounded,
               size: 40,
-              color: corTexto == Colors.white
-                  ? Colors.white
-                  : (ehVerdadeiro ? AppColors.success : AppColors.danger),
+              color: corTexto == context.colors.onDark
+                  ? context.colors.onDark
+                  : (ehVerdadeiro
+                        ? context.colors.success
+                        : context.colors.danger),
             ),
             const SizedBox(height: 10),
             Text(
@@ -120,17 +125,17 @@ class OpcoesPergunta extends StatelessWidget {
     );
   }
 
-  Widget _chipLacuna(int index) {
+  Widget _chipLacuna(BuildContext context, int index) {
     return GestureDetector(
       onTap: () => _tap(index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        decoration: _decoracao(index),
+        decoration: _decoracao(context, index),
         child: Text(
           pergunta.respostas[index].texto,
           style: TextStyle(
-            color: _corTexto(index),
+            color: _corTexto(context, index),
             fontSize: 17,
             fontWeight: FontWeight.w600,
           ),
@@ -139,8 +144,8 @@ class OpcoesPergunta extends StatelessWidget {
     );
   }
 
-  Widget _alternativa(int index) {
-    final corTexto = _corTexto(index);
+  Widget _alternativa(BuildContext context, int index) {
+    final corTexto = _corTexto(context, index);
     final letra = String.fromCharCode(65 + index);
     IconData? icone;
     if (checked) {
@@ -153,7 +158,7 @@ class OpcoesPergunta extends StatelessWidget {
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      decoration: _decoracao(index),
+      decoration: _decoracao(context, index),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -165,9 +170,9 @@ class OpcoesPergunta extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 16,
-                  backgroundColor: corTexto == Colors.white
-                      ? Colors.white24
-                      : AppColors.primary.withValues(alpha: 0.12),
+                  backgroundColor: corTexto == context.colors.onDark
+                      ? context.colors.onDark.withValues(alpha: 0.24)
+                      : context.colors.primary.withValues(alpha: 0.12),
                   child: Text(
                     letra,
                     style: TextStyle(
@@ -189,7 +194,7 @@ class OpcoesPergunta extends StatelessWidget {
                 ),
                 if (icone != null) ...[
                   const SizedBox(width: 8),
-                  Icon(icone, color: Colors.white),
+                  Icon(icone, color: context.colors.onDark),
                 ],
               ],
             ),

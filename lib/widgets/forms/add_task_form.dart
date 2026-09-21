@@ -138,7 +138,7 @@ class _AddTaskFormState extends ConsumerState<AddTaskForm> {
 
     final tema = _temaSelecionado;
     if (tema == null) {
-      _mostrarSnackBar('Selecione um tema.', AppColors.danger);
+      _mostrarSnackBar('Selecione um tema.', context.colors.danger);
       return;
     }
 
@@ -147,7 +147,7 @@ class _AddTaskFormState extends ConsumerState<AddTaskForm> {
       if (corretas.length != 1) {
         _mostrarSnackBar(
           'Marque exatamente uma resposta correta na pergunta ${i + 1}.',
-          AppColors.danger,
+          context.colors.danger,
         );
         return;
       }
@@ -194,12 +194,12 @@ class _AddTaskFormState extends ConsumerState<AddTaskForm> {
       if (!mounted) return;
       _mostrarSnackBar(
         _editando ? 'Tarefa atualizada com sucesso!' : 'Tarefa salva com sucesso!',
-        AppColors.success,
+        context.colors.success,
       );
       Navigator.of(context).pop();
     } catch (e) {
       if (!mounted) return;
-      _mostrarSnackBar('Erro ao salvar tarefa.', AppColors.danger);
+      _mostrarSnackBar('Erro ao salvar tarefa.', context.colors.danger);
     } finally {
       if (mounted) setState(() => _salvando = false);
     }
@@ -297,9 +297,9 @@ class _AddTaskFormState extends ConsumerState<AddTaskForm> {
       margin: const EdgeInsets.only(bottom: AppSpacing.md),
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(AppRadius.sm),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -317,7 +317,7 @@ class _AddTaskFormState extends ConsumerState<AddTaskForm> {
                     ? () => _removerPergunta(index)
                     : null,
                 icon: const Icon(Icons.delete_outline),
-                color: AppColors.danger,
+                color: context.colors.danger,
               ),
             ],
           ),

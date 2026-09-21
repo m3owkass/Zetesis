@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zetesis/auth_gate.dart';
 import 'package:zetesis/config/firebase_options.dart';
 import 'package:zetesis/config/supabase_config.dart';
+import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/theme/app_theme.dart';
 
 void main() async {
@@ -17,15 +18,19 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
+
     return MaterialApp(
       title: 'Zetesis',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: themeMode,
       home: const AuthGate(),
     );
   }

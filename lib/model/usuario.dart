@@ -1,8 +1,13 @@
+String rankingPorTarefas(int totalConcluidas) {
+  if (totalConcluidas >= 30) return 'Ouro';
+  if (totalConcluidas >= 10) return 'Prata';
+  return 'Bronze';
+}
+
 class UsuarioModel {
   final String? uid;
   final String? email;
   final String nome;
-  final String ranking;
   final int pontos;
   final String avatarUrl;
   final bool admin;
@@ -18,7 +23,6 @@ class UsuarioModel {
     this.uid,
     this.email,
     required this.nome,
-    required this.ranking,
     required this.pontos,
     required this.avatarUrl,
     required this.admin,
@@ -28,6 +32,8 @@ class UsuarioModel {
     this.tarefasConcluidas = const [],
     this.itensComprados = const [],
   });
+
+  String get ranking => rankingPorTarefas(tarefasConcluidas.length);
 
   bool concluiu(String? tarefaId) =>
       tarefaId != null && tarefasConcluidas.contains(tarefaId);
@@ -40,7 +46,6 @@ class UsuarioModel {
       uid: id ?? map['uid'],
       email: map['email'],
       nome: map['nome'] ?? 'Usuário',
-      ranking: map['ranking'] ?? 'Bronze',
       pontos: (map['pontos'] as num?)?.toInt() ?? 0,
       avatarUrl: map['avatarUrl'] ?? '',
       admin: map['admin'] ?? false,
@@ -60,7 +65,6 @@ class UsuarioModel {
     return {
       'email': email,
       'nome': nome,
-      'ranking': ranking,
       'pontos': pontos,
       'avatarUrl': avatarUrl,
       'admin': admin,

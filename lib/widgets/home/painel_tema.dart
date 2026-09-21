@@ -43,9 +43,9 @@ class PainelTema extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.colors.card,
             borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: context.colors.border),
           ),
           child: Column(
             children: [
@@ -58,9 +58,9 @@ class PainelTema extends StatelessWidget {
                   ),
                   Text(
                     total == 0 ? '—' : '$feitas/$total tarefas',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
+                      color: context.colors.primary,
                     ),
                   ),
                 ],
@@ -71,8 +71,10 @@ class PainelTema extends StatelessWidget {
                 child: LinearProgressIndicator(
                   value: progresso,
                   minHeight: 12,
-                  backgroundColor: AppColors.field,
-                  color: tudoFeito ? AppColors.success : AppColors.accent,
+                  backgroundColor: context.colors.field,
+                  color: tudoFeito
+                      ? context.colors.success
+                      : context.colors.accent,
                 ),
               ),
               if (tudoFeito) ...[
@@ -80,9 +82,9 @@ class PainelTema extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.emoji_events,
-                      color: AppColors.star,
+                      color: context.colors.star,
                       size: 18,
                     ),
                     const SizedBox(width: 6),

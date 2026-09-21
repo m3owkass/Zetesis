@@ -25,8 +25,8 @@ class _HomeShellState extends ConsumerState<HomeShell> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: const CustomStatefulAppBar(),
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          border: Border(top: BorderSide(color: AppColors.border, width: 2)),
+        decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: context.colors.border, width: 2)),
         ),
         child: CustomBottomNav(
           currentIndex: _currentIndex,

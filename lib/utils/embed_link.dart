@@ -44,7 +44,6 @@ EmbedInfo? detectarEmbed(String? url) {
   }
 
   if (host == 'open.spotify.com') {
-    // O Spotify pode prefixar o caminho com o idioma, ex.: /intl-pt/track/{id}.
     final segmentos = uri.pathSegments;
     final tipoIndex = segmentos.indexWhere(_tiposSpotifyValidos.contains);
     if (tipoIndex == -1 || tipoIndex + 1 >= segmentos.length) return null;

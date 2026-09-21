@@ -114,7 +114,7 @@ class _AddMaterialFormState extends ConsumerState<AddMaterialForm> {
 
     final tipo = _tipoSelecionado;
     if (tipo == null) {
-      _mostrarSnackBar('Selecione um tipo.', AppColors.danger);
+      _mostrarSnackBar('Selecione um tipo.', context.colors.danger);
       return;
     }
 
@@ -122,7 +122,7 @@ class _AddMaterialFormState extends ConsumerState<AddMaterialForm> {
     if (!_editando && currentUser == null) {
       _mostrarSnackBar(
         'Não foi possível identificar o usuário atual.',
-        AppColors.danger,
+        context.colors.danger,
       );
       return;
     }
@@ -188,12 +188,12 @@ class _AddMaterialFormState extends ConsumerState<AddMaterialForm> {
       if (!mounted) return;
       _mostrarSnackBar(
         _editando ? 'Material atualizado com sucesso!' : 'Material salvo com sucesso!',
-        AppColors.success,
+        context.colors.success,
       );
       Navigator.of(context).pop();
     } catch (e) {
       if (!mounted) return;
-      _mostrarSnackBar('Erro ao salvar material.', AppColors.danger);
+      _mostrarSnackBar('Erro ao salvar material.', context.colors.danger);
     } finally {
       if (mounted) setState(() => _salvando = false);
     }

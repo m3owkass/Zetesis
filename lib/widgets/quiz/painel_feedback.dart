@@ -25,8 +25,8 @@ class PainelFeedback extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final corTexto = acertou ? AppColors.successDark : AppColors.dangerDark;
-    final corFundo = (acertou ? AppColors.success : AppColors.danger)
+    final corTexto = acertou ? context.colors.successDark : context.colors.dangerDark;
+    final corFundo = (acertou ? context.colors.success : context.colors.danger)
         .withValues(alpha: 0.15);
 
     return Container(
@@ -61,14 +61,14 @@ class PainelFeedback extends StatelessWidget {
               if (acertou) ...[
                 if (comboAtivo) ...[
                   _Selo(
-                    cor: AppColors.accent,
+                    cor: context.colors.accent,
                     icon: Icons.local_fire_department,
                     texto: 'x$sequencia',
                   ),
                   const SizedBox(width: 8),
                 ],
                 _Selo(
-                  cor: AppColors.success,
+                  cor: context.colors.success,
                   icon: Icons.star,
                   texto: '+$ultimoGanho',
                 ),
@@ -114,12 +114,12 @@ class _Selo extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: Colors.white, size: 16),
+          Icon(icon, color: context.colors.onDark, size: 16),
           const SizedBox(width: 4),
           Text(
             texto,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: context.colors.onDark,
               fontWeight: FontWeight.bold,
             ),
           ),

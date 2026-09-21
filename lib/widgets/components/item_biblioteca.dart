@@ -31,9 +31,9 @@ class ItemBiblioteca extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.colors.card,
           borderRadius: BorderRadius.circular(AppRadius.md),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: context.colors.border),
         ),
         clipBehavior: Clip.hardEdge,
         child: Stack(
@@ -61,20 +61,20 @@ class ItemBiblioteca extends StatelessWidget {
                       children: [
                         Text(
                           item.nome,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
-                            color: AppColors.primaryDark,
+                            color: context.colors.primaryDark,
                           ),
                         ),
                         if (item.autor != null) ...[
                           const SizedBox(height: AppSpacing.xs),
                           Text(
                             item.autor!,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 12,
-                              color: AppColors.primary,
+                              color: context.colors.primary,
                             ),
                           ),
                         ],
@@ -83,29 +83,29 @@ class ItemBiblioteca extends StatelessWidget {
                           const SizedBox(height: AppSpacing.sm),
                           Text(
                             item.descricao!,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               height: 1.4,
-                              color: AppColors.textSecondary,
+                              color: context.colors.textSecondary,
                             ),
                           ),
                         ],
                         if (temAnexo && !temImagem) ...[
                           const SizedBox(height: AppSpacing.sm),
-                          const Row(
+                          Row(
                             children: [
                               Icon(
                                 Icons.attachment,
                                 size: 16,
-                                color: AppColors.primary,
+                                color: context.colors.primary,
                               ),
-                              SizedBox(width: AppSpacing.xs),
+                              const SizedBox(width: AppSpacing.xs),
                               Text(
                                 'Toque para abrir o anexo',
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.primary,
+                                  color: context.colors.primary,
                                 ),
                               ),
                             ],
@@ -128,7 +128,9 @@ class ItemBiblioteca extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     child: Icon(
                       isFavorito ? Icons.star : Icons.star_border,
-                      color: isFavorito ? AppColors.star : AppColors.border,
+                      color: isFavorito
+                          ? context.colors.star
+                          : context.colors.border,
                       size: 28,
                     ),
                   ),
