@@ -5,7 +5,7 @@ import 'package:zetesis/theme/app_theme.dart';
 class CardEstatistica extends StatelessWidget {
   final IconData icon;
   final Color cor;
-  final int? valor;
+  final dynamic valor;
   final String label;
 
   const CardEstatistica({
