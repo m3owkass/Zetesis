@@ -48,7 +48,10 @@ O **Zetesis** é um app mobile de estudo da filosofia. O usuário escolhe um tem
 
 ## Pré-requisitos
 
-- Android 5.0 (API 21) ou superior
+- Windows 10 ou superior 
+- Flutter 3.x | `flutter doctor` para verificar |
+- Dart SDK | ^3.10.1 | Incluído com Flutter |
+- Android SDK | API 21+ | Android 5.0 Lollipop |
 
 ---
 
