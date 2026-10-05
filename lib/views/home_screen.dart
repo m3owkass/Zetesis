@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
+import 'package:zetesis/views/ranking_screen.dart';
 import 'package:zetesis/widgets/admin/card_estatistica.dart';
 import 'package:zetesis/widgets/components/mensagem_estado.dart';
 import 'package:zetesis/widgets/home/circulo_tema.dart';
@@ -25,16 +26,24 @@ class HomeScreen extends ConsumerWidget {
           children: [
             Expanded(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  CardEstatistica(
-                    icon: Icons.emoji_events_rounded,
-                    cor: context.colors.accent,
-                    valor: user?.ranking,
-                    label: 'Seu Ranking',
+                  SizedBox(height: 10,),
+                  
+                  GestureDetector(
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_)=> RankingScreen())),
+                    child: CardEstatistica(
+                      icon: Icons.emoji_events_rounded,
+                      cor: context.colors.accent,
+                      valor: user?.ranking,
+                      label: 'Seu Ranking',
+                    ),
                   ),
+                  SizedBox(height: 30,),
                   lastTarefa.when(
                     data: (tarefa) => CardEstatistica(
-                      icon: Icons.emoji_events_rounded,
+                      icon: Icons.auto_awesome,
                       cor: context.colors.accent,
                       valor: tarefa?.nome,
                       label: 'Última Tarefa Concluída',
@@ -48,6 +57,7 @@ class HomeScreen extends ConsumerWidget {
             ),
             const SizedBox(height: AppSpacing.md),
             PainelTema(),
+            SizedBox(height: 30,),
           ],
         ),
       ),

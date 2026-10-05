@@ -5,6 +5,7 @@ import 'package:zetesis/model/tarefa.dart';
 import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
+import 'package:zetesis/views/home_shell.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 import 'package:zetesis/widgets/quiz/enunciado_pergunta.dart';
 import 'package:zetesis/widgets/quiz/opcoes_pergunta.dart';
@@ -161,7 +162,7 @@ class _TarefaScreenState extends ConsumerState<TarefaScreen> {
         pontosGanhos: _pontosGanhos,
         melhorSequencia: _melhorSequencia,
         pratica: _modoPratica,
-        onConcluir: () => Navigator.pop(context),
+        onConcluir: (){Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));},
         onProxima: proxima == null ? null : () => _irParaProxima(proxima),
       );
     }

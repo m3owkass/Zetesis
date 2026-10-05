@@ -45,7 +45,7 @@ class CardEstatistica extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: AppSpacing.xs),
-          Text(
+          Text( 
             label,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall,
