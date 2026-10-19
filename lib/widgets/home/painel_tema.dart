@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/model/tarefa.dart';
-import 'package:zetesis/model/tema.dart';
 import 'package:zetesis/model/usuario.dart';
 import 'package:zetesis/provider/auth_providers.dart';
 import 'package:zetesis/provider/tarefa_providers.dart';
 import 'package:zetesis/theme/app_colors.dart';
 import 'package:zetesis/theme/app_theme.dart';
-import 'package:zetesis/views/selecao_tarefa_screen.dart';
 import 'package:zetesis/views/selecao_tema_screen.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 import 'package:zetesis/widgets/components/mensagem_estado.dart';
@@ -35,6 +33,8 @@ class _PainelTemaState extends ConsumerState<PainelTema> {
     });
     
   }
+  
+    
 
   @override
   Widget build(BuildContext context,) {
