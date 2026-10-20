@@ -69,16 +69,6 @@ class CustomStatefulAppBar extends ConsumerWidget
                       ],
                     ),
                   ),
-                  const PopupMenuItem(
-                    value: 'ranking',
-                    child: Row(
-                      children: [
-                        Icon(Icons.military_tech),
-                        SizedBox(width: 8),
-                        Text('Ranking'),
-                      ],
-                    ),
-                  ),
                   if (isDev || isAdmin)
                     const PopupMenuItem(
                       value: 'admin',

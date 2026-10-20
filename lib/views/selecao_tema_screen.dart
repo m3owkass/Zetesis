@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zetesis/model/tema.dart';
 import 'package:zetesis/provider/providers.dart';
 import 'package:zetesis/theme/app_theme.dart';
+import 'package:zetesis/views/selecao_tarefa_screen.dart';
 import 'package:zetesis/widgets/components/app_button.dart';
 import 'package:zetesis/widgets/components/item_tema.dart';
 import 'package:zetesis/widgets/components/mensagem_estado.dart';
@@ -27,7 +28,10 @@ class _SelecaoTemaScreenState extends ConsumerState<SelecaoTemaScreen> {
     final usuarios = ref.read(usuarioRepositoryProvider);
     final storage = ref.read(secureStorageProvider);
 
-    Navigator.pop(context);
+    Navigator.push(context,
+                  MaterialPageRoute(
+                    builder: (_) => const SelecaotarefaScreen(),
+                  ),);
 
     if (uid != null) {
       usuarios

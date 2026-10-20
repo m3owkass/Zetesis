@@ -5,7 +5,7 @@ import 'package:zetesis/theme/app_theme.dart';
 class CardEstatistica extends StatelessWidget {
   final IconData icon;
   final Color cor;
-  final int? valor;
+  final dynamic valor;
   final String label;
 
   const CardEstatistica({
@@ -45,7 +45,7 @@ class CardEstatistica extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: AppSpacing.xs),
-          Text(
+          Text( 
             label,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall,
