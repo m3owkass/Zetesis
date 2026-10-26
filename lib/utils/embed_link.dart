@@ -1,14 +1,18 @@
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
 enum EmbedProvider { youtube, spotify }
 
 class EmbedInfo {
   final EmbedProvider provider;
   final String embedUrl;
+  final String? videoId;
   final double? aspectRatio;
   final double? alturaFixa;
 
   const EmbedInfo({
     required this.provider,
     required this.embedUrl,
+    this.videoId,
     this.aspectRatio,
     this.alturaFixa,
   });
@@ -23,22 +27,13 @@ EmbedInfo? detectarEmbed(String? url) {
 
   final host = uri.host.replaceFirst('www.', '').replaceFirst('m.', '');
 
-  if (host == 'youtube.com') {
-    final id = uri.queryParameters['v'];
+  if (host == 'youtube.com' || host == 'youtu.be') {
+    final id = YoutubePlayerController.convertUrlToId(url);
     if (id == null || id.isEmpty) return null;
     return EmbedInfo(
       provider: EmbedProvider.youtube,
       embedUrl: 'https://www.youtube.com/embed/$id',
-      aspectRatio: 16 / 9,
-    );
-  }
-
-  if (host == 'youtu.be') {
-    final id = uri.pathSegments.isNotEmpty ? uri.pathSegments.first : null;
-    if (id == null || id.isEmpty) return null;
-    return EmbedInfo(
-      provider: EmbedProvider.youtube,
-      embedUrl: 'https://www.youtube.com/embed/$id',
+      videoId: id,
       aspectRatio: 16 / 9,
     );
   }

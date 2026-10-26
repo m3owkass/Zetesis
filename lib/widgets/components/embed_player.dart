@@ -4,6 +4,7 @@ import 'package:zetesis/theme/app_theme.dart';
 import 'package:zetesis/utils/abrir_anexo.dart';
 import 'package:zetesis/utils/embed_link.dart';
 import 'package:zetesis/widgets/components/embed_frame/embed_frame.dart';
+import 'package:zetesis/widgets/components/youtube_embed.dart';
 
 bool get _plataformaSuportaEmbed {
   if (kIsWeb) return true;
@@ -26,6 +27,13 @@ class EmbedPlayer extends StatelessWidget {
         onPressed: () => abrirAnexo(context, url),
         icon: const Icon(Icons.open_in_new),
         label: const Text('Abrir link'),
+      );
+    }
+
+    if (info.provider == EmbedProvider.youtube) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(AppRadius.sm),
+        child: YoutubeEmbed(videoId: info.videoId!),
       );
     }
 
